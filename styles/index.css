@@ -1,0 +1,35 @@
+@font-face {
+  font-family: "Inter";
+  src: url(../assets/fonts/Inter.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "Calamity";
+  src: url(../assets/fonts/Calamity-Bold.otf) format("opentype");
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.app {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Inter";
+}
+
+.text-box {
+  width: 425px;
+  height: 75px;
+  font-size: 20px;
+  resize: none;
+  overflow: hidden;
+  white-space: pre;
+  line-height: 1.25;
+  font-family: "Calamity";
+}
