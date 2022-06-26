@@ -39,6 +39,14 @@ body {
   margin: 1em;
 }
 
+.title {
+  margin-bottom: 0.5em;
+}
+
+.version {
+  margin-top: 0;
+}
+
 .content-edit-container {
   display: flex;
   flex-grow: 1;
