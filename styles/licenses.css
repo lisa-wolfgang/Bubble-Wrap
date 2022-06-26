@@ -1,0 +1,26 @@
+@font-face {
+  font-family: "Inter";
+  src: url(../assets/fonts/Inter.ttf) format("truetype");
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+}
+
+.list-container {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: "Inter";
+}
+
+.list-item-heading {
+  margin-top: 1em;
+  margin-bottom: 0;
+}
