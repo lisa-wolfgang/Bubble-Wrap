@@ -1,6 +1,13 @@
 @font-face {
   font-family: "Inter";
-  src: url(../assets/fonts/Inter.woff2) format("woff2");
+  font-weight: bold;
+  src: url(../assets/fonts/Inter-Bold.woff2) format("woff2");
+}
+
+@font-face {
+  font-family: "Inter";
+  font-weight: normal;
+  src: url(../assets/fonts/Inter-Regular.woff) format("woff2");
 }
 
 @font-face {
@@ -47,6 +54,7 @@ body {
 
 .title {
   margin: 1rem 0 0.5rem 0;
+  font-weight: 700;
 }
 
 .version {
@@ -75,6 +83,19 @@ body {
   color: var(--dialog-text-color);
   background-color: var(--dialog-bg-color);
   font-family: "Calamity";
+  transition-property: filter, transform;
+  transition-duration: 0.25s;
+}
+
+.text-box:focus {
+  outline: none;
+  filter: drop-shadow(0 0 2rem var(--dialog-bg-color));
+  transform: translateY(-0.25rem);
+}
+
+.text-box::placeholder {
+  color: var(--dialog-text-color);
+  opacity: 0.55;
 }
 
 .footer-content {
