@@ -10,11 +10,17 @@
 
 :root {
   --page-text-color: hsl(40, 60%, 5%);
+  --page-link-color: hsl(210, 100%, 50%);
   --page-bg-color: hsl(0, 0%, 100%);
   --dialog-text-color: hsl(60, 50%, 95%);
   --dialog-highlight-color: hsl(172, 95%, 50%);
   --dialog-important-color: hsl(353, 95%, 60%);
   --dialog-bg-color: hsla(0, 0%, 0%, 0.4);
+}
+
+a {
+  text-decoration: none;
+  color: var(--page-link-color);
 }
 
 body {
@@ -36,15 +42,15 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 1em;
+  margin: 1rem;
 }
 
 .title {
-  margin-bottom: 0.5em;
+  margin: 1rem 0 0.5rem 0;
 }
 
 .version {
-  margin-top: 0;
+  margin: 0 0 2rem 0;
 }
 
 .content-edit-container {
@@ -52,26 +58,26 @@ body {
   flex-grow: 1;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
 }
 
 .text-box {
-  width: 21.5em;
+  width: 430px;
   height: 75px;
   font-size: 20px;
   resize: none;
   overflow: hidden;
   /* white-space: pre; */
   line-height: 1.25;
+  margin: 1rem;
   border: 0;
-  border-radius: 4em;
-  padding: 1em 4em;
+  border-radius: 4rem;
+  padding: 1rem 4rem;
   color: var(--dialog-text-color);
   background-color: var(--dialog-bg-color);
   font-family: "Calamity";
 }
 
 .footer-content {
-  margin-top: 1em;
+  margin-top: 1rem;
   margin-bottom: 0;
 }

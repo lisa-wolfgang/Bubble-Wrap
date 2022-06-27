@@ -1,6 +1,17 @@
 @font-face {
   font-family: "Inter";
-  src: url(../assets/fonts/Inter.ttf) format("truetype");
+  src: url(../assets/fonts/Inter.woff2) format("woff2");
+}
+
+:root {
+  --page-text-color: hsl(40, 60%, 5%);
+  --page-link-color: hsl(210, 100%, 50%);
+  --page-bg-color: hsl(0, 0%, 100%);
+}
+
+a {
+  text-decoration: none;
+  color: var(--page-link-color);
 }
 
 body {
@@ -11,16 +22,39 @@ body {
   width: 100vw;
   height: 100vh;
   margin: 0;
-}
-
-.list-container {
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  color: var(--page-text-color);
+  background-color: var(--page-bg-color);
   font-family: "Inter";
 }
 
+.license-page {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem;
+}
+
+.title {
+  margin: 1rem 0 3rem 0;
+}
+
+.list-container {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  gap: 2rem;
+}
+
 .list-item-heading {
-  margin-top: 1em;
-  margin-bottom: 0;
+  margin: 0;
+}
+
+.list-item p {
+  margin: 0.5rem 0 0 0;
+}
+
+.footer-content {
+  margin: 1rem 0 0 0;
 }
