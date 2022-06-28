@@ -98,6 +98,11 @@ body {
   opacity: 0.55;
 }
 
+.footer {
+  display: flex;
+  gap: 2rem;
+}
+
 .footer-content {
   margin-top: 1rem;
   margin-bottom: 0;
