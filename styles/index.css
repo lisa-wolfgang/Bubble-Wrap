@@ -17,17 +17,36 @@
 
 :root {
   --page-text-color: hsl(40, 60%, 5%);
-  --page-link-color: hsl(210, 100%, 50%);
   --page-bg-color: hsl(0, 0%, 100%);
+  --page-link-color: hsl(210, 100%, 50%);
+  --page-button-color: hsl(0, 0%, 90%);
+  --page-button-hover-color: hsl(0, 0%, 85%);
   --dialog-text-color: hsl(60, 50%, 95%);
   --dialog-highlight-color: hsl(172, 95%, 50%);
   --dialog-important-color: hsl(353, 95%, 60%);
   --dialog-bg-color: hsla(0, 0%, 0%, 0.4);
 }
 
+.no-transition {
+  transition: none !important;
+}
+
 a {
   text-decoration: none;
   color: var(--page-link-color);
+}
+
+select {
+  padding: 0.5rem;
+  border: none;
+  background-color: var(--page-button-color);
+  transition-property: background-color;
+  transition-duration: 0.25s;
+}
+
+select:hover {
+  outline: none;
+  background-color: var(--page-button-hover-color);
 }
 
 body {
@@ -68,7 +87,7 @@ body {
   align-items: center;
 }
 
-.text-box {
+.bubble {
   width: 430px;
   height: 75px;
   font-size: 20px;
@@ -76,26 +95,34 @@ body {
   overflow: hidden;
   /* white-space: pre; */
   line-height: 1.25;
-  margin: 1rem;
+  margin: 16px;
   border: 0;
-  border-radius: 4rem;
-  padding: 1rem 4rem;
+  padding: 16px 64px;
   color: var(--dialog-text-color);
   background-color: var(--dialog-bg-color);
   font-family: "Calamity";
-  transition-property: filter, transform;
+  transition-property: filter, transform, border-radius;
+  transition-timing-function: cubic-bezier(0, 0, 0, 1);
   transition-duration: 0.25s;
 }
 
-.text-box:focus {
+.bubble:focus {
   outline: none;
   filter: drop-shadow(0 0 2rem var(--dialog-bg-color));
   transform: translateY(-0.25rem);
 }
 
-.text-box::placeholder {
+.bubble::placeholder {
   color: var(--dialog-text-color);
   opacity: 0.55;
+}
+
+.bubble.dialogue {
+  border-radius: calc(107px / 2);
+}
+
+.bubble.signboard {
+  border-radius: 6px;
 }
 
 .footer {
