@@ -52,23 +52,27 @@ select:hover {
 body {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  width: 100vw;
+  height: 100vh;
   margin: 0;
   color: var(--page-text-color);
   background-color: var(--page-bg-color);
   font-family: "Inter";
 }
 
+.app-container {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+}
+
 .app {
   display: flex;
   flex-grow: 1;
-  flex-basis: 100vh;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 100vw;
-  margin: 1rem;
+  padding: 1rem;
 }
 
 .title {
