@@ -2,7 +2,7 @@
 
 A visual dialogue editor for Breath of the Wild.
 
-- The tool simulates an NPC dialogue bubble
+- The tool simulates NPC dialogue and sign bubbles
 - Text is automatically wrapped, eliminating guesswork and providing instant visual feedback
 - The spacing and wrapping behavior have been tested for accuracy against a variety of the vanilla dialogue
 
