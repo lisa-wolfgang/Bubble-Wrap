@@ -83,7 +83,7 @@ body {
   margin: 0 0 2rem 0;
 }
 
-.content-edit-container {
+.bubble-container {
   display: flex;
   flex-grow: 1;
   flex-direction: column;
@@ -91,33 +91,27 @@ body {
 }
 
 .bubble {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 430px;
   height: 75px;
   font-size: 20px;
-  resize: none;
-  overflow: hidden;
-  /* white-space: pre; */
-  line-height: 1.25;
   margin: 16px;
   border: 0;
   padding: 16px 64px;
   color: var(--dialog-text-color);
   background-color: var(--dialog-bg-color);
-  font-family: "Calamity";
+  cursor: text;
   transition-property: filter, transform, border-radius;
   transition-timing-function: cubic-bezier(0, 0, 0, 1);
   transition-duration: 0.25s;
 }
 
-.bubble:focus {
+.bubble:focus-within {
   outline: none;
   filter: drop-shadow(0 0 2rem var(--dialog-bg-color));
   transform: translateY(-0.25rem);
-}
-
-.bubble::placeholder {
-  color: var(--dialog-text-color);
-  opacity: 0.55;
 }
 
 .bubble.dialogue {
@@ -126,6 +120,26 @@ body {
 
 .bubble.signboard {
   border-radius: 6px;
+}
+
+.bubble-content {
+  white-space: break-spaces;
+  overflow-wrap: break-word;
+  line-height: 1.25;
+  margin: 1rem;
+  font-family: "Calamity";
+}
+
+.bubble-content:focus {
+  outline: none;
+}
+
+.bubble-content:empty:not(:focus)::before {
+  display: block;
+  content: attr(placeholder);
+  cursor: text;
+  color: var(--dialog-text-color);
+  opacity: 0.55;
 }
 
 .footer {
