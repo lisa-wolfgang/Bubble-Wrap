@@ -124,7 +124,7 @@ body {
 
 .bubble-content {
   white-space: break-spaces;
-  overflow-wrap: break-word;
+  overflow-wrap: anywhere;
   line-height: 1.25;
   margin: 1rem;
   font-family: "Calamity";
