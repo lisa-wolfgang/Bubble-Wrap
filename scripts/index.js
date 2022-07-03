@@ -17,8 +17,24 @@ bubbleElement.addEventListener("mousedown", (e) => {
   bubbleContentElement.focus();
 });
 
+// Clear formatting on anything pasted into the bubble
+bubbleContentElement.addEventListener("paste", (e) => sanitizePaste(e));
+document.addEventListener("drop", (e) => e.preventDefault());
+bubbleContentElement.addEventListener("drop", (e) => sanitizeDrop(e));
 function updateBubbleType() {
   bubbleElement.classList.remove(bubbleType);
   bubbleType = bubbleTypeElement.value;
   bubbleElement.classList.add(bubbleType);
+}
+
+function sanitizePaste(e) {
+  e.preventDefault();
+  let plaintext = e.clipboardData.getData("text/plain");
+  document.execCommand("insertText", false, plaintext);
+}
+
+function sanitizeDrop(e) {
+  e.preventDefault();
+  let plaintext = e.dataTransfer.getData("text/plain");
+  document.execCommand("insertText", false, plaintext);
 }
