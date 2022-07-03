@@ -21,6 +21,7 @@
   --page-link-color: hsl(210, 100%, 50%);
   --page-button-color: hsl(0, 0%, 90%);
   --page-button-hover-color: hsl(0, 0%, 85%);
+  --page-button-active-color: hsl(0, 0%, 80%);
   --dialog-text-color: hsl(60, 50%, 95%);
   --dialog-highlight-color: hsl(172, 95%, 50%);
   --dialog-important-color: hsl(353, 95%, 60%);
@@ -36,7 +37,7 @@ a {
   color: var(--page-link-color);
 }
 
-select {
+select, button {
   padding: 0.5rem;
   border: none;
   background-color: var(--page-button-color);
@@ -44,9 +45,13 @@ select {
   transition-duration: 0.25s;
 }
 
-select:hover {
+select:hover, button:hover {
   outline: none;
   background-color: var(--page-button-hover-color);
+}
+
+button:active {
+  background-color: var(--page-button-active-color);
 }
 
 body {
@@ -81,6 +86,11 @@ body {
 
 .version {
   margin: 0 0 2rem 0;
+}
+
+.bubble-options {
+  display: flex;
+  gap: 0.5rem;
 }
 
 .bubble-container {
@@ -150,4 +160,9 @@ body {
 .footer-content {
   margin-top: 1rem;
   margin-bottom: 0;
+}
+
+.test-bubble {
+  position: absolute;
+  visibility: hidden;
 }
