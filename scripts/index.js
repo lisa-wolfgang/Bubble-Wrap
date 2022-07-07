@@ -4,6 +4,8 @@ let bubbleContentElement = document.querySelector(".bubble-content");
 let exportBtnElement = document.getElementById("export-btn");
 
 let bubbleType = bubbleTypeElement.value;
+let bubbleFontSize = parseInt(window.getComputedStyle(bubbleContentElement).getPropertyValue("font-size"));
+let bubbleValue = "";
 
 // Sets the previously selected bubble type on page load
 bubbleElement.classList.add("no-transition");
@@ -35,6 +37,18 @@ bubbleContentElement.addEventListener("paste", (e) => sanitizePaste(e));
 document.addEventListener("drop", (e) => e.preventDefault());
 bubbleContentElement.addEventListener("drop", (e) => sanitizeDrop(e));
 
+// Flag input over three lines long
+bubbleContentElement.addEventListener("input", (e) => {
+  testBubbleText.innerHTML = bubbleContentElement.innerHTML;
+  if (testBubbleText.offsetHeight > bubbleFontSize * 1.25 * 3) {
+    // bubbleContentElement.innerHTML = bubbleValue;
+    bubbleElement.classList.add("overflow");
+  } else {
+    bubbleValue = bubbleContentElement.innerHTML;
+    bubbleElement.classList.remove("overflow");
+  }
+});
+
 // Put the bubble text on the clipboard in MSYT format
 exportBtnElement.addEventListener("mousedown", () => putMsytToClipboard(true));
 document.addEventListener("keydown", (e) => {
@@ -60,38 +74,39 @@ function sanitizeDrop(e) {
 }
 
 function putMsytToClipboard(showShortcutHint) {
-  if (bubbleContentElement.textContent) {
-    let msytExport = '  - text: "';
-    let nodes = Array.from(bubbleContentElement.childNodes);
-    for (let i = 0; i < nodes.length; i++) {
-      let nodeContent = nodes[i].textContent;
-      if (!nodeContent) nodes.splice(i, 1); // gets rid of empty nodes such as <br>
-    }
-    for (let i = 0; i < nodes.length; i++) {
-      let nodeContent = breakTextAtWrap(nodes[i].textContent);
-      if (nodeContent) {
-        msytExport += nodeContent;
-        if (i != nodes.length - 1) msytExport += "\\n";
-      }
-    }
-    msytExport += '"';
-    navigator.clipboard.writeText(msytExport).then(
-      () => {
-        let alertMsg = "The MSYT output has been copied to your clipboard. You can now open your Bootup_LANG.pack file in Wildbits, open an MSBT file, and paste your MSYT output under the `content` field of any text entry.";
-        if (showShortcutHint) alertMsg += "\n\nProtip: you can use Ctrl + Enter as a keyboard shortcut for this feature.";
-        window.alert(alertMsg);
-      },
-      () => {
-        window.alert("Couldn't access the clipboard.");
-      }
-    );
-  } else {
-    window.alert("There's nothing to copy. Try typing some text in the dialogue bubble.");
+  if (!bubbleContentElement.textContent) {
+    return window.alert("There's nothing to copy. Try typing some text in the dialogue bubble.");
   }
+  if (bubbleElement.classList.contains("overflow")) {
+    return window.alert("The text bubble is overflowing. Remove some text and try again.");
+  }
+  let msytExport = '  - text: "';
+  let nodes = Array.from(bubbleContentElement.childNodes);
+  for (let i = 0; i < nodes.length; i++) {
+    let nodeContent = nodes[i].textContent;
+    if (!nodeContent) nodes.splice(i, 1); // gets rid of empty nodes such as <br>
+  }
+  for (let i = 0; i < nodes.length; i++) {
+    let nodeContent = breakTextAtWrap(nodes[i].textContent);
+    if (nodeContent) {
+      msytExport += nodeContent;
+      if (i != nodes.length - 1) msytExport += "\\n";
+    }
+  }
+  msytExport += '"';
+  navigator.clipboard.writeText(msytExport).then(
+    () => {
+      let alertMsg = "The MSYT output has been copied to your clipboard. You can now open your Bootup_LANG.pack file in Wildbits, open an MSBT file, and paste your MSYT output under the `content` field of any text entry.";
+      if (showShortcutHint) alertMsg += "\n\nProtip: you can use Ctrl + Enter as a keyboard shortcut for this feature.";
+      window.alert(alertMsg);
+    },
+    () => {
+      window.alert("Couldn't access the clipboard.");
+    }
+  );
 }
 
 function breakTextAtWrap(text) {
-  let fontSize = parseInt(window.getComputedStyle(testBubbleText).getPropertyValue("font-size"));
   let words = text.split(" ");
   let testString;
   let outputString;
@@ -99,7 +114,7 @@ function breakTextAtWrap(text) {
   while (words.length > 0) {
     testString = "";
     testBubbleText.textContent = "";
-    while (testBubbleText.offsetHeight <= fontSize * 1.25) {
+    while (testBubbleText.offsetHeight <= bubbleFontSize * 1.25) {
       outputString = testString;
       if (outputString) words.splice(0, 1);
       if (words.length == 0) break;

@@ -26,6 +26,7 @@
   --dialog-highlight-color: hsl(172, 95%, 50%);
   --dialog-important-color: hsl(353, 95%, 60%);
   --dialog-bg-color: hsla(0, 0%, 0%, 0.4);
+  --dialog-invalid-bg-color: hsla(0, 100%, 30%, 0.4);
 }
 
 .no-transition {
@@ -113,7 +114,7 @@ body {
   color: var(--dialog-text-color);
   background-color: var(--dialog-bg-color);
   cursor: text;
-  transition-property: filter, transform, border-radius;
+  transition-property: filter, transform, border-radius, background-color;
   transition-timing-function: cubic-bezier(0, 0, 0, 1);
   transition-duration: 0.25s;
 }
@@ -122,6 +123,12 @@ body {
   outline: none;
   filter: drop-shadow(0 0 2rem var(--dialog-bg-color));
   transform: translateY(-0.25rem);
+}
+
+.bubble.overflow {
+  background-color: var(--dialog-invalid-bg-color);
+  overflow: scroll;
+  scrollbar-width: none;
 }
 
 .bubble.dialogue {
