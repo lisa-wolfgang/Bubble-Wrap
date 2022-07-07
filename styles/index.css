@@ -131,6 +131,10 @@ body {
   scrollbar-width: none;
 }
 
+.bubble.overflow::-webkit-scrollbar {
+  display: none;
+}
+
 .bubble.dialogue {
   border-radius: calc(107px / 2);
 }
