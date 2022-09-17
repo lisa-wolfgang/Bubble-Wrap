@@ -115,7 +115,7 @@ export default class Bubble {
     }
     // If this is a text node, parse out the respective MSYT artifacts
     if (plaintext.trim().startsWith('- text: "') && plaintext.trim().endsWith('"')) {
-      plaintext = plaintext.trim().slice(8, -1);
+      plaintext = plaintext.trim().slice(9, -1);
     }
     return plaintext;
   }
