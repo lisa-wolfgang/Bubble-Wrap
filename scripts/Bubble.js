@@ -76,6 +76,9 @@ export default class Bubble {
     this.btnAddBubbleElement.addEventListener("mousedown", (e) => {
       BubbleManager.addBubble(this);
     });
+    this.element.addEventListener("keydown", (e) => {
+      if (e.code == "Enter" && e.ctrlKey && !e.altKey) BubbleManager.addBubble(this);
+    });
 
     // When bubble delete button is clicked, delete this bubble
     this.btnDelBubbleElement.addEventListener("mousedown", (e) => {
