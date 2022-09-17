@@ -11,3 +11,7 @@ A visual text bubble editor for Breath of the Wild.
 Bubble Wrap is a web app: no installation is required, and it works on all platforms. However, if your browser supports it, you may install it offline.
 
 Access Bubble Wrap at https://lisa-wolfgang.github.io/Bubble-Wrap.
+
+## Contributing
+
+Pull requests are welcome! Please read the [contributing guidelines](CONTRIBUTING.md) for more information.
