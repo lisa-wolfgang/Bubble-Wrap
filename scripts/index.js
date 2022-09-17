@@ -62,7 +62,6 @@ function putMsytToClipboard(showShortcutHint) {
   navigator.clipboard.writeText(msytExport).then(
     () => {
       let alertMsg = "The MSYT output has been copied to your clipboard. You can now open your Bootup_LANG.pack file in Wildbits, open an MSBT file, and paste your MSYT output under the `content` field of any text entry.";
-      if (showShortcutHint) alertMsg += "\n\nProtip: you can use Ctrl+Alt+Enter as a keyboard shortcut for this feature.";
       window.alert(alertMsg);
     },
     () => {

@@ -1,0 +1,82 @@
+@font-face {
+  font-family: "Inter";
+  font-weight: bold;
+  src: url(../assets/fonts/Inter-Bold.woff2) format("woff2");
+}
+
+@font-face {
+  font-family: "Inter";
+  font-weight: normal;
+  src: url(../assets/fonts/Inter-Regular.woff) format("woff2");
+}
+
+:root {
+  --page-text-color: hsl(40, 60%, 5%);
+  --page-separator-color: hsla(40, 60%, 5%, 25%);
+  --page-link-color: hsl(210, 100%, 50%);
+  --page-bg-color: hsl(0, 0%, 100%);
+}
+
+a {
+  text-decoration: none;
+  color: var(--page-link-color);
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  color: var(--page-text-color);
+  background-color: var(--page-bg-color);
+  font-family: "Inter";
+}
+
+.app-container {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+}
+
+.app {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.title {
+  margin: 1rem 0;
+}
+
+.list-container {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  gap: 2rem;
+  margin: 1rem;
+}
+
+table {
+  text-align: left;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 1rem;
+}
+
+th {
+  padding-right: 2rem;
+}
+
+tr + tr {
+  border-top: 2px solid var(--page-separator-color);
+}
+
+.footer-content {
+  margin: 1rem 0 0 0;
+}
