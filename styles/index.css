@@ -19,14 +19,18 @@
   --page-text-color: hsl(40, 60%, 5%);
   --page-bg-color: hsl(0, 0%, 100%);
   --page-link-color: hsl(210, 100%, 50%);
+  --page-danger-color: hsl(16, 100%, 50%);
   --page-button-color: hsl(0, 0%, 90%);
   --page-button-hover-color: hsl(0, 0%, 85%);
   --page-button-active-color: hsl(0, 0%, 80%);
+  --shadow-color: hsla(0, 0%, 0%, 0.5);
   --dialog-text-color: hsl(60, 50%, 95%);
   --dialog-highlight-color: hsl(172, 95%, 50%);
   --dialog-important-color: hsl(353, 95%, 60%);
   --dialog-bg-color: hsla(0, 0%, 0%, 0.4);
   --dialog-invalid-bg-color: hsla(0, 100%, 30%, 0.4);
+  --transition-duration: 0.25s;
+  --transition-function: cubic-bezier(0, 0, 0, 1);
 }
 
 .no-transition {
@@ -41,9 +45,10 @@ a {
 select, button {
   padding: 0.5rem;
   border: none;
+  color: var(--page-text-color);
   background-color: var(--page-button-color);
   transition-property: background-color;
-  transition-duration: 0.25s;
+  transition-duration: var(--transition-duration);
 }
 
 select:hover, button:hover {
@@ -99,40 +104,65 @@ body {
   flex-grow: 1;
   flex-direction: column;
   align-items: center;
+  gap: 1rem;
+  margin: 1rem 0;
 }
 
 .bubble {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 470px;
+  position: relative;
+  width: 502px;
   height: 75px;
   font-size: 20px;
-  margin: 16px;
   border: 0;
-  padding: 16px 64px;
+  padding: 16px 32px;
   color: var(--dialog-text-color);
   background-color: var(--dialog-bg-color);
   cursor: text;
-  transition-property: filter, transform, border-radius, background-color;
-  transition-timing-function: cubic-bezier(0, 0, 0, 1);
-  transition-duration: 0.25s;
+  transition-property: margin-bottom, filter, transform, border-radius, background-color;
+  transition-timing-function: var(--transition-function);
+  transition-duration: var(--transition-duration);
+  animation: slidein var(--transition-duration) var(--transition-function);
+}
+
+@keyframes slidein {
+  0% {
+    height: 0;
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.bubble.deleting {
+  animation: slideout var(--transition-duration) var(--transition-function);
+}
+
+@keyframes slideout {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    height: 0;
+    margin-bottom: -3rem;
+    opacity: 0;
+  }
 }
 
 .bubble:focus-within {
+  margin-bottom: 3rem;
   outline: none;
-  filter: drop-shadow(0 0 2rem var(--dialog-bg-color));
+  filter: drop-shadow(0 0.5rem 1rem var(--shadow-color));
   transform: translateY(-0.25rem);
 }
 
 .bubble.overflow {
   background-color: var(--dialog-invalid-bg-color);
-  overflow: scroll;
-  scrollbar-width: none;
-}
-
-.bubble.overflow::-webkit-scrollbar {
-  display: none;
 }
 
 .bubble.dialogue {
@@ -143,11 +173,28 @@ body {
   border-radius: 6px;
 }
 
+.bubble-content-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: inherit;
+  height: inherit;
+  padding: 1rem;
+  overflow: scroll;
+  scrollbar-width: none;
+}
+
+.bubble-content-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* TODO: https://jsfiddle.net/527z755p/13/ */
+
 .bubble-content {
   white-space: break-spaces;
   overflow-wrap: anywhere;
   line-height: 1.25;
-  margin: 1rem;
+  padding: 1rem;
   font-family: "Calamity";
 }
 
@@ -155,12 +202,77 @@ body {
   outline: none;
 }
 
-.bubble-content:empty:not(:focus)::before {
+.bubble-content:empty:not(:focus, .deleting .bubble-content, .test-bubble .bubble-content)::before {
   display: block;
   content: attr(placeholder);
   cursor: text;
   color: var(--dialog-text-color);
   opacity: 0.55;
+}
+
+.test-bubble .bubble-content {
+  padding: 0;
+  margin: 1rem;
+}
+
+.bubble-btn-container {
+  display: flex;
+  position: absolute;
+  overflow: hidden;
+  user-select: none;
+  pointer-events: none;
+  opacity: 0;
+  transition-property: opacity;
+  transition-duration: var(--transition-duration);
+}
+
+.btn-add-bubble-container {
+  display: flex;
+  justify-content: center;
+  bottom: -3rem;
+  right: 0;
+  width: 100%;
+}
+
+.btn-del-bubble-container {
+  bottom: auto;
+  right: -0.5rem;
+  top: -0.5rem;
+}
+
+.bubble:focus-within .bubble-btn-container {
+  pointer-events: auto;
+  opacity: 1;
+}
+
+.bubble-btn-container button {
+  box-sizing: content-box;
+  width: 1rem;
+  height: 1rem;
+  line-height: 0;
+  border-radius: 1rem;
+}
+
+.bubble:only-child .btn-del-bubble, .del-disabled .btn-del-bubble {
+  display: none;
+}
+
+.btn-add-bubble:hover {
+  content: attr(data-label);
+}
+
+.btn-del-bubble:hover {
+  background-color: var(--page-danger-color);
+}
+
+.btn-del-bubble svg {
+  transition-property: filter;
+  transition-duration: var(--transition-duration);
+}
+
+.btn-del-bubble:hover svg {
+  color: var(--page-text-color);
+  filter: invert(1);
 }
 
 .footer {

@@ -1,96 +1,61 @@
+import BubbleManager from "../scripts/BubbleManager.js";
+
+BubbleManager.template = await fetch("../components/bubble.html");
+BubbleManager.template = await BubbleManager.template.text();
+
 let bubbleTypeElement = document.getElementById("bubble-type");
-let bubbleElement = document.querySelector(".bubble");
-let bubbleContentElement = document.querySelector(".bubble-content");
+BubbleManager.type = bubbleTypeElement.value;
+
+new BubbleManager();
+updateBubbleType();
+
 let exportBtnElement = document.getElementById("export-btn");
 
-let bubbleType = bubbleTypeElement.value;
-let bubbleFontSize = parseInt(window.getComputedStyle(bubbleContentElement).getPropertyValue("font-size"));
-let bubbleValue = "";
-
-// Sets the previously selected bubble type on page load
-bubbleElement.classList.add("no-transition");
-updateBubbleType();
-bubbleElement.parentElement.offsetHeight; // necessary to force CSS reload in time
-bubbleElement.classList.remove("no-transition");
-
-// Create test bubble
-let testBubbleText = document.createElement("div");
-testBubbleText.classList.add("bubble-content");
-let testBubbleElement = document.createElement("div");
-testBubbleElement.classList.add("bubble", "test-bubble");
-testBubbleElement.appendChild(testBubbleText);
-document.body.appendChild(testBubbleElement);
-
 // Update bubble type when select menu value is changed
-bubbleTypeElement.addEventListener("change", () => {
+bubbleTypeElement.addEventListener("change", (e) => {
   updateBubbleType();
 });
 
-// Focus the bubble text input when any part of the bubble is clicked
-bubbleElement.addEventListener("mousedown", (e) => {
-  if (e.target == bubbleElement) e.preventDefault(); // prevents unfocus on text when clicked
-  bubbleContentElement.focus();
-});
-
-// Clear formatting on anything pasted into the bubble
-bubbleContentElement.addEventListener("paste", (e) => sanitizePaste(e));
+// Allow bubbles to define their own drop behavior
 document.addEventListener("drop", (e) => e.preventDefault());
-bubbleContentElement.addEventListener("drop", (e) => sanitizeDrop(e));
-
-// Flag input over three lines long
-bubbleContentElement.addEventListener("input", (e) => {
-  testBubbleText.innerHTML = bubbleContentElement.innerHTML;
-  if (testBubbleText.offsetHeight > bubbleFontSize * 1.25 * 3) {
-    // bubbleContentElement.innerHTML = bubbleValue;
-    bubbleElement.classList.add("overflow");
-  } else {
-    bubbleValue = bubbleContentElement.innerHTML;
-    bubbleElement.classList.remove("overflow");
-  }
-});
 
 // Put the bubble text on the clipboard in MSYT format
-exportBtnElement.addEventListener("mousedown", () => putMsytToClipboard(true));
+exportBtnElement.addEventListener("click", () => putMsytToClipboard(true));
 document.addEventListener("keydown", (e) => {
   if (e.code == "Enter" && e.ctrlKey) putMsytToClipboard();
 });
 
 function updateBubbleType() {
-  bubbleElement.classList.remove(bubbleType);
-  bubbleType = bubbleTypeElement.value;
-  bubbleElement.classList.add(bubbleType);
-}
-
-function sanitizePaste(e) {
-  e.preventDefault();
-  let plaintext = e.clipboardData.getData("text/plain");
-  document.execCommand("insertText", false, plaintext);
-}
-
-function sanitizeDrop(e) {
-  e.preventDefault();
-  let plaintext = e.dataTransfer.getData("text/plain");
-  document.execCommand("insertText", false, plaintext);
+  BubbleManager.updateType(bubbleTypeElement.value);
 }
 
 function putMsytToClipboard(showShortcutHint) {
-  if (!bubbleContentElement.textContent) {
-    return window.alert("There's nothing to copy. Try typing some text in the dialogue bubble.");
-  }
-  if (bubbleElement.classList.contains("overflow")) {
-    return window.alert("The text bubble is overflowing. Remove some text and try again.");
-  }
   let msytExport = '  - text: "';
-  let nodes = Array.from(bubbleContentElement.childNodes);
-  for (let i = 0; i < nodes.length; i++) {
-    let nodeContent = nodes[i].textContent;
-    if (!nodeContent) nodes.splice(i, 1); // gets rid of empty nodes such as <br>
-  }
-  for (let i = 0; i < nodes.length; i++) {
-    let nodeContent = breakTextAtWrap(nodes[i].textContent);
-    if (nodeContent) {
+  let lineCount = 1;
+  for (let b = 0; b < BubbleManager.bubbles.length; b++) {
+    let bubble = BubbleManager.bubbles[b];
+    if (BubbleManager.bubbles.length == 1 && !bubble.bubbleContentElement.textContent) {
+      return window.alert("There's nothing to copy. Try typing some text in the dialogue bubble.");
+    }
+    if (bubble.element.classList.contains("overflow")) {
+      return window.alert("Your text is overflowing. Locate the red bubble(s), reformat your text, and try again.");
+    }
+    // Note: blank bubbles will not export three line breaks like some may expect,
+    // but this is actually an intended convenience feature.
+    // This may be a setting if a settings page is implemented in the future.
+    let nodes = Array.from(bubble.bubbleContentElement.childNodes);
+    for (let i = 0; i < nodes.length; i++) {
+      let rawContent = nodes[i].textContent;
+      let nodeContent = rawContent ? breakTextAtWrap(bubble, rawContent) : "";
       msytExport += nodeContent;
-      if (i != nodes.length - 1) msytExport += "\\n";
+      if (i != nodes.length - 1) {
+        msytExport += "\\n";
+        lineCount++;
+      }
+    }
+    while (b != BubbleManager.bubbles.length - 1 && lineCount % 3 != 1) {
+      msytExport += "\\n";
+      lineCount++;
     }
   }
   msytExport += '"';
@@ -104,29 +69,55 @@ function putMsytToClipboard(showShortcutHint) {
       window.alert("Couldn't access the clipboard.");
     }
   );
-}
 
-function breakTextAtWrap(text) {
-  let words = text.split(" ");
-  let testString;
-  let outputString;
-  let output = [];
-  while (words.length > 0) {
-    testString = "";
-    testBubbleText.textContent = "";
-    while (testBubbleText.offsetHeight <= bubbleFontSize * 1.25) {
-      outputString = testString;
-      if (outputString) words.splice(0, 1);
-      if (words.length == 0) break;
-      testString += words[0];
-      if (words.length > 1) testString += " ";
-      testBubbleText.textContent = testString;
+  function breakTextAtWrap(b, text) {
+    let testBubbleText = BubbleManager.testBubble.bubbleContentElement;
+    let words = text.split(" ");
+    let testString;
+    let outputString;
+    let output = [];
+    while (words.length > 0) {
+      testString = "";
+      testBubbleText.textContent = "";
+      while (testBubbleText.offsetHeight <= b.bubbleFontSize * 1.25) {
+        outputString = testString;
+        if (outputString) words.splice(0, 1);
+        if (words.length == 0) break;
+        testString += words[0];
+        if (words.length > 1) testString += " ";
+        testBubbleText.textContent = testString;
+      }
+      // Handle words longer than one line
+      if (!outputString) {
+        let word = words[0].split("");
+        let outputWordString;
+        let outputWord = "";
+        while (word.length > 0) {
+          testString = "";
+          testBubbleText.textContent = "";
+          while (testBubbleText.offsetHeight <= b.bubbleFontSize * 1.25) {
+            outputWordString = testString;
+            if (outputWordString) word.splice(0, 1);
+            if (word.length == 0) break;
+            testString += word[0];
+            testBubbleText.textContent = testString;
+          }
+          outputWord += outputWordString;
+          if (word.length > 0) {
+            outputWord = outputWord.slice(0, -1);
+            outputWord += "\\n";
+            lineCount++;
+          }
+        }
+        outputString = outputWord;
+        words.splice(0, 1);
+      }
+      if (words.length > 0) {
+        outputString = outputString.split(" ").slice(0, -1).join(" ");
+        lineCount++;
+      }
+      output.push(outputString);
     }
-    output += outputString;
-    if (words.length > 0) {
-      output = output.slice(0, -1);
-      output += "\\n";
-    }
+    return output.join("\\n");
   }
-  return output;
 }

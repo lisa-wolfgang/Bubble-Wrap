@@ -1,10 +1,10 @@
 # Bubble Wrap
 
-A visual text dialog editor for Breath of the Wild.
+A visual text bubble editor for Breath of the Wild.
 
 - The tool simulates NPC dialogue and sign bubbles. The spacing and wrapping behavior have been tested for accuracy against a variety of the vanilla dialogue.
 - Text is automatically wrapped, eliminating guesswork and providing instant visual feedback.
-- Dialogs can be converted to the MSYT format with a single click or keyboard shortcut.
+- Multiple bubbles can be simultaneously converted to the MSYT format with a single click or keyboard shortcut.
 
 ## Install
 
