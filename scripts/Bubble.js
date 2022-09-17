@@ -49,9 +49,9 @@ export default class Bubble {
       this.bubbleContentElement.focus();
     });
 
-    // Clear formatting on anything pasted into the bubble
-    this.bubbleContentElement.addEventListener("paste", (e) => this.sanitizePaste(e));
-    this.bubbleContentElement.addEventListener("drop", (e) => this.sanitizeDrop(e));
+    // Perform parsing on anything pasted into the bubble
+    this.bubbleContentElement.addEventListener("paste", (e) => this.parsePaste(e));
+    this.bubbleContentElement.addEventListener("drop", (e) => this.parseDrop(e));
 
     this.bubbleContentElement.addEventListener("input", (e) => {
       // Clear if <br> is the only content
@@ -87,15 +87,30 @@ export default class Bubble {
     });
   }
 
-  sanitizePaste(e) {
+  parsePaste(e) {
     e.preventDefault();
     let plaintext = e.clipboardData.getData("text/plain");
-    document.execCommand("insertText", false, plaintext);
+    document.execCommand("insertText", false, this.parsePastedContent(plaintext));
   }
 
-  sanitizeDrop(e) {
+  parseDrop(e) {
     e.preventDefault();
     let plaintext = e.dataTransfer.getData("text/plain");
-    document.execCommand("insertText", false, plaintext);
+    document.execCommand("insertText", false, this.parsePastedContent(plaintext));
+  }
+
+  parsePastedContent(plaintext) {
+    // Convert certain characters to the variants used in-game
+    let replaceDict = {
+      "\\n": "\n",
+      "--": "—",
+      "‘": "'",
+      "’": "'",
+      "…": "..."
+    };
+    for (const [key, val] of Object.entries(replaceDict)) {
+      plaintext = plaintext.replaceAll(key, val);
+    }
+    return plaintext;
   }
 }

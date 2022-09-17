@@ -47,16 +47,6 @@ function putMsytToClipboard(showShortcutHint) {
     for (let i = 0; i < nodes.length; i++) {
       let rawContent = nodes[i].textContent;
       let nodeContent = rawContent ? breakTextAtWrap(bubble, rawContent) : "";
-      // Convert certain characters to the variants used in-game
-      let replaceDict = {
-        "--": "—",
-        "‘": "'",
-        "’": "'",
-        "…": "..."
-      };
-      for (const [key, val] of Object.entries(replaceDict)) {
-        nodeContent = nodeContent.replaceAll(key, val);
-      }
       msytExport += nodeContent;
       if (i != nodes.length - 1) {
         msytExport += "\\n";
