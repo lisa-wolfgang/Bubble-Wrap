@@ -43,6 +43,7 @@ function putMsytToClipboard(showShortcutHint) {
     }
     let nodes = Array.from(bubble.bubbleContentElement.childNodes);
     for (let i = 0; i < nodes.length; i++) {
+      if (nodes[i].nodeValue == null) continue;
       let rawContent = nodes[i].textContent;
       let nodeContent = rawContent ? breakTextAtWrap(bubble, rawContent) : "";
       // Convenience conversions
