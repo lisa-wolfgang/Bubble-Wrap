@@ -33,6 +33,7 @@ function putMsytToClipboard(showShortcutHint) {
   let msytExport = '  - text: "';
   let lineCount = 1;
   for (let b = 0; b < BubbleManager.bubbles.length; b++) {
+    let originalLineCount = lineCount;
     let bubble = BubbleManager.bubbles[b];
     if (BubbleManager.bubbles.length == 1 && !bubble.bubbleContentElement.textContent) {
       return window.alert("There's nothing to copy. Try typing some text in the dialogue bubble.");
@@ -40,9 +41,6 @@ function putMsytToClipboard(showShortcutHint) {
     if (bubble.element.classList.contains("overflow")) {
       return window.alert("Your text is overflowing. Locate the red bubble(s), reformat your text, and try again.");
     }
-    // Note: blank bubbles will not export three line breaks like some may expect,
-    // but this is actually an intended convenience feature.
-    // This may be a setting if a settings page is implemented in the future.
     let nodes = Array.from(bubble.bubbleContentElement.childNodes);
     for (let i = 0; i < nodes.length; i++) {
       let rawContent = nodes[i].textContent;
@@ -61,7 +59,8 @@ function putMsytToClipboard(showShortcutHint) {
         lineCount++;
       }
     }
-    while (b != BubbleManager.bubbles.length - 1 && lineCount % 3 != 1) {
+    // TODO: Setting for skipping over blank bubbles on export
+    while (b != BubbleManager.bubbles.length - 1 && bubble.bubbleContentElement.textContent && (lineCount == originalLineCount || lineCount % 3 != 1)) {
       msytExport += "\\n";
       lineCount++;
     }
