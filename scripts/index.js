@@ -1,6 +1,6 @@
 import BubbleManager from "../scripts/BubbleManager.js";
 
-BubbleManager.template = await fetch("../components/bubble.html");
+BubbleManager.template = await fetch("components/bubble.html");
 BubbleManager.template = await BubbleManager.template.text();
 
 let bubbleTypeElement = document.getElementById("bubble-type");
