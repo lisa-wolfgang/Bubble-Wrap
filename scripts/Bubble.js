@@ -101,8 +101,10 @@ export default class Bubble {
 
   parsePastedContent(plaintext) {
     // Convert certain characters to the variants used in-game
+    // (also remove some MSYT artifacts)
     let replaceDict = {
       "\\n": "\n",
+      '\\"': '"',
       "--": "—",
       "‘": "'",
       "’": "'",
@@ -110,6 +112,10 @@ export default class Bubble {
     };
     for (const [key, val] of Object.entries(replaceDict)) {
       plaintext = plaintext.replaceAll(key, val);
+    }
+    // If this is a text node, parse out the respective MSYT artifacts
+    if (plaintext.trim().startsWith('- text: "') && plaintext.trim().endsWith('"')) {
+      plaintext = plaintext.trim().slice(8, -1);
     }
     return plaintext;
   }
