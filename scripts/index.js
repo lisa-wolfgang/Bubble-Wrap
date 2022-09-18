@@ -1,4 +1,5 @@
 import BubbleManager from "../scripts/BubbleManager.js";
+import BubbleTester from "../scripts/BubbleTester.js";
 
 BubbleManager.template = await fetch("components/bubble.html");
 BubbleManager.template = await BubbleManager.template.text();
@@ -45,7 +46,9 @@ function putMsytToClipboard(showShortcutHint) {
     for (let i = 0; i < nodes.length; i++) {
       if (nodes[i].nodeValue == null) continue;
       let rawContent = nodes[i].textContent;
-      let nodeContent = rawContent ? breakTextAtWrap(bubble, rawContent) : "";
+      let contentLines = rawContent ? BubbleTester.breakTextAtWrap(bubble, rawContent) : "";
+      if (rawContent) lineCount += contentLines.length - 1;
+      let nodeContent = rawContent ? contentLines.join("\\n") : "";
       // Convenience conversions
       let replaceDict = {
         "--": "—",
@@ -76,55 +79,4 @@ function putMsytToClipboard(showShortcutHint) {
       window.alert("Couldn't access the clipboard.");
     }
   );
-
-  function breakTextAtWrap(b, text) {
-    let testBubbleText = BubbleManager.testBubble.bubbleContentElement;
-    let words = text.split(" ");
-    let testString;
-    let outputString;
-    let output = [];
-    while (words.length > 0) {
-      testString = "";
-      testBubbleText.textContent = "";
-      while (testBubbleText.offsetHeight <= b.bubbleFontSize * 1.25) {
-        outputString = testString;
-        if (outputString) words.splice(0, 1);
-        if (words.length == 0) break;
-        testString += words[0];
-        if (words.length > 1) testString += " ";
-        testBubbleText.textContent = testString;
-      }
-      // Handle words longer than one line
-      if (!outputString) {
-        let word = words[0].split("");
-        let outputWordString;
-        let outputWord = "";
-        while (word.length > 0) {
-          testString = "";
-          testBubbleText.textContent = "";
-          while (testBubbleText.offsetHeight <= b.bubbleFontSize * 1.25) {
-            outputWordString = testString;
-            if (outputWordString) word.splice(0, 1);
-            if (word.length == 0) break;
-            testString += word[0];
-            testBubbleText.textContent = testString;
-          }
-          outputWord += outputWordString;
-          if (word.length > 0) {
-            outputWord = outputWord.slice(0, -1);
-            outputWord += "\\n";
-            lineCount++;
-          }
-        }
-        outputString = outputWord;
-        words.splice(0, 1);
-      }
-      if (words.length > 0) {
-        outputString = outputString.split(" ").slice(0, -1).join(" ");
-        lineCount++;
-      }
-      output.push(outputString);
-    }
-    return output.join("\\n");
-  }
 }
