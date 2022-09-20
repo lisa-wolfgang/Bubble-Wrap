@@ -2,9 +2,19 @@
 
 A visual text bubble editor for Breath of the Wild.
 
-- The tool simulates NPC dialogue and sign bubbles. The spacing and wrapping behavior have been tested for accuracy against a variety of the vanilla dialogue.
-- Text is automatically wrapped, eliminating guesswork and providing instant visual feedback.
-- Multiple bubbles can be simultaneously converted to the MSYT format with a single click or keyboard shortcut.
+## Features
+
+### Automatic text wrapping
+
+The editor works just like a regular text box -- eliminating guesswork and providing instant visual feedback. The spacing and wrapping behavior have been tested for accuracy against a variety of vanilla dialogue. NPC and sign dialogs are currently supported.
+
+### Smart paste
+
+Simply paste a long passage or a MSYT text node into a bubble, then watch as the lines neatly arrange themselves into logical bubble separations. Plus, sneaky variants of apostrophes and other characters are weeded out and replaced with the correct in-game versions.
+
+### Effortless MSYT export
+
+When you're ready to use your text in your mod, simply hit the button or keyboard shortcut to export everything into a single MSYT text node and have it copied to the clipboard. Never type a `\n` again.
 
 ## Install
 
