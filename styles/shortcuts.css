@@ -70,6 +70,7 @@ th, td {
 }
 
 th {
+  max-width: 12rem;
   padding-right: 2rem;
 }
 
