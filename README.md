@@ -10,7 +10,7 @@ The editor works just like a regular text box -- eliminating guesswork and provi
 
 ### Smart paste
 
-Simply paste a long passage or a MSYT text node into a bubble, then watch as the lines neatly arrange themselves into logical bubble separations. Plus, sneaky variants of apostrophes and other characters are weeded out and replaced with the correct in-game versions.
+Simply paste a long passage separated by line breaks or a MSYT text node into a bubble -- the text will automatically be formatted based on punctuation. Plus, sneaky variants of apostrophes and other characters are weeded out and replaced with the correct in-game versions.
 
 ### Effortless MSYT export
 
