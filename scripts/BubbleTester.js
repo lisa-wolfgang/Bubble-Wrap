@@ -3,12 +3,14 @@ import BubbleManager from "./BubbleManager.js";
 /** Manages the testing and formatting of exported text from bubbles. */
 export default class BubbleTester {
   /**
-   * Breaks text into individual lines at the given bubble's text size.
+   * Breaks a single line of text into multiple lines using the given bubble's text size
+   * to perform wrapping.
    * @param {Bubble} b The bubble whose text size the text should wrap with.
    * @param {string} text The text to wrap.
    * @returns {Array<string>} An array of individual lines of text.
    */
   static breakTextAtWrap(b, text) {
+    if (text == "") return "";
     let testBubbleText = BubbleManager.testBubble.bubbleContentElement;
     let words = text.split(" ");
     let testString;

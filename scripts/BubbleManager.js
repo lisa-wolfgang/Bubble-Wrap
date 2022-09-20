@@ -15,11 +15,16 @@ export default class BubbleManager {
     window.BubbleManager = BubbleManager;
   }
 
-  static addBubble(parentBubble) {
-    let index = BubbleManager.bubbles.indexOf(parentBubble);
+  /**
+   * Inserts a new bubble below the specified parent.
+   * @param {Bubble} parentBubble The bubble to create this one under.
+   * @param {string} text (optional) A string to prefill the new bubble with.
+   */
+  static addBubble(parentBubble, text) {
+    let index = parentBubble.getIndex();
     // Prevents sudden/flickery appearance from focus shift
     parentBubble.element.classList.add("del-disabled");
-    let newBubble = new Bubble(index);
+    let newBubble = new Bubble(index, text);
     BubbleManager.bubbles.splice(index + 1, 0, newBubble);
     BubbleManager.updateType(BubbleManager.type);
   }

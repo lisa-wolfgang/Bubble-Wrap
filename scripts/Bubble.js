@@ -1,8 +1,17 @@
 import BubbleManager from "./BubbleManager.js";
+import BubbleTester from "./BubbleTester.js";
 
 /** Manages the UI for an individual text box. */
 export default class Bubble {
-  constructor(index) {
+  /**
+   * Creates a new Bubble. This constructor should only be called internally by BubbleManager.
+   * @param {int} index The index of the bubble to create this one under.
+   * @param {string} text (optional) A string to prefill the bubble with.
+   */
+  constructor(index, text) {
+    // Tracking the index reliably would require updating all bubbles when a new one is created,
+    // so it is instead exposed in Bubble.prototype.getIndex() (sourced from BubbleManager)
+
     // Create and insert the bubble element
     this.element = document.createElement("div");
     this.element.classList.add("bubble");
@@ -25,6 +34,9 @@ export default class Bubble {
     this.btnDelBubbleElement = this.element.querySelector(".btn-del-bubble");
     this.bubbleFontSize = parseInt(window.getComputedStyle(this.bubbleContentElement).getPropertyValue("font-size"));
     this.bubbleValue = "";
+
+    // Populate bubble with instantiation text
+    this.bubbleContentElement.textContent = text;
 
     // If this is not the initial or test bubble, autofocus
     if (index > 0) {
@@ -87,16 +99,24 @@ export default class Bubble {
     });
   }
 
+  /**
+   * Gets the numeric position of this bubble in the list.
+   * @returns The index of this bubble.
+   */
+  getIndex() {
+    return BubbleManager.bubbles.indexOf(this);
+  }
+
   parsePaste(e) {
     e.preventDefault();
     let plaintext = e.clipboardData.getData("text/plain");
-    document.execCommand("insertText", false, this.parsePastedContent(plaintext));
+    this.parsePastedContent(plaintext);
   }
 
   parseDrop(e) {
     e.preventDefault();
     let plaintext = e.dataTransfer.getData("text/plain");
-    document.execCommand("insertText", false, this.parsePastedContent(plaintext));
+    this.parsePastedContent(plaintext);
   }
 
   parsePastedContent(plaintext) {
@@ -104,6 +124,7 @@ export default class Bubble {
     // (also remove some MSYT artifacts)
     let replaceDict = {
       "\\n": "\n",
+      "\\\\n": "\n",
       '\\"': '"',
       "--": "—",
       "‘": "'",
@@ -117,6 +138,62 @@ export default class Bubble {
     if (plaintext.trim().startsWith('- text: "') && plaintext.trim().endsWith('"')) {
       plaintext = plaintext.trim().slice(9, -1);
     }
-    return plaintext;
+    // Auto-split into multiple bubbles
+    let plaintextChunks = plaintext.split("\n");
+    let textLines = [];
+    plaintextChunks.forEach((chunk) => {
+      textLines = textLines.concat(BubbleTester.breakTextAtWrap(this, chunk));
+    });
+    let bubbleStartIndex = 0;
+    let bubbleManagerIndex = BubbleManager.bubbles.indexOf(this);
+    let lineIndex;
+    let setTextChunkToOffset = setTextChunkToOffsetFunc.bind(this);
+    for (lineIndex = 0; lineIndex < textLines.length; lineIndex++) {
+      let line = textLines[lineIndex];
+      let nextLine = textLines[lineIndex + 1];
+      let nextNextLine = textLines[lineIndex + 2];
+      let relativeLineIndex = lineIndex - bubbleStartIndex;
+      if (Bubble.lineIsPunctuated(line) && line != "") {
+        let isEndingLastLine = relativeLineIndex >= 2;
+        let isEndingSecondLine = relativeLineIndex == 1 && nextLine != undefined && !Bubble.lineIsPunctuated(nextLine);
+        let isEndingFirstLine = relativeLineIndex == 0 && nextLine != undefined && !Bubble.lineIsPunctuated(nextLine) && nextNextLine != undefined && !Bubble.lineIsPunctuated(nextNextLine);
+        if (isEndingLastLine || isEndingSecondLine || isEndingFirstLine || !nextLine || nextLine == "") {
+          setTextChunkToOffset();
+        }
+      } else if (line == "") {
+        while (textLines[lineIndex] == "") {
+          textLines.splice(lineIndex, 1);
+        }
+        if (relativeLineIndex > 0) setTextChunkToOffset();
+        else lineIndex--;
+      } else if (lineIndex == textLines.length - 1) {
+        setTextChunkToOffset();
+      }
+    }
+    if (plaintext) document.execCommand("insertText", false, plaintext);
+
+    function setTextChunkToOffsetFunc() {
+      let textChunk = textLines.slice(bubbleStartIndex, lineIndex + 1).join("\n");
+      if (bubbleStartIndex > 0) {
+        BubbleManager.addBubble(BubbleManager.bubbles[bubbleManagerIndex], textChunk);
+        bubbleManagerIndex++;
+      } else {
+        document.execCommand("insertText", false, textChunk);
+        plaintext = null;
+      }
+      bubbleStartIndex = lineIndex + 1;
+    }
+  }
+
+  /**
+   * Determines whether or not the input string ends in sentence-ending punctuation,
+   * accounting for quotation marks and parantheses.
+   * @param {string} line The string to test.
+   * @returns {boolean} Whether or not `line` is punctuated.
+   */
+  static lineIsPunctuated(line) {
+    let punctuation = [".", "?", "!"];
+    let exceptionEndings = ['"', "»", ")"];
+    return punctuation.some((p) => line.endsWith(p) || exceptionEndings.some((x) => line.endsWith(x) && (line.endsWith(p, line.length - 1) || exceptionEndings.some((x2) => line.endsWith(x2, line.length - 1) && line.endsWith(p, line.length - 2)))));
   }
 }
