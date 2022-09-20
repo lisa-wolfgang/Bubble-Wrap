@@ -180,12 +180,15 @@ body {
   width: inherit;
   height: inherit;
   padding: 1rem;
-  overflow: scroll;
   scrollbar-width: none;
 }
 
 .bubble-content-container::-webkit-scrollbar {
   display: none;
+}
+
+.bubble.overflow .bubble-content-container {
+  overflow: scroll;
 }
 
 /* TODO: https://jsfiddle.net/527z755p/13/ */
