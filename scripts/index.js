@@ -143,11 +143,11 @@ if (devMode) {
   // Post final test results
   let alertPopup = document.createElement("div");
   if (failedTests.length == 0) {
-    console.groupCollapsed(`%c ✓ %c All tests passed`, "background-color: green; color: white; border-radius: 10px");
+    console.groupCollapsed(`%c ✓ %c All tests passed`, "background-color: green; color: white; border-radius: 10px", "background-color: transparent; color: canvastext; border-radius: 0");
     alertPopup.textContent = "All tests passed.";
     alertPopup.classList.add("alertPopup", "alertPopup-testPass");
   } else {
-    console.group(`%c ! %c ${failedTests.length} ${failedTests.length == 1 ? "test" : "tests"} failed`, "background-color: red; color: white; border-radius: 10px");
+    console.group(`%c ! %c ${failedTests.length} ${failedTests.length == 1 ? "test" : "tests"} failed`, "background-color: red; color: white; border-radius: 10px", "background-color: transparent; color: canvastext; border-radius: 0");
     alertPopup.textContent = `${failedTests.length} ${failedTests.length == 1 ? "test" : "tests"} failed. View console for details.`;
     alertPopup.classList.add("alertPopup", "alertPopup-testFail");
     failedTests.forEach((e) => {
@@ -169,11 +169,11 @@ if (devMode) {
   }
 
   function postTestPass(testName) {
-    console.log(`%c ✓ %c ${testName ? `"${testName}"` : "Test"} passed`, "background-color: green; color: white; border-radius: 10px");
+    console.log(`%c ✓ %c ${testName ? `"${testName}"` : "Test"} passed`, "background-color: green; color: white; border-radius: 10px", "background-color: transparent; color: canvastext; border-radius: 0");
   }
 
   function postTestFail(testName, msg) {
-    console.log(`%c ! %c ${testName ? `"${testName}"` : "Test"} failed${msg ? `: ${msg}` : ""}`, "background-color: red; color: white; border-radius: 10px");
+    console.log(`%c ! %c ${testName ? `"${testName}"` : "Test"} failed${msg ? `: ${msg}` : ""}`, "background-color: red; color: white; border-radius: 10px", "background-color: transparent; color: canvastext; border-radius: 0");
   }
 }
 
