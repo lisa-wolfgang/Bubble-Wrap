@@ -31,7 +31,9 @@ function updateBubbleType() {
 }
 
 function putMsytToClipboard() {
-  navigator.clipboard.writeText(MSYTParser.export(BubbleManager.bubbles)).then(
+  let result = MSYTParser.export(BubbleManager.bubbles, true);
+  if (result) {
+    navigator.clipboard.writeText(result).then(
     () => {
       let alertMsg = "The MSYT output has been copied to your clipboard. You can now open your Bootup_LANG.pack file in Wildbits, open an MSBT file, and paste your MSYT output under the `content` field of any text entry.";
       window.alert(alertMsg);
@@ -40,4 +42,5 @@ function putMsytToClipboard() {
       window.alert("Couldn't access the clipboard.");
     }
   );
+  }
 }

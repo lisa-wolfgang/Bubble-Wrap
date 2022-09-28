@@ -5,19 +5,22 @@ export default class MSYTParser {
   /**
    * Exports a set of Bubbles into MSYT text.
    * @param {Bubble[]} bubbles An array of Bubble objects.
+   * @param {boolean} verbose Whether or not the browser should warn the user about issues.
    * @returns A string containing the exported MSYT text.
    */
-  static export(bubbles) {
+  static export(bubbles, verbose) {
     let msytExport = '  - text: "';
     let lineCount = 1;
     for (let b = 0; b < bubbles.length; b++) {
       let originalLineCount = lineCount;
       let bubble = bubbles[b];
-      if (bubbles.length == 1 && !bubble.bubbleContentElement.textContent) {
-        return window.alert("There's nothing to copy. Try typing some text in the dialogue bubble.");
+      if (verbose && bubbles.length == 1 && !bubble.bubbleContentElement.textContent) {
+        window.alert("There's nothing to copy. Try typing some text in the dialogue bubble.");
+        return undefined;
       }
-      if (bubble.element.classList.contains("overflow")) {
-        return window.alert("Your text is overflowing. Locate the red bubble(s), reformat your text, and try again.");
+      if (verbose && bubble.element.classList.contains("overflow")) {
+        window.alert("Your text is overflowing. Locate the red bubble(s), reformat your text, and try again.");
+        return undefined;
       }
       let nodes = Array.from(bubble.bubbleContentElement.childNodes);
       for (let i = 0; i < nodes.length; i++) {
