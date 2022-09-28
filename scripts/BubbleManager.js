@@ -8,6 +8,7 @@ export default class BubbleManager {
 
   static wrappingBubble;
   static bubbles = [];
+  static testBubbles = [];
 
   constructor() {
     BubbleManager.wrappingBubble = new Bubble(-1);

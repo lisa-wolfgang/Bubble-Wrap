@@ -29,6 +29,7 @@
   --dialog-important-color: hsl(353, 95%, 60%);
   --dialog-bg-color: hsla(0, 0%, 0%, 0.4);
   --dialog-invalid-bg-color: hsla(0, 100%, 30%, 0.4);
+  --modal-danger-bg-color: hsla(353, 95%, 60%, 0.4);
   --transition-duration: 0.25s;
   --transition-function: cubic-bezier(0, 0, 0, 1);
 }
@@ -65,6 +66,7 @@ body {
   width: 100vw;
   height: 100vh;
   margin: 0;
+  overflow: hidden;
   color: var(--page-text-color);
   background-color: var(--page-bg-color);
   font-family: "Inter";
@@ -74,6 +76,7 @@ body {
   display: flex;
   flex-grow: 1;
   flex-direction: column;
+  overflow: auto;
 }
 
 .app {
@@ -291,4 +294,43 @@ body {
 .test-bubble {
   position: absolute;
   visibility: hidden;
+}
+
+.alertPopup {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.5rem;
+  padding: 0.5rem;
+}
+
+.alertPopup-testPass {
+  opacity: 0;
+  animation: alertPopup-testPass var(--transition-duration) var(--transition-function) forwards;
+}
+
+@keyframes alertPopup-testPass {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.alertPopup-testFail {
+  background-color: var(--modal-danger-bg-color);
+  opacity: 0;
+  animation: alertPopup-testFail var(--transition-duration) var(--transition-function) 0.25s forwards;
+}
+  
+@keyframes alertPopup-testFail {
+  0% {
+    right: -5rem;
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
