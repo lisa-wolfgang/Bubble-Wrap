@@ -18,19 +18,30 @@
 :root {
   --page-text-color: hsl(40, 60%, 5%);
   --page-bg-color: hsl(0, 0%, 100%);
-  --page-link-color: hsl(210, 100%, 50%);
-  --page-danger-color: hsl(16, 100%, 50%);
-  --page-button-color: hsl(0, 0%, 90%);
-  --page-button-hover-color: hsl(0, 0%, 85%);
-  --page-button-active-color: hsl(0, 0%, 80%);
+  --action-color: hsl(210, 100%, 50%);
+  --danger-color: hsl(16, 100%, 50%);
+  --button-bg-color: hsla(0, 0%, 100%, 1);
+  --button-border-color: hsla(0, 0%, 75%, 1);
+  --button-hover-bg-color: hsla(0, 0%, 95%, 1);
+  --button-border-hover-color: hsla(0, 0%, 0%, 0);
+  --button-active-bg-color: hsla(0, 0%, 0%, 0.1);
+  --button-action-color: var(--page-text-color);
+  --action-bg-color: var(--button-bg-color);
+  --action-border-color: var(--button-border-color);
+  --action-hover-color: var(--page-bg-color);
+  --action-hover-bg-color: hsl(210, 100%, 50%);
+  --action-hover-border-color: hsla(0, 0%, 0%, 0);
+  --action-active-bg-color: hsl(210, 100%, 45%);
+  --section-color: hsla(0, 0%, 90%, 0);
   --shadow-color: hsla(0, 0%, 0%, 0.5);
   --dialog-text-color: hsl(60, 50%, 95%);
   --dialog-highlight-color: hsl(172, 95%, 50%);
   --dialog-important-color: hsl(353, 95%, 60%);
   --dialog-bg-color: hsla(0, 0%, 0%, 0.4);
   --dialog-invalid-bg-color: hsla(0, 100%, 30%, 0.4);
-  --modal-danger-bg-color: hsla(353, 95%, 60%, 0.4);
+  --modal-danger-bg-color: hsla(353, 95%, 60%, 0.25);
   --transition-duration: 0.25s;
+  --page-button-transition-duration: 0.15s;
   --transition-function: cubic-bezier(0, 0, 0, 1);
 }
 
@@ -40,25 +51,44 @@
 
 a {
   text-decoration: none;
-  color: var(--page-link-color);
+  color: var(--action-color);
 }
 
 select, button {
   padding: 0.5rem;
-  border: none;
+  border: 2px solid var(--button-border-color);
+  border-radius: 0.25rem;
   color: var(--page-text-color);
-  background-color: var(--page-button-color);
-  transition-property: background-color;
-  transition-duration: var(--transition-duration);
+  background-color: var(--button-bg-color);
+  transition-property: background-color, border;
+  transition-duration: var(--page-button-transition-duration);
 }
 
 select:hover, button:hover {
-  outline: none;
-  background-color: var(--page-button-hover-color);
+  border: 2px solid var(--button-border-hover-color);
+  background-color: var(--button-hover-bg-color);
+  cursor: pointer;
 }
 
 button:active {
-  background-color: var(--page-button-active-color);
+  background-color: var(--button-active-bg-color);
+}
+
+.action {
+  color: var(--button-action-color);
+  background-color: var(--action-bg-color);
+  border: 2px solid var(--action-border-color);
+}
+
+.action:hover {
+  color: var(--action-hover-color);
+  background-color: var(--action-hover-bg-color);
+  border: 2px solid var(--action-hover-border-color);
+  cursor: pointer;
+}
+
+.action:active {
+  background-color: var(--action-active-bg-color);
 }
 
 body {
@@ -100,6 +130,9 @@ body {
 .bubble-options {
   display: flex;
   gap: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  background-color: var(--section-color);
 }
 
 .bubble-container {
@@ -268,7 +301,7 @@ body {
 }
 
 .btn-del-bubble:hover {
-  background-color: var(--page-danger-color);
+  background-color: var(--danger-color);
 }
 
 .btn-del-bubble svg {
@@ -300,7 +333,8 @@ body {
   position: absolute;
   bottom: 0.5rem;
   right: 0.5rem;
-  padding: 0.5rem;
+  padding: 1rem;
+  border-radius: 0.25rem;
 }
 
 .alertPopup-testPass {
@@ -320,6 +354,7 @@ body {
 
 .alertPopup-testFail {
   background-color: var(--modal-danger-bg-color);
+  border: 2px solid var(--danger-color);
   opacity: 0;
   animation: alertPopup-testFail var(--transition-duration) var(--transition-function) 0.25s forwards;
 }
