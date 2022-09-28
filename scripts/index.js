@@ -33,99 +33,111 @@ document.addEventListener("keydown", (e) => {
 if (devMode) {
   let passedTests = [];
   let failedTests = [];
+  let testResult;
   BubbleManager.testBubbles.push(new Bubble(-1));
 
   // Test if empty bubble = empty MSYT node
-  if (MSYTParser.export(BubbleManager.testBubbles) == '  - text: ""') {
+  testResult = MSYTParser.export(BubbleManager.testBubbles);
+  if (testResult == '  - text: ""') {
     pushTestPass("Empty bubble to MSYT");
   } else {
-    pushTestFail("Empty bubble to MSYT");
+    pushTestFail("Empty bubble to MSYT", `got result '${MSYTParser.export(BubbleManager.testBubbles)}'`);
   }
 
   // Test if single-line bubble = single-line MSYT node
   BubbleManager.testBubbles[0].bubbleContentElement.innerHTML = "a";
-  if (MSYTParser.export(BubbleManager.testBubbles) == '  - text: "a"') {
+  testResult = MSYTParser.export(BubbleManager.testBubbles);
+  if (testResult == '  - text: "a"') {
     pushTestPass("Single-line bubble to MSYT");
   } else {
-    pushTestFail("Single-line bubble to MSYT");
+    pushTestFail("Single-line bubble to MSYT", `got result '${MSYTParser.export(BubbleManager.testBubbles)}'`);
   }
 
   // Test if wrapping single-line bubble = multi-line MSYT node
   BubbleManager.testBubbles[0].bubbleContentElement.innerHTML = "llamallamallamallamallamallamallamallamallama";
-  if (MSYTParser.export(BubbleManager.testBubbles) == '  - text: "llamallamallamallamallamallamallamallamal\\nlama"') {
+  testResult = MSYTParser.export(BubbleManager.testBubbles);
+  if (testResult == '  - text: "llamallamallamallamallamallamallamallamal\\nlama"') {
     pushTestPass("Wrapping single-line bubble to MSYT");
   } else {
-    pushTestFail("Wrapping single-line bubble to MSYT");
+    pushTestFail("Wrapping single-line bubble to MSYT", `got result '${MSYTParser.export(BubbleManager.testBubbles)}'`);
   }
 
   // Test if manual two-line bubble = two-line MSYT node
   BubbleManager.testBubbles[0].bubbleContentElement.innerHTML = "<div>a</div><div>a<br></div>";
-  if (MSYTParser.export(BubbleManager.testBubbles) == '  - text: "a\\na"') {
+  testResult = MSYTParser.export(BubbleManager.testBubbles);
+  if (testResult == '  - text: "a\\na"') {
     pushTestPass("Manual two-line bubble to MSYT");
   } else {
-    pushTestFail("Manual two-line bubble to MSYT");
+    pushTestFail("Manual two-line bubble to MSYT", `got result '${MSYTParser.export(BubbleManager.testBubbles)}'`);
   }
 
   // Test if pasted two-line bubble = two-line MSYT node
   BubbleManager.testBubbles[0].bubbleContentElement.innerHTML = "a<br>a";
-  if (MSYTParser.export(BubbleManager.testBubbles) == '  - text: "a\\na"') {
+  testResult = MSYTParser.export(BubbleManager.testBubbles);
+  if (testResult == '  - text: "a\\na"') {
     pushTestPass("Pasted two-line bubble to MSYT");
   } else {
-    pushTestFail("Pasted two-line bubble to MSYT");
+    pushTestFail("Pasted two-line bubble to MSYT", `got result '${MSYTParser.export(BubbleManager.testBubbles)}'`);
   }
 
   // Test if manual three-line bubble = three-line MSYT node
   BubbleManager.testBubbles[0].bubbleContentElement.innerHTML = "<div>a</div><div>a</div><div>a<br></div>";
-  if (MSYTParser.export(BubbleManager.testBubbles) == '  - text: "a\\na\\na"') {
+  testResult = MSYTParser.export(BubbleManager.testBubbles);
+  if (testResult == '  - text: "a\\na\\na"') {
     pushTestPass("Manual three-line bubble to MSYT");
   } else {
-    pushTestFail("Manual three-line bubble to MSYT");
+    pushTestFail("Manual three-line bubble to MSYT", `got result '${MSYTParser.export(BubbleManager.testBubbles)}'`);
   }
 
   // Test if three-line bubble (one wrap, one manual) = three-line MSYT node
   BubbleManager.testBubbles[0].bubbleContentElement.innerHTML = "<div>a</div><div>llamallamallamallamallamallamallamallamallama<br></div>";
-  if (MSYTParser.export(BubbleManager.testBubbles) == '  - text: "a\\nllamallamallamallamallamallamallamallamallamal\\nlama"') {
+  testResult = MSYTParser.export(BubbleManager.testBubbles);
+  if (testResult == '  - text: "a\\nllamallamallamallamallamallamallamallamal\\nlama"') {
     pushTestPass("Three-line bubble (one wrap, one manual) to MSYT");
   } else {
-    pushTestFail("Three-line bubble (one wrap, one manual) to MSYT");
+    pushTestFail("Three-line bubble (one wrap, one manual) to MSYT", `got result '${MSYTParser.export(BubbleManager.testBubbles)}'`);
   }
 
   // Test if two bubbles = two-bubble MSYT node
   BubbleManager.testBubbles[0].bubbleContentElement.innerHTML = "a";
   BubbleManager.testBubbles.push(new Bubble(-1, "a"));
-  if (MSYTParser.export(BubbleManager.testBubbles) == '  - text: "a\\n\\n\\na"') {
+  testResult = MSYTParser.export(BubbleManager.testBubbles);
+  if (testResult == '  - text: "a\\n\\n\\na"') {
     pushTestPass("Two bubbles to MSYT");
   } else {
-    pushTestFail("Two bubbles to MSYT");
+    pushTestFail("Two bubbles to MSYT", `got result '${MSYTParser.export(BubbleManager.testBubbles)}'`);
   }
 
   // Test if three-line bubble (one wrap, one manual) + single-line bubble = two-bubble MSYT node
   BubbleManager.testBubbles[0].bubbleContentElement.innerHTML = "<div>a</div><div>llamallamallamallamallamallamallamallamallama<br></div>";
   BubbleManager.testBubbles[1].bubbleContentElement.innerHTML = "a";
-  if (MSYTParser.export(BubbleManager.testBubbles) == '  - text: "a\\nllamallamallamallamallamallamallamallamallamal\\nlama\\na"') {
+  testResult = MSYTParser.export(BubbleManager.testBubbles);
+  if (testResult == '  - text: "a\\nllamallamallamallamallamallamallamallamal\\nlama\\na"') {
     pushTestPass("Three-line bubble (one wrap, one manual) + single-line bubble to MSYT");
   } else {
-    pushTestFail("Three-line bubble (one wrap, one manual) + single-line bubble to MSYT");
+    pushTestFail("Three-line bubble (one wrap, one manual) + single-line bubble to MSYT", `got result '${MSYTParser.export(BubbleManager.testBubbles)}'`);
   }
 
   // Test if three bubbles = three-bubble MSYT node
   BubbleManager.testBubbles[0].bubbleContentElement.innerHTML = "a";
   BubbleManager.testBubbles[1].bubbleContentElement.innerHTML = "a";
   BubbleManager.testBubbles.push(new Bubble(-1, "a"));
-  if (MSYTParser.export(BubbleManager.testBubbles) == '  - text: "a\\n\\n\\na\\n\\n\\na"') {
+  testResult = MSYTParser.export(BubbleManager.testBubbles);
+  if (testResult == '  - text: "a\\n\\n\\na\\n\\n\\na"') {
     pushTestPass("Three bubbles to MSYT");
   } else {
-    pushTestFail("Three bubbles to MSYT");
+    pushTestFail("Three bubbles to MSYT", `got result '${MSYTParser.export(BubbleManager.testBubbles)}'`);
   }
 
   // Test if the MSYT exporter skips over empty bubbles on export
   BubbleManager.testBubbles[0].bubbleContentElement.innerHTML = "a";
   BubbleManager.testBubbles[1].bubbleContentElement.innerHTML = "";
   BubbleManager.testBubbles[2].bubbleContentElement.innerHTML = "a";
-  if (MSYTParser.export(BubbleManager.testBubbles) == '  - text: "a\\n\\n\\na"') {
+  testResult = MSYTParser.export(BubbleManager.testBubbles);
+  if (testResult == '  - text: "a\\n\\n\\na"') {
     pushTestPass("Skip empty bubbles on export");
   } else {
-    pushTestFail("Skip empty bubbles on export");
+    pushTestFail("Skip empty bubbles on export", `got result '${MSYTParser.export(BubbleManager.testBubbles)}'`);
   }
 
   // Post final test results
@@ -136,7 +148,7 @@ if (devMode) {
     alertPopup.classList.add("alertPopup", "alertPopup-testPass");
   } else {
     console.group(`%c ! %c ${failedTests.length} ${failedTests.length == 1 ? "test" : "tests"} failed`, "background-color: red; color: white; border-radius: 10px");
-    alertPopup.textContent = `${failedTests.length} tests failed. View console for details.`;
+    alertPopup.textContent = `${failedTests.length} ${failedTests.length == 1 ? "test" : "tests"} failed. View console for details.`;
     alertPopup.classList.add("alertPopup", "alertPopup-testFail");
     failedTests.forEach((e) => {
       postTestFail(e.testName, e.msg);
