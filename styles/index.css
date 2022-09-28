@@ -64,7 +64,7 @@ select, button {
   transition-duration: var(--page-button-transition-duration);
 }
 
-select:hover, button:hover {
+select:hover, button:hover, select:active, button:active {
   border: 2px solid var(--button-border-hover-color);
   background-color: var(--button-hover-bg-color);
   cursor: pointer;
@@ -80,7 +80,7 @@ button:active {
   border: 2px solid var(--action-border-color);
 }
 
-.action:hover {
+.action:hover, .action:active {
   color: var(--action-hover-color);
   background-color: var(--action-hover-bg-color);
   border: 2px solid var(--action-hover-border-color);
