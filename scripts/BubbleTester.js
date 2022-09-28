@@ -11,21 +11,21 @@ export default class BubbleTester {
    */
   static breakTextAtWrap(b, text) {
     if (text == "") return "";
-    let testBubbleText = BubbleManager.testBubble.bubbleContentElement;
+    let wrappingBubbleText = BubbleManager.wrappingBubble.bubbleContentElement;
     let words = text.split(" ");
     let testString;
     let outputString;
     let output = [];
     while (words.length > 0) {
       testString = "";
-      testBubbleText.textContent = "";
-      while (testBubbleText.offsetHeight <= b.bubbleFontSize * 1.25) {
+      wrappingBubbleText.textContent = "";
+      while (wrappingBubbleText.offsetHeight <= b.bubbleFontSize * 1.25) {
         outputString = testString;
         if (outputString) words.splice(0, 1);
         if (words.length == 0) break;
         testString += words[0];
         if (words.length > 1) testString += " ";
-        testBubbleText.textContent = testString;
+        wrappingBubbleText.textContent = testString;
       }
       // Handle words longer than one line
       if (!outputString) {
@@ -34,13 +34,13 @@ export default class BubbleTester {
         let outputWord = "";
         while (word.length > 0) {
           testString = "";
-          testBubbleText.textContent = "";
-          while (testBubbleText.offsetHeight <= b.bubbleFontSize * 1.25) {
+          wrappingBubbleText.textContent = "";
+          while (wrappingBubbleText.offsetHeight <= b.bubbleFontSize * 1.25) {
             outputWordString = testString;
             if (outputWordString) word.splice(0, 1);
             if (word.length == 0) break;
             testString += word[0];
-            testBubbleText.textContent = testString;
+            wrappingBubbleText.textContent = testString;
           }
           outputWord += outputWordString;
           if (word.length > 0) {

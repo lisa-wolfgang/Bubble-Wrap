@@ -6,11 +6,11 @@ export default class BubbleManager {
   static template;
   static type;
 
-  static testBubble;
+  static wrappingBubble;
   static bubbles = [];
 
   constructor() {
-    BubbleManager.testBubble = new Bubble(-1);
+    BubbleManager.wrappingBubble = new Bubble(-1);
     BubbleManager.bubbles.push(new Bubble(0));
     window.BubbleManager = BubbleManager;
   }

@@ -72,9 +72,9 @@ export default class Bubble {
       }
 
       // Flag input over three lines long
-      BubbleManager.testBubble.bubbleContentElement.innerHTML = this.bubbleContentElement.innerHTML;
-      let heightAndPadding = BubbleManager.testBubble.bubbleContentElement.offsetHeight;
-      let padding = 2 * parseInt(getComputedStyle(BubbleManager.testBubble.bubbleContentElement).padding);
+      BubbleManager.wrappingBubble.bubbleContentElement.innerHTML = this.bubbleContentElement.innerHTML;
+      let heightAndPadding = BubbleManager.wrappingBubble.bubbleContentElement.offsetHeight;
+      let padding = 2 * parseInt(getComputedStyle(BubbleManager.wrappingBubble.bubbleContentElement).padding);
       if (heightAndPadding - padding > this.bubbleFontSize * 1.25 * 3) {
         // this.bubbleContentElement.innerHTML = this.bubbleValue;
         this.element.classList.add("overflow");
