@@ -43,7 +43,7 @@ if (devMode) {
   }
 
   // Test if single-line bubble = single-line MSYT node
-  BubbleManager.testBubbles[0].bubbleContentElement.textContent = "a";
+  BubbleManager.testBubbles[0].bubbleContentElement.innerHTML = "a";
   if (MSYTParser.export(BubbleManager.testBubbles) == '  - text: "a"') {
     pushTestPass("Single-line bubble to MSYT");
   } else {
@@ -51,31 +51,39 @@ if (devMode) {
   }
 
   // Test if wrapping single-line bubble = multi-line MSYT node
-  BubbleManager.testBubbles[0].bubbleContentElement.textContent = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+  BubbleManager.testBubbles[0].bubbleContentElement.innerHTML = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
   if (MSYTParser.export(BubbleManager.testBubbles) == '  - text: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\\naaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"') {
     pushTestPass("Wrapping single-line bubble to MSYT");
   } else {
     pushTestFail("Wrapping single-line bubble to MSYT");
   }
 
-  // Test if two-line bubble = multi-line MSYT node
-  BubbleManager.testBubbles[0].bubbleContentElement.textContent = "a\na";
+  // Test if manual two-line bubble = two-line MSYT node
+  BubbleManager.testBubbles[0].bubbleContentElement.innerHTML = "<div>a</div><div>a<br></div>";
   if (MSYTParser.export(BubbleManager.testBubbles) == '  - text: "a\\na"') {
-    pushTestPass("Two-line bubble to MSYT");
+    pushTestPass("Manual two-line bubble to MSYT");
   } else {
-    pushTestFail("Two-line bubble to MSYT");
+    pushTestFail("Manual two-line bubble to MSYT");
   }
 
-  // Test if three-line bubble = multi-line MSYT node
-  BubbleManager.testBubbles[0].bubbleContentElement.textContent = "a\na\na";
+  // Test if pasted two-line bubble = two-line MSYT node
+  BubbleManager.testBubbles[0].bubbleContentElement.innerHTML = "a<br>a";
+  if (MSYTParser.export(BubbleManager.testBubbles) == '  - text: "a\\na"') {
+    pushTestPass("Pasted two-line bubble to MSYT");
+  } else {
+    pushTestFail("Pasted two-line bubble to MSYT");
+  }
+
+  // Test if three-line bubble = three-line MSYT node
+  BubbleManager.testBubbles[0].bubbleContentElement.innerHTML = "<div>a</div><div>a</div><div>a<br></div>";
   if (MSYTParser.export(BubbleManager.testBubbles) == '  - text: "a\\na\\na"') {
     pushTestPass("Three-line bubble to MSYT");
   } else {
     pushTestFail("Three-line bubble to MSYT");
   }
 
-  // Test if three-line bubble (one wrap, one manual) = multi-line MSYT node
-  BubbleManager.testBubbles[0].bubbleContentElement.textContent = "a\naaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+  // Test if three-line bubble (one wrap, one manual) = three-line MSYT node
+  BubbleManager.testBubbles[0].bubbleContentElement.innerHTML = "<div>a</div><div>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa<br></div>";
   if (MSYTParser.export(BubbleManager.testBubbles) == '  - text: "a\\naaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\\naaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"') {
     pushTestPass("Three-line bubble (one wrap, one manual) to MSYT");
   } else {
@@ -83,7 +91,7 @@ if (devMode) {
   }
 
   // Test if two bubbles = two-bubble MSYT node
-  BubbleManager.testBubbles[0].bubbleContentElement.textContent = "a";
+  BubbleManager.testBubbles[0].bubbleContentElement.innerHTML = "a";
   BubbleManager.testBubbles.push(new Bubble(-1, "a"));
   if (MSYTParser.export(BubbleManager.testBubbles) == '  - text: "a\\n\\n\\na"') {
     pushTestPass("Two bubbles to MSYT");
@@ -92,8 +100,8 @@ if (devMode) {
   }
 
   // Test if three-line bubble (one wrap, one manual) + single-line bubble = two-bubble MSYT node
-  BubbleManager.testBubbles[0].bubbleContentElement.textContent = "a\naaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-  BubbleManager.testBubbles[1].bubbleContentElement.textContent = "a";
+  BubbleManager.testBubbles[0].bubbleContentElement.innerHTML = "<div>a</div><div>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa<br></div>";
+  BubbleManager.testBubbles[1].bubbleContentElement.innerHTML = "a";
   if (MSYTParser.export(BubbleManager.testBubbles) == '  - text: "a\\naaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\\naaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\\na"') {
     pushTestPass("Three-line bubble (one wrap, one manual) + single-line bubble to MSYT");
   } else {
@@ -101,8 +109,8 @@ if (devMode) {
   }
 
   // Test if three bubbles = three-bubble MSYT node
-  BubbleManager.testBubbles[0].bubbleContentElement.textContent = "a";
-  BubbleManager.testBubbles[1].bubbleContentElement.textContent = "a";
+  BubbleManager.testBubbles[0].bubbleContentElement.innerHTML = "a";
+  BubbleManager.testBubbles[1].bubbleContentElement.innerHTML = "a";
   BubbleManager.testBubbles.push(new Bubble(-1, "a"));
   if (MSYTParser.export(BubbleManager.testBubbles) == '  - text: "a\\n\\n\\na\\n\\n\\na"') {
     pushTestPass("Three bubbles to MSYT");
@@ -111,9 +119,9 @@ if (devMode) {
   }
 
   // Test if the MSYT exporter skips over empty bubbles on export
-  BubbleManager.testBubbles[0].bubbleContentElement.textContent = "a";
-  BubbleManager.testBubbles[1].bubbleContentElement.textContent = "";
-  BubbleManager.testBubbles[2].bubbleContentElement.textContent = "a";
+  BubbleManager.testBubbles[0].bubbleContentElement.innerHTML = "a";
+  BubbleManager.testBubbles[1].bubbleContentElement.innerHTML = "";
+  BubbleManager.testBubbles[2].bubbleContentElement.innerHTML = "a";
   if (MSYTParser.export(BubbleManager.testBubbles) == '  - text: "a\\n\\n\\na"') {
     pushTestPass("Skip empty bubbles on export");
   } else {
