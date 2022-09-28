@@ -14,7 +14,7 @@ export default class BubbleTester {
     let wrappingBubbleText = BubbleManager.wrappingBubble.bubbleContentElement;
     let words = text.split(" ");
     let testString;
-    let outputString;
+    let outputString = "";
     let output = [];
     while (words.length > 0) {
       testString = "";
@@ -44,10 +44,11 @@ export default class BubbleTester {
           }
           outputWord += outputWordString;
           if (word.length > 0) {
-            outputWord += "\\n";
+            output.push(outputWord);
+            outputWord = "";
           }
         }
-        outputString = outputWord;
+        outputString += outputWord;
         words.splice(0, 1);
       }
       if (words.length > 0) {
