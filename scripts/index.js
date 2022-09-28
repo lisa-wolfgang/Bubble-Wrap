@@ -74,12 +74,12 @@ if (devMode) {
     pushTestFail("Pasted two-line bubble to MSYT");
   }
 
-  // Test if three-line bubble = three-line MSYT node
+  // Test if manual three-line bubble = three-line MSYT node
   BubbleManager.testBubbles[0].bubbleContentElement.innerHTML = "<div>a</div><div>a</div><div>a<br></div>";
   if (MSYTParser.export(BubbleManager.testBubbles) == '  - text: "a\\na\\na"') {
-    pushTestPass("Three-line bubble to MSYT");
+    pushTestPass("Manual three-line bubble to MSYT");
   } else {
-    pushTestFail("Three-line bubble to MSYT");
+    pushTestFail("Manual three-line bubble to MSYT");
   }
 
   // Test if three-line bubble (one wrap, one manual) = three-line MSYT node
