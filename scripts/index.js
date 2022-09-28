@@ -41,7 +41,7 @@ if (devMode) {
   if (testResult == '  - text: ""') {
     pushTestPass("Empty bubble to MSYT");
   } else {
-    pushTestFail("Empty bubble to MSYT", `got result '${MSYTParser.export(BubbleManager.testBubbles)}'`);
+    pushTestFail("Empty bubble to MSYT", `got result '${testResult}'`);
   }
 
   // Test if single-line bubble = single-line MSYT node
@@ -50,7 +50,7 @@ if (devMode) {
   if (testResult == '  - text: "a"') {
     pushTestPass("Single-line bubble to MSYT");
   } else {
-    pushTestFail("Single-line bubble to MSYT", `got result '${MSYTParser.export(BubbleManager.testBubbles)}'`);
+    pushTestFail("Single-line bubble to MSYT", `got result '${testResult}'`);
   }
 
   // Test if wrapping single-line bubble = multi-line MSYT node
@@ -59,7 +59,7 @@ if (devMode) {
   if (testResult == '  - text: "llamallamallamallamallamallamallamallamal\\nlama"') {
     pushTestPass("Wrapping single-line bubble to MSYT");
   } else {
-    pushTestFail("Wrapping single-line bubble to MSYT", `got result '${MSYTParser.export(BubbleManager.testBubbles)}'`);
+    pushTestFail("Wrapping single-line bubble to MSYT", `got result '${testResult}'`);
   }
 
   // Test if manual two-line bubble = two-line MSYT node
@@ -68,7 +68,7 @@ if (devMode) {
   if (testResult == '  - text: "a\\na"') {
     pushTestPass("Manual two-line bubble to MSYT");
   } else {
-    pushTestFail("Manual two-line bubble to MSYT", `got result '${MSYTParser.export(BubbleManager.testBubbles)}'`);
+    pushTestFail("Manual two-line bubble to MSYT", `got result '${testResult}'`);
   }
 
   // Test if pasted two-line bubble = two-line MSYT node
@@ -77,7 +77,7 @@ if (devMode) {
   if (testResult == '  - text: "a\\na"') {
     pushTestPass("Pasted two-line bubble to MSYT");
   } else {
-    pushTestFail("Pasted two-line bubble to MSYT", `got result '${MSYTParser.export(BubbleManager.testBubbles)}'`);
+    pushTestFail("Pasted two-line bubble to MSYT", `got result '${testResult}'`);
   }
 
   // Test if manual three-line bubble = three-line MSYT node
@@ -86,7 +86,7 @@ if (devMode) {
   if (testResult == '  - text: "a\\na\\na"') {
     pushTestPass("Manual three-line bubble to MSYT");
   } else {
-    pushTestFail("Manual three-line bubble to MSYT", `got result '${MSYTParser.export(BubbleManager.testBubbles)}'`);
+    pushTestFail("Manual three-line bubble to MSYT", `got result '${testResult}'`);
   }
 
   // Test if three-line bubble (one wrap, one manual) = three-line MSYT node
@@ -95,7 +95,7 @@ if (devMode) {
   if (testResult == '  - text: "a\\nllamallamallamallamallamallamallamallamal\\nlama"') {
     pushTestPass("Three-line bubble (one wrap, one manual) to MSYT");
   } else {
-    pushTestFail("Three-line bubble (one wrap, one manual) to MSYT", `got result '${MSYTParser.export(BubbleManager.testBubbles)}'`);
+    pushTestFail("Three-line bubble (one wrap, one manual) to MSYT", `got result '${testResult}'`);
   }
 
   // Test if two bubbles = two-bubble MSYT node
@@ -105,7 +105,7 @@ if (devMode) {
   if (testResult == '  - text: "a\\n\\n\\na"') {
     pushTestPass("Two bubbles to MSYT");
   } else {
-    pushTestFail("Two bubbles to MSYT", `got result '${MSYTParser.export(BubbleManager.testBubbles)}'`);
+    pushTestFail("Two bubbles to MSYT", `got result '${testResult}'`);
   }
 
   // Test if three-line bubble (one wrap, one manual) + single-line bubble = two-bubble MSYT node
@@ -115,7 +115,7 @@ if (devMode) {
   if (testResult == '  - text: "a\\nllamallamallamallamallamallamallamallamal\\nlama\\na"') {
     pushTestPass("Three-line bubble (one wrap, one manual) + single-line bubble to MSYT");
   } else {
-    pushTestFail("Three-line bubble (one wrap, one manual) + single-line bubble to MSYT", `got result '${MSYTParser.export(BubbleManager.testBubbles)}'`);
+    pushTestFail("Three-line bubble (one wrap, one manual) + single-line bubble to MSYT", `got result '${testResult}'`);
   }
 
   // Test if three bubbles = three-bubble MSYT node
@@ -126,7 +126,7 @@ if (devMode) {
   if (testResult == '  - text: "a\\n\\n\\na\\n\\n\\na"') {
     pushTestPass("Three bubbles to MSYT");
   } else {
-    pushTestFail("Three bubbles to MSYT", `got result '${MSYTParser.export(BubbleManager.testBubbles)}'`);
+    pushTestFail("Three bubbles to MSYT", `got result '${testResult}'`);
   }
 
   // Test if the MSYT exporter skips over empty bubbles on export
@@ -137,7 +137,7 @@ if (devMode) {
   if (testResult == '  - text: "a\\n\\n\\na"') {
     pushTestPass("Skip empty bubbles on export");
   } else {
-    pushTestFail("Skip empty bubbles on export", `got result '${MSYTParser.export(BubbleManager.testBubbles)}'`);
+    pushTestFail("Skip empty bubbles on export", `got result '${testResult}'`);
   }
 
   // Post final test results
