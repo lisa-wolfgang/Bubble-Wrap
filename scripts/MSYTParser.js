@@ -24,7 +24,7 @@ export default class MSYTParser {
       }
       let nodes = Array.from(bubble.bubbleContentElement.childNodes);
       for (let i = 0; i < nodes.length; i++) {
-        if (nodes[i].nodeValue == null) continue;
+        if (!nodes[i].nodeValue && !nodes[i].childNodes[0]) continue;
         let rawContent = nodes[i].textContent;
         let contentLines = rawContent ? BubbleTester.breakTextAtWrap(bubble, rawContent) : "";
         if (rawContent) lineCount += contentLines.length - 1;
