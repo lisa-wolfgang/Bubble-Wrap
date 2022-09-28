@@ -44,7 +44,6 @@ export default class BubbleTester {
           }
           outputWord += outputWordString;
           if (word.length > 0) {
-            outputWord = outputWord.slice(0, -1);
             outputWord += "\\n";
           }
         }
