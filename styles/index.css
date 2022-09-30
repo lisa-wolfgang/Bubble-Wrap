@@ -24,7 +24,7 @@
   --button-border-color: hsla(0, 0%, 75%, 1);
   --button-hover-bg-color: hsla(0, 0%, 95%, 1);
   --button-border-hover-color: hsla(0, 0%, 0%, 0);
-  --button-active-bg-color: hsla(0, 0%, 0%, 0.1);
+  --button-active-bg-color: hsla(0, 0%, 90%, 1);
   --button-action-color: var(--page-text-color);
   --action-bg-color: var(--button-bg-color);
   --action-border-color: var(--button-border-color);
@@ -34,9 +34,10 @@
   --action-active-bg-color: hsl(210, 100%, 45%);
   --section-color: hsla(0, 0%, 90%, 0);
   --shadow-color: hsla(0, 0%, 0%, 0.5);
-  --dialog-text-color: hsl(60, 50%, 95%);
-  --dialog-highlight-color: hsl(172, 95%, 50%);
-  --dialog-important-color: hsl(353, 95%, 60%);
+  --dialog-text-white-color: hsl(60, 50%,95%);
+  --dialog-text-grey-color: hsl(60, 5%, 55%);
+  --dialog-text-blue-color: hsl(172, 95%, 50%);
+  --dialog-text-red-color: hsl(353, 95%, 60%);
   --dialog-bg-color: hsla(0, 0%, 0%, 0.4);
   --dialog-invalid-bg-color: hsla(0, 100%, 30%, 0.4);
   --modal-danger-bg-color: hsla(353, 95%, 60%, 0.25);
@@ -154,7 +155,7 @@ body {
   font-size: 20px;
   border: 0;
   padding: 16px 32px;
-  color: var(--dialog-text-color);
+  color: var(--dialog-text-white-color);
   background-color: var(--dialog-bg-color);
   cursor: text;
   transition-property: margin-bottom, filter, transform, border-radius, background-color;
@@ -245,7 +246,7 @@ body {
   display: block;
   content: attr(placeholder);
   cursor: text;
-  color: var(--dialog-text-color);
+  color: var(--dialog-text-white-color);
   opacity: 0.55;
 }
 
@@ -258,10 +259,12 @@ body {
   display: flex;
   position: absolute;
   overflow: hidden;
+  border: 2px solid var(--button-border-color);
+  border-radius: 5rem;
   user-select: none;
   pointer-events: none;
   opacity: 0;
-  transition-property: opacity;
+  transition-property: opacity, transform;
   transition-duration: var(--transition-duration);
 }
 
@@ -271,15 +274,19 @@ body {
   bottom: -3rem;
   right: 0;
   width: 100%;
+  border: 0;
+  border-radius: 0;
 }
 
 .btn-del-bubble-container {
   bottom: auto;
   right: -0.5rem;
   top: -0.5rem;
+  border: 0;
+  border-radius: 0;
 }
 
-.bubble:focus-within .bubble-btn-container {
+.bubble:focus-within .bubble-btn-container:not(.formatting-overlay) {
   pointer-events: auto;
   opacity: 1;
 }
@@ -290,6 +297,80 @@ body {
   height: 1rem;
   line-height: 0;
   border-radius: 100%;
+}
+
+.formatting-overlay {
+  align-items: center;
+  z-index: 1;
+  border: 0;
+  background-color: hsla(0, 0%, 30%, 1);
+  font-family: "Calamity";
+  transform: translateY(-0.25rem);
+  transition-duration: var(--page-button-transition-duration);
+}
+
+.formatting-overlay.visible {
+  pointer-events: auto;
+  opacity: 1;
+  transform: translateY(-0.5rem);
+}
+
+.formatting-overlay button {
+  border: 0;
+  border-radius: 0;
+  font-size: 1rem;
+  color: var(--dialog-text-white-color);
+  background-color: hsla(0, 0%, 0%, 0);
+}
+
+.formatting-overlay button:hover {
+  background-color: hsla(0, 0%, 0%, 0.1);
+}
+
+.formatting-overlay button:active {
+  background-color: hsla(0, 0%, 0%, 0.2);
+}
+
+.formatting-overlay button:first-child {
+  padding-left: 0.75rem;
+}
+
+.formatting-category-separator {
+  height: 1rem;
+  border: 1px solid hsla(0, 0%, 75%, 0.25);
+  margin: 0 0.25rem;
+}
+
+.formatting-overlay button:last-child {
+  padding-right: 0.75rem;
+}
+
+button.btn-white {
+  color: var(--dialog-text-white-color);
+}
+
+button.btn-grey {
+  color: var(--dialog-text-grey-color);
+}
+
+button.btn-blue {
+  color: var(--dialog-text-blue-color);
+}
+
+button.btn-red {
+  color: var(--dialog-text-red-color);
+}
+
+button.btn-medium {
+  font-size: 1rem;
+}
+
+button.btn-small {
+  font-size: 0.7rem;
+}
+
+button.btn-large {
+  font-size: 1.25rem;
 }
 
 .bubble:only-child .btn-del-bubble, .del-disabled .btn-del-bubble {
