@@ -316,6 +316,9 @@ body {
 }
 
 .formatting-overlay button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border: 0;
   border-radius: 0;
   font-size: 1rem;
@@ -345,32 +348,54 @@ body {
   padding-right: 0.75rem;
 }
 
-button.btn-white {
+[data-color="white"],
+.formatting-overlay button[data-color="white"] {
   color: var(--dialog-text-white-color);
 }
 
-button.btn-grey {
+[data-color="grey"],
+.formatting-overlay button[data-color="grey"] {
   color: var(--dialog-text-grey-color);
 }
 
-button.btn-blue {
+[data-color="blue"],
+.formatting-overlay button[data-color="blue"] {
   color: var(--dialog-text-blue-color);
 }
 
-button.btn-red {
+[data-color="red"],
+.formatting-overlay button[data-color="red"] {
   color: var(--dialog-text-red-color);
 }
 
-button.btn-medium {
+[data-size="80"],
+.formatting-overlay button[data-size="80"] {
+  font-size: 0.8rem;
+}
+
+[data-size="100"],
+.formatting-overlay button[data-size="100"] {
   font-size: 1rem;
 }
 
-button.btn-small {
-  font-size: 0.7rem;
+[data-size="125"],
+.formatting-overlay button[data-size="125"] {
+  font-size: 1.25rem;
 }
 
-button.btn-large {
-  font-size: 1.25rem;
+.formatting-overlay button svg {
+  width: 0.75rem;
+  height: 0.75rem;
+}
+
+.formatting-overlay button[data-size="80"] svg {
+  width: 0.5rem;
+  height: 0.5rem;
+}
+
+.formatting-overlay button[data-size="125"] svg {
+  width: calc(0.75rem * 3 / 2);
+  height: calc(0.75rem * 3 / 2);
 }
 
 .bubble:only-child .btn-del-bubble, .del-disabled .btn-del-bubble {
