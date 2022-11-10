@@ -12,6 +12,7 @@
     },
     "rules": {
         "no-unused-vars": "warn",
-        "no-inner-declarations": "off"
+        "no-inner-declarations": "off",
+        "no-empty": "off"
     }
 }
