@@ -2,7 +2,7 @@ import BubbleManager from "../scripts/BubbleManager.js";
 import Bubble from "./Bubble.js";
 import MSYTParser from "./MSYTParser.js";
 
-let devMode = window.location.host == "127.0.0.1:5500";
+let devMode = window.location.host == "127.0.0.1:3000";
 
 BubbleManager.template = await fetch("components/bubble.html");
 BubbleManager.template = await BubbleManager.template.text();
@@ -186,7 +186,7 @@ function putMsytToClipboard() {
   if (result) {
     navigator.clipboard.writeText(result).then(
       () => {
-        let alertMsg = "The MSYT output has been copied to your clipboard. You can now open your Bootup_LANG.pack file in Wildbits, open an MSBT file, and paste your MSYT output under the `content` field of any text entry.";
+        let alertMsg = "The MSYT output has been copied to your clipboard.";
         window.alert(alertMsg);
       },
       () => {
