@@ -18,7 +18,7 @@
 :root {
   --page-text-color: hsl(40, 60%, 5%);
   --page-bg-color: hsl(0, 0%, 100%);
-  --action-color: hsl(210, 100%, 50%);
+  --action-color: hsl(210, 100%, 45%);
   --danger-color: hsl(16, 100%, 50%);
   --button-bg-color: hsla(0, 0%, 100%, 1);
   --button-border-color: hsla(0, 0%, 75%, 1);
@@ -29,9 +29,9 @@
   --action-bg-color: var(--button-bg-color);
   --action-border-color: var(--button-border-color);
   --action-hover-color: var(--page-bg-color);
-  --action-hover-bg-color: hsl(210, 100%, 50%);
+  --action-hover-bg-color: var(--action-color);
   --action-hover-border-color: hsla(0, 0%, 0%, 0);
-  --action-active-bg-color: hsl(210, 100%, 45%);
+  --action-active-bg-color: hsl(210, 100%, 40%);
   --section-color: hsla(0, 0%, 90%, 0);
   --shadow-color: hsla(0, 0%, 0%, 0.5);
   --dialog-text-white-color: hsl(60, 50%,95%);
