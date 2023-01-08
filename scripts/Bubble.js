@@ -92,6 +92,69 @@ export default class Bubble {
       }
     });
 
+    // When a formatting button is pressed, apply the formatting on selected text
+    Array.from(this.bubbleFormattingOverlay.children).forEach((el) => {
+      if (el.matches("button")) {
+        el.addEventListener("click", (e) => {
+          let originalOuterNodes = this.bubbleContentElement.childNodes;
+          let newContentElement = document.createElement("div");
+          let range = getSelection().getRangeAt(0);
+          let color = e.currentTarget.getAttribute("data-color");
+          let size = e.currentTarget.getAttribute("data-size");
+          originalOuterNodes.forEach((outerNode) => {
+            // Each outer div (lines separated by manual line breaks)
+            if (outerNode.tagName == "BR") return;
+            let outerNodeContent = outerNode.childNodes;
+            let newOuterNode = document.createElement("div");
+            if (range.intersectsNode(outerNode)) {
+              // Internal structure changes are necessary due to selection
+              if (outerNode.hasChildNodes() && outerNode.tagName == "DIV") {
+                // Scan each inner span / text node
+                outerNodeContent.forEach((innerNode) => {
+                  parseNode(innerNode);
+                });
+              } else {
+                // There is no inner layer in the bubble
+                parseNode(outerNode);
+              }
+              function parseNode(node) {
+                if (range.intersectsNode(node)) {
+                  // Internal structure changes are necessary due to selection
+                  let isStart = node.contains(range.startContainer);
+                  let isEnd = node.contains(range.endContainer);
+                  let sliceStart = isStart ? range.startOffset : 0;
+                  let sliceEnd = isEnd ? range.endOffset : undefined;
+                  let selectedText = node.textContent.slice(sliceStart, sliceEnd);
+                  if (isStart && sliceStart != 0) createNewSpan(node.textContent.slice(0, sliceStart));
+                  createNewSpan(selectedText, color, size);
+                  if (isEnd && sliceEnd != node.textContent.length) createNewSpan(node.textContent.slice(sliceEnd));
+                } else {
+                  // This inner node was not selected and doesn't need to change
+                  newOuterNode.appendChild(node.cloneNode(true));
+                }
+                function createNewSpan(text, color, size) {
+                  let newSpan = document.createElement("span");
+                  newSpan.textContent = text;
+                  let newColor = color || node.getAttribute?.("data-color");
+                  if (newColor) newSpan.setAttribute("data-color", newColor);
+                  let newSize = size || node.getAttribute?.("data-size");
+                  if (newSize) newSpan.setAttribute("data-size", newSize);
+                  newOuterNode.appendChild(newSpan);
+                }
+              }
+            } else {
+              // This outer node was not selected and doesn't need to change
+              newOuterNode = outerNode.cloneNode(true);
+            }
+            // Apply any changes to the replacement bubble
+            newContentElement.appendChild(newOuterNode);
+          });
+          // Apply any changes to the actual bubble
+          this.bubbleContentElement.innerHTML = newContentElement.innerHTML;
+        });
+      }
+    });
+
     // Perform parsing on anything pasted into the bubble
     this.bubbleContentElement.addEventListener("paste", (e) => this.parsePaste(e));
     this.bubbleContentElement.addEventListener("drop", (e) => this.parseDrop(e));
