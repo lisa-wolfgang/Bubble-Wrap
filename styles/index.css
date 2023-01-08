@@ -291,7 +291,7 @@ label {
   outline: none;
 }
 
-.bubble-content:empty:not(:focus, .deleting .bubble-content, .test-bubble .bubble-content)::before {
+.bubble:only-child .bubble-content:empty:not(:focus, .deleting .bubble-content, .test-bubble .bubble-content)::before {
   display: block;
   content: attr(placeholder);
   cursor: text;
