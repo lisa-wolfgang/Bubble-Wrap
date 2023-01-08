@@ -17,12 +17,14 @@
 
 :root {
   --page-text-color: hsl(40, 60%, 5%);
-  --page-bg-color: hsl(0, 0%, 100%);
+  --page-bg-color: hsl(0, 0%, 95%);
+  --sidebar-color: hsla(0, 0%, 100%, 1);
   --action-color: hsl(210, 100%, 45%);
+  --warning-color: hsl(49, 100%, 50%);
   --danger-color: hsl(16, 100%, 50%);
   --button-bg-color: hsla(0, 0%, 100%, 1);
   --button-border-color: hsla(0, 0%, 75%, 1);
-  --button-hover-bg-color: hsla(0, 0%, 95%, 1);
+  --button-hover-bg-color: hsla(0, 0%, 85%, 1);
   --button-border-hover-color: hsla(0, 0%, 0%, 0);
   --button-active-bg-color: hsla(0, 0%, 90%, 1);
   --button-action-color: var(--page-text-color);
@@ -32,14 +34,14 @@
   --action-hover-bg-color: var(--action-color);
   --action-hover-border-color: hsla(0, 0%, 0%, 0);
   --action-active-bg-color: hsl(210, 100%, 40%);
-  --section-color: hsla(0, 0%, 90%, 0);
   --shadow-color: hsla(0, 0%, 0%, 0.5);
-  --dialog-text-white-color: hsl(60, 50%,95%);
-  --dialog-text-grey-color: hsl(60, 5%, 55%);
+  --dialog-text-white-color: hsl(60, 50%, 95%);
+  --dialog-text-grey-color: hsl(60, 50%, 95%, 0.7);
   --dialog-text-blue-color: hsl(172, 95%, 50%);
   --dialog-text-red-color: hsl(353, 95%, 60%);
-  --dialog-bg-color: hsla(0, 0%, 0%, 0.4);
+  --dialog-bg-color: hsla(0, 0%, 0%, 0.6);
   --dialog-invalid-bg-color: hsla(0, 100%, 30%, 0.4);
+  --modal-warning-bg-color: hsla(49, 95%, 60%, 0.25);
   --modal-danger-bg-color: hsla(353, 95%, 60%, 0.25);
   --transition-duration: 0.25s;
   --page-button-transition-duration: 0.15s;
@@ -51,11 +53,11 @@
 }
 
 a {
-  text-decoration: none;
   color: var(--action-color);
 }
 
-select, button {
+select,
+button {
   padding: 0.5rem;
   border: 2px solid var(--button-border-color);
   border-radius: 0.25rem;
@@ -65,7 +67,10 @@ select, button {
   transition-duration: var(--page-button-transition-duration);
 }
 
-select:hover, button:hover, select:active, button:active {
+select:hover,
+button:hover,
+select:active,
+button:active {
   border: 2px solid var(--button-border-hover-color);
   background-color: var(--button-hover-bg-color);
   cursor: pointer;
@@ -81,7 +86,8 @@ button:active {
   border: 2px solid var(--action-border-color);
 }
 
-.action:hover, .action:active {
+.action:hover,
+.action:active {
   color: var(--action-hover-color);
   background-color: var(--action-hover-bg-color);
   border: 2px solid var(--action-hover-border-color);
@@ -106,41 +112,86 @@ body {
 .app-container {
   display: flex;
   flex-grow: 1;
-  flex-direction: column;
-  overflow: auto;
 }
 
 .app {
   display: flex;
   flex-grow: 1;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.sidebar {
+  display: flex;
   flex-direction: column;
-  align-items: center;
-  padding: 1rem;
+  gap: 1.5rem;
+  width: 300px;
+  padding: 1.5rem;
+  overflow: auto;
+  line-height: 1.25;
+  background-color: var(--sidebar-color);
+  filter: drop-shadow(0 0 0.5rem var(--shadow-color));
+}
+
+.sidebar-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25rem;
+  border-radius: 0.25rem;
+}
+
+.title-block {
+  gap: 0.25rem;
 }
 
 .title {
-  margin: 1rem 0 0.5rem 0;
-  font-weight: 700;
+  margin: 0;
 }
 
 .version {
-  margin: 0 0 2rem 0;
+  margin: 0;
 }
 
-.bubble-options {
-  display: flex;
-  gap: 0.5rem;
-  padding: 0.5rem;
+h2 {
+  margin: 0 0 0.5rem 0;
+}
+
+label {
+  padding-right: 0.5rem;
+  font-weight: bold;
+}
+
+.description {
+  font-size: 0.75rem;
+}
+
+.warning-modal {
+  padding: 1rem;
+  border: 2px solid var(--warning-color);
   border-radius: 0.25rem;
-  background-color: var(--section-color);
+  margin: 0 0 0.5rem 0;
+  background-color: var(--modal-warning-bg-color);
 }
 
-.bubble-container {
+.editor {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  overflow: auto;
+  padding: 1.5rem;
+}
+
+.editor-section {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.bubble-container {
   gap: 1rem;
-  margin: 1rem 0;
 }
 
 .bubble {
@@ -368,17 +419,17 @@ body {
 
 [data-size="80"],
 .formatting-overlay button[data-size="80"] {
-  font-size: 0.8rem;
+  font-size: 0.8em;
 }
 
 [data-size="100"],
 .formatting-overlay button[data-size="100"] {
-  font-size: 1rem;
+  font-size: 1em;
 }
 
 [data-size="125"],
 .formatting-overlay button[data-size="125"] {
-  font-size: 1.25rem;
+  font-size: 1.25em;
 }
 
 .formatting-overlay button svg {
@@ -396,7 +447,8 @@ body {
   height: calc(0.75rem * 3 / 2);
 }
 
-.bubble:only-child .btn-del-bubble, .del-disabled .btn-del-bubble {
+.bubble:only-child .btn-del-bubble,
+.del-disabled .btn-del-bubble {
   display: none;
 }
 
@@ -416,18 +468,6 @@ body {
 .btn-del-bubble:hover svg {
   color: var(--page-text-color);
   filter: invert(1);
-}
-
-.footer {
-  display: flex;
-  flex-grow: 1;
-  align-items: flex-end;
-  gap: 2rem;
-}
-
-.footer-content {
-  margin-top: 1rem;
-  margin-bottom: 0;
 }
 
 .test-bubble {
@@ -464,7 +504,7 @@ body {
   opacity: 0;
   animation: alertPopup-testFail var(--transition-duration) var(--transition-function) 0.25s forwards;
 }
-  
+
 @keyframes alertPopup-testFail {
   0% {
     right: -5rem;
