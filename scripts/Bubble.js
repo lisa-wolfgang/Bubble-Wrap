@@ -179,7 +179,7 @@ export default class Bubble {
     });
 
     // When bubble add button is clicked, create a new bubble below this one
-    this.btnAddBubbleElement.addEventListener("mousedown", (e) => {
+    this.btnAddBubbleElement?.addEventListener("mousedown", (e) => {
       BubbleManager.addBubble(this);
     });
     this.element.addEventListener("keydown", (e) => {
@@ -187,7 +187,7 @@ export default class Bubble {
     });
 
     // When bubble delete button is clicked, delete this bubble
-    this.btnDelBubbleElement.addEventListener("mousedown", (e) => {
+    this.btnDelBubbleElement?.addEventListener("mousedown", (e) => {
       BubbleManager.deleteBubble(this);
       // if (confirm("Are you sure you want to delete this bubble? There is no undo!"))
     });
