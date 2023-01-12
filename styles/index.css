@@ -285,6 +285,7 @@ label {
   line-height: 1.25;
   padding: 1rem;
   font-family: "Calamity";
+  filter: drop-shadow(0 0 0.2rem var(--shadow-color));
 }
 
 .bubble-content:focus {
