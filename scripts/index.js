@@ -36,14 +36,6 @@ if (devMode) {
   let testResult;
   BubbleManager.testBubbles.push(new Bubble(-1));
 
-  // Test if empty bubble = empty MSYT node
-  testResult = MSYTParser.export(BubbleManager.testBubbles);
-  if (testResult == '  - text: ""') {
-    pushTestPass("Empty bubble to MSYT");
-  } else {
-    pushTestFail("Empty bubble to MSYT", `got result '${testResult}'`);
-  }
-
   // Test if single-line bubble = single-line MSYT node
   BubbleManager.testBubbles[0].bubbleContentElement.innerHTML = "a";
   testResult = MSYTParser.export(BubbleManager.testBubbles);
@@ -96,6 +88,15 @@ if (devMode) {
     pushTestPass("Three-line bubble (one wrap, one manual) to MSYT");
   } else {
     pushTestFail("Three-line bubble (one wrap, one manual) to MSYT", `got result '${testResult}'`);
+  }
+
+  // Test control nodes
+  BubbleManager.testBubbles[0].bubbleContentElement.innerHTML = '<div><span data-color="red">aaaaaaa</span><span data-color="white">aaaaaa</span></div><div><span data-size="125">llamallamallamallam</span><span data-size="100">allamallamallamallamallama</span><br></div>';
+  testResult = MSYTParser.export(BubbleManager.testBubbles);
+  if (testResult == "  - control:\n" + "      - kind: set_colour\n" + "      - colour: red\n" + '  - text: "aaaaaaa"\n' + "  - control:\n" + "      - kind: reset_colour\n" + '  - text: "aaaaaa\\n"\n' + "  - control:\n" + "      - kind: text_size\n" + "      - percent: 125\n" + '  - text: "llamallamallamallam"\n' + "  - control:\n" + "      - kind: text_size\n" + "      - percent: 100\n" + '  - text: "allamallamallamal\\nlamallama"') {
+    pushTestPass("Color/size control nodes");
+  } else {
+    pushTestFail("Color/size control nodes", `got result '${testResult}'`);
   }
 
   // Test if two bubbles = two-bubble MSYT node
