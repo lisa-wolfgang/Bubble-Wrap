@@ -15,6 +15,7 @@ export default class BubbleUtil {
    * @callback iteratedNodeCallback
    * @param {Node} currentNode The node currently being iterated.
    * @param {Node} newParentNode A copy of the parent of `currentNode`.
+   * @param {Boolean} [isManualLineBreak] Signals that a manual line break is present.
    */
 
   /**
@@ -32,7 +33,8 @@ export default class BubbleUtil {
   static reconstructBubble(bubble, condition, callback) {
     BubbleUtil.iterateInsideBubble(
       bubble,
-      (currentNode, newParentNode) => {
+      (currentNode, newParentNode, isManualLineBreak) => {
+        if (isManualLineBreak) return;
         if (condition(currentNode)) {
           // Work with the node if it satisfies the condition
           callback(currentNode, newParentNode);
@@ -46,6 +48,7 @@ export default class BubbleUtil {
 
   /**
    * Iterates through and runs the callback on each text node in the Bubble.
+   * Line breaks will also be returned.
    * @param {Bubble} bubble The Bubble to iterate through.
    * @param {iteratedNodeCallback} callback The callback to execute for each node.
    * @param {Boolean} [applyChanges] If any changes made to the copy of the parent
@@ -54,19 +57,25 @@ export default class BubbleUtil {
   static iterateInsideBubble(bubble, callback, applyChanges) {
     let originalOuterNodes = bubble.bubbleContentElement.childNodes;
     let newContentElement = document.createElement("div");
-    originalOuterNodes.forEach((outerNode) => {
+    originalOuterNodes.forEach((outerNode, index) => {
       // Each outer div (lines separated by manual line breaks)
-      if (outerNode.tagName == "BR") return;
+      if (index == originalOuterNodes.length - 1 && outerNode.tagName == "BR") return;
       let outerNodeContent = outerNode.childNodes;
       let newOuterNode = document.createElement("div");
       if (outerNode.hasChildNodes() && outerNode.tagName == "DIV") {
         // Scan each inner span / text node
-        outerNodeContent.forEach((innerNode) => {
+        outerNodeContent.forEach((innerNode, innerIndex) => {
+          if (innerIndex == outerNodeContent.length - 1 && innerNode.tagName == "BR") return;
           callback(innerNode, newOuterNode);
         });
+        // Signal manual line break
+        if (index != originalOuterNodes.length - 1) {
+          callback(null, null, true);
+        }
       } else {
         // There is no inner layer in the bubble
-        callback(outerNode, newOuterNode);
+        if (outerNode.tagName == "BR") callback(null, null, true);
+        else callback(outerNode, newOuterNode);
       }
       // Apply any changes to the replacement bubble
       if (applyChanges) newContentElement.appendChild(newOuterNode);
