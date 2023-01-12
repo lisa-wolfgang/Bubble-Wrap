@@ -47,6 +47,28 @@ export default class BubbleUtil {
   }
 
   /**
+   * Returns a two-dimensional array of all text nodes in the given Bubble,
+   * with the outer layer representing manual line breaks.
+   * The nodes are copied from the original nodes, so modifications to the array
+   * will not have any effect on the original nodes.
+   * @param {Bubble} bubble The Bubble to retrieve text nodes from.
+   * @returns {Array<Array<Node>>} A copy of text nodes from the Bubble.
+   */
+  static getTextNodes(bubble) {
+    let nodes = [[]];
+    let currentLine = 0;
+    BubbleUtil.iterateInsideBubble(bubble, (currentNode, newParentNode, isManualLineBreak) => {
+      if (isManualLineBreak) {
+        nodes.push([]);
+        currentLine++;
+      } else {
+        nodes[currentLine].push(currentNode);
+      }
+    });
+    return nodes;
+  }
+
+  /**
    * Iterates through and runs the callback on each text node in the Bubble.
    * Line breaks will also be returned.
    * @param {Bubble} bubble The Bubble to iterate through.
