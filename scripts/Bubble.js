@@ -104,18 +104,23 @@ export default class Bubble {
             this,
             (node) => range.intersectsNode(node),
             (currentNode, newParentNode) => {
+              if (currentNode.textContent == "") return;
               let isStart = currentNode.contains(range.startContainer);
               let isEnd = currentNode.contains(range.endContainer);
               let sliceStart = isStart ? range.startOffset : 0;
               let sliceEnd = isEnd ? range.endOffset : undefined;
               let selectedText = currentNode.textContent.slice(sliceStart, sliceEnd);
               if (isStart && sliceStart != 0) {
+                let sliceText = currentNode.textContent.slice(0, sliceStart);
+                if (sliceText != "") {
                 newParentNode.appendChild(
-                  BubbleUtil.newNode(currentNode.textContent.slice(0, sliceStart), {
+                    BubbleUtil.newNode(sliceText, {
                     node: currentNode
                   })
                 );
               }
+              }
+              if (selectedText != "") {
               newParentNode.appendChild(
                 BubbleUtil.newNode(selectedText, {
                   color: color,
@@ -123,12 +128,16 @@ export default class Bubble {
                   node: currentNode
                 })
               );
+              }
               if (isEnd && sliceEnd != currentNode.textContent.length) {
+                let sliceText = currentNode.textContent.slice(sliceEnd);
+                if (sliceText != "") {
                 newParentNode.appendChild(
-                  BubbleUtil.newNode(currentNode.textContent.slice(sliceEnd), {
+                    BubbleUtil.newNode(sliceText, {
                     node: currentNode
                   })
                 );
+                }
               }
             }
           );
