@@ -119,6 +119,16 @@ if (devMode) {
     pushTestFail("Three-line bubble (one wrap, one manual) + single-line bubble to MSYT", `got result '${testResult}'`);
   }
 
+  // Test if three-line bubble (one wrap, one manual) + wrapping single-line bubble = two-bubble MSYT node
+  BubbleManager.testBubbles[0].bubbleContentElement.innerHTML = "<div>Hello, Link.</div><div>I have been awaiting your return for quite some time.<br></div>";
+  BubbleManager.testBubbles[1].bubbleContentElement.innerHTML = '<div><span>Now I can finally avenge the </span><span data-color="grey"></span><span data-color="grey" data-size="80">embarrassing</span><span data-color="grey"></span><span> death of my master...</span></div>';
+  testResult = MSYTParser.export(BubbleManager.testBubbles);
+  if (testResult == '  - text: "Hello, Link.\\nI have been awaiting your return for quite\\nsome time.\\nNow I can finally avenge the "\n  - control:\n      - kind: set_colour\n      - colour: grey\n  - control:\n      - kind: text_size\n      - percent: 80\n  - text: "embarrassing\\n"\n  - control:\n      - kind: reset_colour\n  - control:\n      - kind: text_size\n      - percent: 100\n  - text: "death of my master..."') {
+    pushTestPass("Three-line bubble (one wrap, one manual) + wrapping single-line bubble to MSYT");
+  } else {
+    pushTestFail("Three-line bubble (one wrap, one manual) + wrapping single-line bubble to MSYT", `got result '${testResult}'`);
+  }
+
   // Test if three bubbles = three-bubble MSYT node
   BubbleManager.testBubbles[0].bubbleContentElement.innerHTML = "a";
   BubbleManager.testBubbles[1].bubbleContentElement.innerHTML = "a";
