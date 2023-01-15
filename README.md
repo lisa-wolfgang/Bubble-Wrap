@@ -6,11 +6,15 @@ A visual text bubble editor for Breath of the Wild.
 
 ### Automatic text wrapping
 
-The editor works just like a regular text box -- eliminating guesswork and providing instant visual feedback. The spacing and wrapping behavior have been tested for accuracy against a variety of vanilla dialogue. NPC and sign dialogs are currently supported.
+The editor works just like a regular text box -- eliminating guesswork and providing instant visual feedback. The spacing and wrapping behaviors have been tested for accuracy against a variety of vanilla dialogue. NPC and sign dialogs are currently supported.
+
+### Hassle-free control nodes
+
+Coloring and resizing text is as easy as selecting a portion of text and applying the desired effect from the formatting popup. When it comes time to export, the control nodes are intelligently inserted so minimal manual tweakage is required.
 
 ### Smart paste
 
-Simply paste a long passage separated by line breaks or a MSYT text node into a bubble -- the text will automatically be formatted based on punctuation. Plus, sneaky variants of apostrophes and other characters are weeded out and replaced with the correct in-game versions.
+Simply paste a set of dialogue from your planning document into a bubble -- the text will automatically be wrapped and broken into multiple bubbles based on line breaks. Plus, sneaky variants of apostrophes and other characters are weeded out and replaced with the correct in-game versions.
 
 ### Effortless MSYT export
 
