@@ -83,20 +83,23 @@ export default class BubbleTester {
         let testString;
         let outputString = "";
         let newNode = currentNode.cloneNode();
+        newNode.textContent = "";
         wrappingBubbleContainer.appendChild(newNode);
         while (words.length > 0) {
+          let isFirstIteration = true;
           testString = "";
           // Test base font size * line spacing * max font modifier
           while (wrappingBubbleContainer.offsetHeight <= b.bubbleFontSize * 1.25 * 1.25) {
             outputString = testString;
-            if (outputString) words.splice(0, 1);
+            if (!isFirstIteration) words.splice(0, 1);
+            else isFirstIteration = false;
             if (words.length == 0) break;
             testString += words[0];
             if (words.length > 1) testString += " ";
             newNode.textContent = testString;
           }
           // Handle words longer than one line
-          if (!outputString) {
+          if (!outputString && words[0]) {
             let word = words[0].split("");
             let outputWordString;
             let outputWord = "";
