@@ -113,30 +113,30 @@ export default class Bubble {
               if (isStart && sliceStart != 0) {
                 let sliceText = currentNode.textContent.slice(0, sliceStart);
                 if (sliceText != "") {
-                newParentNode.appendChild(
+                  newParentNode.appendChild(
                     BubbleUtil.newNode(sliceText, {
+                      node: currentNode
+                    })
+                  );
+                }
+              }
+              if (selectedText != "") {
+                newParentNode.appendChild(
+                  BubbleUtil.newNode(selectedText, {
+                    color: color,
+                    size: size,
                     node: currentNode
                   })
                 );
-              }
-              }
-              if (selectedText != "") {
-              newParentNode.appendChild(
-                BubbleUtil.newNode(selectedText, {
-                  color: color,
-                  size: size,
-                  node: currentNode
-                })
-              );
               }
               if (isEnd && sliceEnd != currentNode.textContent.length) {
                 let sliceText = currentNode.textContent.slice(sliceEnd);
                 if (sliceText != "") {
-                newParentNode.appendChild(
+                  newParentNode.appendChild(
                     BubbleUtil.newNode(sliceText, {
-                    node: currentNode
-                  })
-                );
+                      node: currentNode
+                    })
+                  );
                 }
               }
             }
