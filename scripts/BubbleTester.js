@@ -128,7 +128,7 @@ export default class BubbleTester {
             words.splice(0, 1);
           }
           if (words.length > 0) {
-            newNode.textContent = newNode.textContent.split(" ").slice(0, -1).join(" ");
+            newNode.textContent = newNode.textContent.split(" ").slice(0, -2).join(" ");
             output[currentLine].push(newNode.cloneNode(true));
             output.push([]);
             currentLine++;
