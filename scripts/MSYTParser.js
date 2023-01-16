@@ -47,9 +47,9 @@ export default class MSYTParser {
               textUnfinished = false;
             }
             let reset = color == TextColor.DEFAULT && !isFirst;
-            msytExport += `  - control:\n`;
-            msytExport += `      - kind: ${reset ? "re" : ""}set_colour\n`;
-            if (!reset) msytExport += `      - colour: ${color}\n`;
+            msytExport += `      - control:\n`;
+            msytExport += `          kind: ${reset ? "re" : ""}set_colour\n`;
+            if (!reset) msytExport += `          colour: ${color}\n`;
           }
 
           let size = node.getAttribute?.("data-size") || TextSize.DEFAULT;
@@ -60,9 +60,9 @@ export default class MSYTParser {
               msytExport += '"\n';
               textUnfinished = false;
             }
-            msytExport += `  - control:\n`;
-            msytExport += `      - kind: text_size\n`;
-            msytExport += `      - percent: ${size}\n`;
+            msytExport += `      - control:\n`;
+            msytExport += `          kind: text_size\n`;
+            msytExport += `          percent: ${size}\n`;
           }
 
           // Get text
@@ -76,7 +76,7 @@ export default class MSYTParser {
             text = text.replaceAll(key, val);
           }
 
-          if (!textUnfinished) msytExport += `  - text: "`;
+          if (!textUnfinished) msytExport += `      - text: "`;
           msytExport += `${text}`;
           textUnfinished = true;
         }
