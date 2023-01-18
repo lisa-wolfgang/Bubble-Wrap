@@ -355,6 +355,7 @@ label {
   border: 0;
   background-color: hsla(0, 0%, 30%, 1);
   font-family: "Calamity";
+  filter: drop-shadow(0 0.5rem 0.5rem var(--shadow-color));
   transform: translateY(-0.25rem);
   transition-duration: var(--page-button-transition-duration);
 }
