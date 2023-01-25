@@ -33,17 +33,23 @@
           </div>
         </div>
         <div class="editor">
-          <div class="editor-section">
+          <div class="editor-section editor-header">
             <div class="chain-title">
               <h2>New Chain</h2>
             </div>
             <div class="chain-options">
-              <div>
-                <label>Format</label>
-                <select id="bubble-type">
-                  <option value="dialogue">Dialogue</option>
-                  <option value="signboard">Sign</option>
-                </select>
+              <select id="bubble-type">
+                <option value="dialogue">Dialogue</option>
+                <option value="signboard">Sign</option>
+              </select>
+              <div id="bubble-add-pause" class="select-container">
+                <button class="select-title">Add pause</button>
+                <div class="select-action-container">
+                  <button class="select-action">Short</button>
+                  <button class="select-action">Long</button>
+                  <button class="select-action">Longer</button>
+                  <button class="select-action">Custom...</button>
+                </div>
               </div>
             </div>
           </div>

@@ -16,6 +16,10 @@
 }
 
 :root {
+  --ui-small-text-size: 0.75rem;
+  --ui-normal-text-size: 1rem;
+  --ui-layer-1-shadow: drop-shadow(0 0 0.25rem hsla(0, 0%, 0%, 0.25));
+  --ui-layer-2-shadow: drop-shadow(0 0 0.5rem hsla(0, 0%, 0%, 0.25));
   --page-text-color: hsl(40, 60%, 5%);
   --page-bg-color: hsl(0, 0%, 95%);
   --sidebar-color: hsla(0, 0%, 100%, 1);
@@ -26,7 +30,7 @@
   --button-border-color: hsla(0, 0%, 75%, 1);
   --button-hover-bg-color: hsla(0, 0%, 85%, 1);
   --button-border-hover-color: hsla(0, 0%, 0%, 0);
-  --button-active-bg-color: hsla(0, 0%, 90%, 1);
+  --button-active-bg-color: hsla(0, 0%, 80%, 1);
   --button-action-color: var(--page-text-color);
   --action-bg-color: var(--button-bg-color);
   --action-border-color: var(--button-border-color);
@@ -34,7 +38,9 @@
   --action-hover-bg-color: var(--action-color);
   --action-hover-border-color: hsla(0, 0%, 0%, 0);
   --action-active-bg-color: hsl(210, 100%, 40%);
-  --shadow-color: hsla(0, 0%, 0%, 0.5);
+  --dialog-shadow: drop-shadow(0 0.5rem 1rem hsla(0, 0%, 0%, 0.5));
+  --dialog-text-shadow: drop-shadow(0 0 0.2rem hsla(0, 0%, 0%, 0.5));
+  --dialog-popup-shadow: drop-shadow(0 0.5rem 0.5rem hsla(0, 0%, 0%, 0.5));
   --dialog-text-white-color: hsl(60, 50%, 95%);
   --dialog-text-grey-color: hsl(60, 50%, 95%, 0.7);
   --dialog-text-blue-color: hsl(172, 95%, 50%);
@@ -58,7 +64,8 @@ a {
 
 select,
 button {
-  padding: 0.5rem;
+  height: 2.25rem;
+  padding: 0.25rem 0.5rem;
   border: 2px solid var(--button-border-color);
   border-radius: 0.25rem;
   color: var(--page-text-color);
@@ -69,6 +76,8 @@ button {
 
 select:hover,
 button:hover,
+.select-container:hover .select-title,
+.select-container:focus-within .select-title,
 select:active,
 button:active {
   border: 2px solid var(--button-border-hover-color);
@@ -96,6 +105,40 @@ button:active {
 
 .action:active {
   background-color: var(--action-active-bg-color);
+}
+
+.select-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.select-action-container {
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  z-index: 11;
+  padding: 0.25rem 0;
+  border-radius: 0.25rem;
+  margin-bottom: -200%;
+  background-color: var(--button-bg-color);
+  filter: var(--ui-layer-2-shadow);
+}
+
+.select-title:hover ~ .select-action-container,
+.select-title:focus ~ .select-action-container,
+.select-action-container:hover,
+.select-container:focus-within .select-action-container {
+  display: flex;
+}
+
+.select-action,
+.select-action:hover,
+.select-action:active {
+  height: auto;
+  border: none;
+  border-radius: 0;
+  text-align: left;
 }
 
 body {
@@ -127,10 +170,12 @@ body {
   gap: 1.5rem;
   width: 300px;
   padding: 1.5rem;
+  position: relative;
+  z-index: 2;
   overflow: auto;
   line-height: 1.25;
   background-color: var(--sidebar-color);
-  filter: drop-shadow(0 0 1rem var(--shadow-color));
+  filter: var(--ui-layer-2-shadow);
 }
 
 .sidebar-section {
@@ -163,7 +208,7 @@ label {
 }
 
 .description {
-  font-size: 0.75rem;
+  font-size: var(--ui-small-text-size);
 }
 
 .warning-modal {
@@ -179,19 +224,36 @@ label {
   flex-grow: 1;
   flex-direction: column;
   align-items: center;
-  gap: 1.5rem;
   overflow: auto;
-  padding: 1.5rem;
 }
 
 .editor-section {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 1.5rem 0;
+}
+
+.editor-header {
+  position: relative;
+  width: 100%;
+  z-index: 1;
+  background-color: var(--page-bg-color);
+  filter: var(--ui-layer-1-shadow);
+}
+
+.chain-options {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
 .bubble-container {
+  width: 100%;
+  height: 100%;
   gap: 1rem;
+  overflow: scroll;
 }
 
 .bubble {
@@ -243,7 +305,7 @@ label {
 .bubble:focus-within {
   margin-bottom: 3rem;
   outline: none;
-  filter: drop-shadow(0 0.5rem 1rem var(--shadow-color));
+  filter: var(--dialog-shadow);
   transform: translateY(-0.25rem);
 }
 
@@ -285,7 +347,7 @@ label {
   line-height: 1.25;
   padding: 1rem;
   font-family: "Calamity";
-  filter: drop-shadow(0 0 0.2rem var(--shadow-color));
+  filter: var(--dialog-text-shadow);
 }
 
 .bubble-content:focus {
@@ -341,21 +403,29 @@ label {
   opacity: 1;
 }
 
+.bubble-btn-container p {
+  padding: 0.5rem;
+  margin: 0;
+  font-size: var(--ui-small-text-size);
+  font-weight: bold;
+}
+
 .bubble-btn-container button {
   box-sizing: content-box;
   width: 1rem;
   height: 1rem;
+  padding: 0.5rem;
   line-height: 0;
   border-radius: 100%;
 }
 
 .formatting-overlay {
   align-items: center;
-  z-index: 1;
+  z-index: 10;
   border: 0;
   background-color: hsla(0, 0%, 30%, 1);
   font-family: "Calamity";
-  filter: drop-shadow(0 0.5rem 0.5rem var(--shadow-color));
+  filter: var(--dialog-popup-shadow);
   transform: translateY(-0.25rem);
   transition-duration: var(--page-button-transition-duration);
 }
@@ -372,20 +442,22 @@ label {
   align-items: center;
   border: 0;
   border-radius: 0;
-  font-size: 1rem;
+  font-size: var(--ui-normal-text-size);
   color: var(--dialog-text-white-color);
   background-color: hsla(0, 0%, 0%, 0);
 }
 
 .formatting-overlay button:hover {
+  border: 0;
   background-color: hsla(0, 0%, 0%, 0.1);
 }
 
 .formatting-overlay button:active {
+  border: 0;
   background-color: hsla(0, 0%, 0%, 0.2);
 }
 
-.formatting-overlay button:first-child {
+.formatting-overlay > :first-child {
   padding-left: 0.75rem;
 }
 
@@ -395,7 +467,7 @@ label {
   margin: 0 0.25rem;
 }
 
-.formatting-overlay button:last-child {
+.formatting-overlay > :last-child {
   padding-right: 0.75rem;
 }
 
