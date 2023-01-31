@@ -1,5 +1,6 @@
 import TextColor from "./enums/TextColor.js";
 import TextSize from "./enums/TextSize.js";
+import PauseDuration from "./enums/PauseDuration.js";
 
 /** A collection of utility methods for working with a Bubble object. */
 export default class BubbleUtil {
@@ -107,7 +108,7 @@ export default class BubbleUtil {
   }
 
   /**
-   * Creates and returns a new, detached Bubble node.
+   * Creates and returns a new, detached Bubble textual node.
    * @param {String} text The text content of the node.
    * @param {Object} args A set of parameters for the new node.
    * @param {TextColor} args.color The color attribute of the node.
@@ -116,13 +117,25 @@ export default class BubbleUtil {
    * if either are not specified.
    * @returns {Node} The new node.
    */
-  static newNode(text, args) {
+  static newTextNode(text, args) {
     let newSpan = document.createElement("span");
     newSpan.textContent = text;
     let newColor = args?.color || args?.node?.getAttribute?.("data-color");
     if (newColor) newSpan.setAttribute("data-color", newColor);
     let newSize = args?.size || args?.node?.getAttribute?.("data-size");
     if (newSize) newSpan.setAttribute("data-size", newSize);
+    return newSpan;
+  }
+
+  /**
+   * Creates and returns a new, detached Bubble non-textual node.
+   * @param {Object} args A set of parameters for the new node.
+   * @param {PauseDuration | number} args.pause The pause attribute of the node.
+   * @returns {Node} The new node.
+   */
+  static newNonTextNode(args) {
+    let newSpan = document.createElement("span");
+    if (args.pause) newSpan.setAttribute("data-pause", args.pause);
     return newSpan;
   }
 }

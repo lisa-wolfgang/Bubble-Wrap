@@ -1,6 +1,8 @@
 import BubbleUtil from "./BubbleUtil.js";
 import BubbleManager from "./BubbleManager.js";
 import BubbleTester from "./BubbleTester.js";
+import MSYTParser from "./MSYTParser.js";
+import PauseDuration from "./enums/PauseDuration.js";
 
 /** Manages the UI for an individual text box. */
 export default class Bubble {
@@ -114,7 +116,7 @@ export default class Bubble {
                 let sliceText = currentNode.textContent.slice(0, sliceStart);
                 if (sliceText != "") {
                   newParentNode.appendChild(
-                    BubbleUtil.newNode(sliceText, {
+                    BubbleUtil.newTextNode(sliceText, {
                       node: currentNode
                     })
                   );
@@ -122,7 +124,7 @@ export default class Bubble {
               }
               if (selectedText != "") {
                 newParentNode.appendChild(
-                  BubbleUtil.newNode(selectedText, {
+                  BubbleUtil.newTextNode(selectedText, {
                     color: color,
                     size: size,
                     node: currentNode
@@ -133,7 +135,7 @@ export default class Bubble {
                 let sliceText = currentNode.textContent.slice(sliceEnd);
                 if (sliceText != "") {
                   newParentNode.appendChild(
-                    BubbleUtil.newNode(sliceText, {
+                    BubbleUtil.newTextNode(sliceText, {
                       node: currentNode
                     })
                   );
@@ -189,6 +191,23 @@ export default class Bubble {
    */
   getIndex() {
     return BubbleManager.bubbles.indexOf(this);
+  }
+
+  /**
+   * Inserts a pause control node into this bubble.
+   * @param {PauseDuration | number} duration The duration value of the pause node.
+   * @param {Range} [range] If provided, the node will be inserted at the end position of this range.
+   * Otherwise, it will be appended to the bubble.
+   */
+  insertPauseNode(duration, range) {
+    let pauseNode = BubbleUtil.newNonTextNode({ pause: duration });
+    if (range) {
+      // Collapse the selection to the end point so `Range.insertNode()` inserts at the end point
+      range.collapse(false);
+      range.insertNode(pauseNode);
+    } else {
+      this.bubbleContentElement.appendChild(pauseNode);
+    }
   }
 
   parsePaste(e) {
