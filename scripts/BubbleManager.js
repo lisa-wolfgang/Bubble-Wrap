@@ -1,4 +1,5 @@
 import Bubble from "./Bubble.js";
+import BubbleTools from "./BubbleTools.js";
 
 /** Tracks and manages the states of all Bubbles. */
 export default class BubbleManager {
@@ -13,7 +14,7 @@ export default class BubbleManager {
   constructor() {
     BubbleManager.wrappingBubble = new Bubble(-1);
     BubbleManager.bubbles.push(new Bubble(0));
-    window.BubbleManager = BubbleManager;
+    BubbleManager.updateType(BubbleTools.bubbleTypeElement.value);
   }
 
   /**
