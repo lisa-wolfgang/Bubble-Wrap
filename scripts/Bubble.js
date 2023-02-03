@@ -67,11 +67,12 @@ export default class Bubble {
 
     // Show formatting popup when text within bubble is selected
     let textSelectTest = () => {
-      let selection = getSelection();
-      if (selection && selection.type == "Range" && !selection.isCollapsed) {
+      let selection = getSelection().getRangeAt(0);
+      // Check if the selection change is within a bubble
+      if (selection && !selection.collapsed && selection.endContainer.parentElement.closest(".bubble") == this.element) {
         let parentRect = this.element.getBoundingClientRect();
         let thisRect = this.bubbleFormattingOverlay.getBoundingClientRect();
-        let selectionRect = selection.getRangeAt(0).getBoundingClientRect();
+        let selectionRect = selection.getBoundingClientRect();
         this.bubbleFormattingOverlay.style.bottom = parentRect.bottom - selectionRect.top + "px";
         this.bubbleFormattingOverlay.style.left = selectionRect.left + selectionRect.width / 2 - thisRect.width / 2 - parentRect.left + "px";
         this.bubbleFormattingOverlay.classList.add("visible");
@@ -83,11 +84,7 @@ export default class Bubble {
         this.bubbleFormattingOverlay.style.transitionProperty = "opacity, transform";
       }
     };
-    this.element.addEventListener("mousedown", textSelectTest);
-    this.element.addEventListener("mouseup", textSelectTest);
-    this.element.addEventListener("click", textSelectTest);
-    this.element.addEventListener("keydown", textSelectTest);
-    this.element.addEventListener("keyup", textSelectTest);
+    document.addEventListener("selectionchange", textSelectTest);
     document.addEventListener("mousedown", (e) => {
       if (!this.element.contains(e.target) || e.target.closest(".btn-add-bubble-container")) {
         this.bubbleFormattingOverlay.classList.remove("visible");
