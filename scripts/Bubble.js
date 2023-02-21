@@ -209,6 +209,10 @@ export default class Bubble {
     } else {
       this.bubbleContentElement.appendChild(pauseNode);
     }
+    // Check for a pause node immediately preceding the current one;
+    // if one exists, remove it
+    const previousSibling = pauseNode.previousElementSibling;
+    if (previousSibling?.getAttribute("data-pause")) previousSibling.remove();
   }
 
   parsePaste(e) {

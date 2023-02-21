@@ -108,8 +108,12 @@ button:active {
 }
 
 .select-container {
-  display: flex;
+  display: none;
   flex-direction: column;
+}
+
+.select-container.available {
+  display: flex;
 }
 
 .select-action-container {
@@ -130,6 +134,10 @@ button:active {
 .select-action-container:hover,
 .select-container:focus-within .select-action-container {
   display: flex;
+}
+
+.select-title ~ .select-action-container.just-clicked {
+  display: none;
 }
 
 .select-action,

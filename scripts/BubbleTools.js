@@ -16,7 +16,8 @@ export default class BubbleTools {
 
   static addPauseBtnElement = document.getElementById("bubble-add-pause");
   static {
-    BubbleTools.addPauseBtnElement.addEventListener("click", (e) => {
+    BubbleTools.addPauseBtnElement.addEventListener("mousedown", (e) => {
+      e.preventDefault();
       let el = e.target;
       if (!el.matches(".select-action")) return;
       let duration = el.getAttribute("value");
@@ -37,7 +38,26 @@ export default class BubbleTools {
       let selectedBubbleIndex = Array.from(BubbleManager.container.children).indexOf(selectedBubbleElement);
       let selectedBubble = BubbleManager.bubbles[selectedBubbleIndex];
       selectedBubble.insertPauseNode(duration, range);
+      // Collapse range to end so subsequent typing doesn't delete the pause
+      range.collapse(false);
+      // Replace focus and hide the dropdown
+      BubbleTools.addPauseBtnElement.blur();
+      let dropdown = BubbleTools.addPauseBtnElement.querySelector(".select-action-container");
+      dropdown.classList.add("just-clicked");
+      // Give browser time to paint before cleaning up class
+      setTimeout(() => dropdown.classList.remove("just-clicked"), 20);
     });
+
+    // Toggle appearance on bubble focus/blur
+    const appearCheck = () => {
+      if (document.activeElement?.closest(".bubble")) {
+        BubbleTools.addPauseBtnElement.classList.add("available");
+      } else {
+        BubbleTools.addPauseBtnElement.classList.remove("available");
+      }
+    };
+    document.querySelector(".bubble-container").addEventListener("focusin", appearCheck);
+    document.querySelector(".bubble-container").addEventListener("focusout", appearCheck);
   }
 
   static exportBtnElement = document.getElementById("export-btn");
