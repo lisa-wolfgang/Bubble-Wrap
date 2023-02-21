@@ -138,7 +138,7 @@ export default class BubbleUtil {
     let newSpan = document.createElement("span");
     if (args.pause) {
       newSpan.setAttribute("data-pause", args.pause);
-      newSpan.setAttribute("title", `Pause (${args.pause}${typeof args.pause == "number" ? " frames" : ""})`);
+      newSpan.setAttribute("title", `Pause (${args.pause}${isNaN(args.pause) ? "" : " frames"})`);
     }
     let nodeSelectElement = document.createElement("span");
     nodeSelectElement.classList.add("node-select");

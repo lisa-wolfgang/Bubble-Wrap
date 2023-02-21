@@ -46,7 +46,7 @@ export default class MSYTParser {
             }
             msytExport += `      - control:\n`;
             msytExport += `          kind: pause\n`;
-            msytExport += `          ${typeof pauseDuration == "number" ? "frames" : "length"}: ${pauseDuration}\n`;
+            msytExport += `          ${isNaN(pauseDuration) ? "length" : "frames"}: ${pauseDuration}\n`;
             continue;
           }
 
