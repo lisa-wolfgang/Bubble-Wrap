@@ -136,6 +136,9 @@ export default class BubbleUtil {
   static newNonTextNode(args) {
     let newSpan = document.createElement("span");
     if (args.pause) newSpan.setAttribute("data-pause", args.pause);
+    let nodeSelectElement = document.createElement("span");
+    nodeSelectElement.classList.add("node-select");
+    newSpan.appendChild(nodeSelectElement);
     return newSpan;
   }
 }
