@@ -34,8 +34,21 @@ export default class MSYTParser {
       for (let line = 0; line < nodes.length; line++) {
         for (let n = 0; n < nodes[line].length; n++) {
           let node = nodes[line][n];
-          if (!node.nodeValue && !node.childNodes[0]) continue;
+          if (!node.nodeValue && !node.childNodes[0] && !node.getAttribute?.("data-pause")) continue;
           let isFirst = !previousColor;
+
+          // If this is a pause node, parse and continue to next node
+          let pauseDuration = node.getAttribute?.("data-pause");
+          if (pauseDuration) {
+            if (textUnfinished) {
+              msytExport += '"\n';
+              textUnfinished = false;
+            }
+            msytExport += `      - control:\n`;
+            msytExport += `          kind: pause\n`;
+            msytExport += `          ${typeof pauseDuration == "number" ? "frames" : "length"}: ${pauseDuration}\n`;
+            continue;
+          }
 
           // Get control node information
           let color = node.getAttribute?.("data-color") || TextColor.DEFAULT;
