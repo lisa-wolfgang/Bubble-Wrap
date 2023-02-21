@@ -33,7 +33,7 @@ export default class BubbleTools {
         }
       }
       let range = getSelection().getRangeAt(0);
-      let selectedBubbleElement = range.endContainer.closest(".bubble");
+      let selectedBubbleElement = range.endContainer.parentElement.closest(".bubble");
       let selectedBubbleIndex = Array.from(BubbleManager.container.children).indexOf(selectedBubbleElement);
       let selectedBubble = BubbleManager.bubbles[selectedBubbleIndex];
       selectedBubble.insertPauseNode(duration, range);
