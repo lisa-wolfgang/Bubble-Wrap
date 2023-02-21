@@ -197,7 +197,11 @@ export default class Bubble {
    * Otherwise, it will be appended to the bubble.
    */
   insertPauseNode(duration, range) {
-    let pauseNode = BubbleUtil.newNonTextNode({ pause: duration });
+    let pauseNode = BubbleUtil.newNonTextNode({ pause: duration }, (e) => {
+      if (confirm(`Delete this ${duration}${typeof duration == "number" ? "-frame" : ""} pause?`)) {
+        e.currentTarget.remove();
+      }
+    });
     if (range) {
       // Collapse the selection to the end point so `Range.insertNode()` inserts at the end point
       range.collapse(false);

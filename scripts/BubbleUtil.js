@@ -131,9 +131,10 @@ export default class BubbleUtil {
    * Creates and returns a new, detached Bubble non-textual node.
    * @param {Object} args A set of parameters for the new node.
    * @param {PauseDuration | number} args.pause The pause attribute of the node.
+   * @param {Function} callback The callback to run when the UI of this node is clicked.
    * @returns {Node} The new node.
    */
-  static newNonTextNode(args) {
+  static newNonTextNode(args, callback) {
     let newSpan = document.createElement("span");
     if (args.pause) {
       newSpan.setAttribute("data-pause", args.pause);
@@ -141,6 +142,7 @@ export default class BubbleUtil {
     }
     let nodeSelectElement = document.createElement("span");
     nodeSelectElement.classList.add("node-select");
+    newSpan.addEventListener("click", callback);
     newSpan.appendChild(nodeSelectElement);
     return newSpan;
   }
