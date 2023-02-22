@@ -99,63 +99,13 @@ export default class Bubble {
           let range = getSelection().getRangeAt(0);
           let color = e.currentTarget.getAttribute("data-color");
           let size = e.currentTarget.getAttribute("data-size");
-          BubbleUtil.reconstructBubble(
-            this,
-            (node) => range.intersectsNode(node),
-            (currentNode, newParentNode) => {
-              if (currentNode.textContent == "") {
-                let pauseDuration = currentNode.getAttribute?.("data-pause");
-                if (pauseDuration) {
-                  newParentNode.appendChild(BubbleUtil.newNonTextNode({ pause: pauseDuration }, Bubble.pauseNodeCallback));
-                }
-                return;
-              }
-              const isStart = currentNode.contains(range.startContainer);
-              const isEnd = currentNode.contains(range.endContainer);
-              if (isStart && range.startOffset != 0) {
-                const preFormatRange = new Range();
-                preFormatRange.setStart(range.startContainer, 0);
-                preFormatRange.setEnd(range.startContainer, range.startOffset);
-                const preFormatContent = preFormatRange.cloneContents();
-                if (preFormatContent.childNodes.length > 0) {
-                  newParentNode.appendChild(
-                    BubbleUtil.newTextNode(preFormatContent, {
-                      node: currentNode
-                    })
-                  );
-                }
-              }
-              const formatRange = new Range();
-              formatRange.selectNodeContents(currentNode);
-              if (isStart) formatRange.setStart(range.startContainer, range.startOffset);
-              if (isEnd) formatRange.setEnd(range.endContainer, range.endOffset);
-              const formatContent = formatRange.cloneContents();
-              if (formatContent.childNodes.length > 0) {
-                newParentNode.appendChild(
-                  BubbleUtil.newTextNode(formatContent, {
-                    color: color,
-                    size: size,
-                    node: currentNode
-                  })
-                );
-              }
-              if (isEnd) {
-                const postFormatRange = new Range();
-                postFormatRange.selectNodeContents(currentNode);
-                postFormatRange.setStart(range.endContainer, range.endOffset);
-                if (!postFormatRange.collapsed) {
-                  const postFormatContent = postFormatRange.cloneContents();
-                  if (postFormatContent.childNodes.length > 0) {
-                    newParentNode.appendChild(
-                      BubbleUtil.newTextNode(postFormatContent, {
-                        node: currentNode
-                      })
-                    );
-                  }
-                }
-              }
-            }
-          );
+          BubbleUtil.splitParentAndInsert(range, (formatContent, currentNode) => {
+            return BubbleUtil.newTextNode(formatContent, {
+              color: color,
+              size: size,
+              node: currentNode
+            });
+          });
         });
       }
     });

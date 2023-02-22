@@ -21,6 +21,85 @@ export default class BubbleUtil {
    */
 
   /**
+   * Modifies separated contents of a given node to be inserted into a new independent `<span>`.
+   * @callback separatedRangeCallback
+   * @param {DocumentFragment} formatContent The content separated from the parent node.
+   * @param {Node} currentNode The original parent node of `formatContent`.
+   * @returns {Node} The new node to insert into the new independent `<span>`.
+   */
+
+  /**
+   * Separates the contents of the given range into an independent `<span>` element,
+   * splitting the parent node of the range in the process. The contents of the new
+   * `<span>` may optionally be modified using a callback; otherwise, it will inherit
+   * the attributes of its content's original parent node.
+   * @param {Range} range The range whose contents are to be separated.
+   * @param {separatedRangeCallback} [callback] A callback that modifies the content
+   * to be inserted into the new independent `<span>`.
+   */
+  static splitParentAndInsert(range, callback) {
+    BubbleUtil.reconstructBubble(
+      this,
+      (node) => range.intersectsNode(node),
+      (currentNode, newParentNode) => {
+        if (currentNode.textContent == "") {
+          let pauseDuration = currentNode.getAttribute?.("data-pause");
+          if (pauseDuration) {
+            newParentNode.appendChild(BubbleUtil.newNonTextNode({ pause: pauseDuration }, Bubble.pauseNodeCallback));
+          }
+          return;
+        }
+        const isStart = currentNode.contains(range.startContainer);
+        const isEnd = currentNode.contains(range.endContainer);
+        if (isStart && range.startOffset != 0) {
+          const preFormatRange = new Range();
+          preFormatRange.setStart(range.startContainer, 0);
+          preFormatRange.setEnd(range.startContainer, range.startOffset);
+          const preFormatContent = preFormatRange.cloneContents();
+          if (preFormatContent.childNodes.length > 0) {
+            newParentNode.appendChild(
+              BubbleUtil.newTextNode(preFormatContent, {
+                node: currentNode
+              })
+            );
+          }
+        }
+        const formatRange = new Range();
+        formatRange.selectNodeContents(currentNode);
+        if (isStart) formatRange.setStart(range.startContainer, range.startOffset);
+        if (isEnd) formatRange.setEnd(range.endContainer, range.endOffset);
+        const formatContent = formatRange.cloneContents();
+        if (formatContent.childNodes.length > 0) {
+          if (callback) {
+            newParentNode.appendChild(callback(formatContent, currentNode));
+          } else {
+            newParentNode.appendChild(
+              BubbleUtil.newTextNode(formatContent, {
+                node: currentNode
+              })
+            );
+          }
+        }
+        if (isEnd) {
+          const postFormatRange = new Range();
+          postFormatRange.selectNodeContents(currentNode);
+          postFormatRange.setStart(range.endContainer, range.endOffset);
+          if (!postFormatRange.collapsed) {
+            const postFormatContent = postFormatRange.cloneContents();
+            if (postFormatContent.childNodes.length > 0) {
+              newParentNode.appendChild(
+                BubbleUtil.newTextNode(postFormatContent, {
+                  node: currentNode
+                })
+              );
+            }
+          }
+        }
+      }
+    );
+  }
+
+  /**
    * Iterates through each text node in the Bubble and runs the callback
    * on nodes that satisfy the provided condition. The callback is provided
    * the original node as well as an identical copy of the node to modify.
