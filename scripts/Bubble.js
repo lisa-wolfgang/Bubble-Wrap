@@ -103,39 +103,55 @@ export default class Bubble {
             this,
             (node) => range.intersectsNode(node),
             (currentNode, newParentNode) => {
-              if (currentNode.textContent == "") return;
-              let isStart = currentNode.contains(range.startContainer);
-              let isEnd = currentNode.contains(range.endContainer);
-              let sliceStart = isStart ? range.startOffset : 0;
-              let sliceEnd = isEnd ? range.endOffset : undefined;
-              let selectedText = currentNode.textContent.slice(sliceStart, sliceEnd);
-              if (isStart && sliceStart != 0) {
-                let sliceText = currentNode.textContent.slice(0, sliceStart);
-                if (sliceText != "") {
+              if (currentNode.textContent == "") {
+                let pauseDuration = currentNode.getAttribute?.("data-pause");
+                if (pauseDuration) {
+                  newParentNode.appendChild(BubbleUtil.newNonTextNode({ pause: pauseDuration }, Bubble.pauseNodeCallback));
+                }
+                return;
+              }
+              const isStart = currentNode.contains(range.startContainer);
+              const isEnd = currentNode.contains(range.endContainer);
+              if (isStart && range.startOffset != 0) {
+                const preFormatRange = new Range();
+                preFormatRange.setStart(range.startContainer, 0);
+                preFormatRange.setEnd(range.startContainer, range.startOffset);
+                const preFormatContent = preFormatRange.cloneContents();
+                if (preFormatContent.childNodes.length > 0) {
                   newParentNode.appendChild(
-                    BubbleUtil.newTextNode(sliceText, {
+                    BubbleUtil.newTextNode(preFormatContent, {
                       node: currentNode
                     })
                   );
                 }
               }
-              if (selectedText != "") {
+              const formatRange = new Range();
+              formatRange.selectNodeContents(currentNode);
+              if (isStart) formatRange.setStart(range.startContainer, range.startOffset);
+              if (isEnd) formatRange.setEnd(range.endContainer, range.endOffset);
+              const formatContent = formatRange.cloneContents();
+              if (formatContent.childNodes.length > 0) {
                 newParentNode.appendChild(
-                  BubbleUtil.newTextNode(selectedText, {
+                  BubbleUtil.newTextNode(formatContent, {
                     color: color,
                     size: size,
                     node: currentNode
                   })
                 );
               }
-              if (isEnd && sliceEnd != currentNode.textContent.length) {
-                let sliceText = currentNode.textContent.slice(sliceEnd);
-                if (sliceText != "") {
-                  newParentNode.appendChild(
-                    BubbleUtil.newTextNode(sliceText, {
-                      node: currentNode
-                    })
-                  );
+              if (isEnd) {
+                const postFormatRange = new Range();
+                postFormatRange.selectNodeContents(currentNode);
+                postFormatRange.setStart(range.endContainer, range.endOffset);
+                if (!postFormatRange.collapsed) {
+                  const postFormatContent = postFormatRange.cloneContents();
+                  if (postFormatContent.childNodes.length > 0) {
+                    newParentNode.appendChild(
+                      BubbleUtil.newTextNode(postFormatContent, {
+                        node: currentNode
+                      })
+                    );
+                  }
                 }
               }
             }
@@ -197,11 +213,7 @@ export default class Bubble {
    * Otherwise, it will be appended to the bubble.
    */
   insertPauseNode(duration, range) {
-    let pauseNode = BubbleUtil.newNonTextNode({ pause: duration }, (e) => {
-      if (confirm(`Delete this ${duration}${typeof duration == "number" ? "-frame" : ""} pause?`)) {
-        e.currentTarget.remove();
-      }
-    });
+    let pauseNode = BubbleUtil.newNonTextNode({ pause: duration }, Bubble.pauseNodeCallback);
     if (range) {
       // Collapse the selection to the end point so `Range.insertNode()` inserts at the end point
       range.collapse(false);
@@ -214,6 +226,13 @@ export default class Bubble {
     const previousSibling = pauseNode.previousElementSibling;
     if (previousSibling?.getAttribute("data-pause")) previousSibling.remove();
   }
+
+  static pauseNodeCallback = (e) => {
+    const duration = e.currentTarget.getAttribute("data-pause");
+    if (confirm(`Delete this ${duration}${typeof duration == "number" ? "-frame" : ""} pause?`)) {
+      e.currentTarget.remove();
+    }
+  };
 
   parsePaste(e) {
     e.preventDefault();

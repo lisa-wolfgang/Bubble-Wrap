@@ -1,6 +1,7 @@
 import TextColor from "./enums/TextColor.js";
 import TextSize from "./enums/TextSize.js";
 import PauseDuration from "./enums/PauseDuration.js";
+import Bubble from "./Bubble.js";
 
 /** A collection of utility methods for working with a Bubble object. */
 export default class BubbleUtil {
@@ -45,6 +46,9 @@ export default class BubbleUtil {
       },
       true
     );
+    bubble.element.querySelectorAll("[data-pause]").forEach((el) => {
+      el.addEventListener("click", Bubble.pauseNodeCallback);
+    });
   }
 
   /**
@@ -80,7 +84,9 @@ export default class BubbleUtil {
   static iterateInsideBubble(bubble, callback, applyChanges) {
     let originalOuterNodes = bubble.bubbleContentElement.childNodes;
     let newContentElement = document.createElement("div");
+    let alreadyIterated = false;
     originalOuterNodes.forEach((outerNode, index) => {
+      if (alreadyIterated) return;
       // Each outer div (lines separated by manual line breaks)
       if (index == originalOuterNodes.length - 1 && outerNode.tagName == "BR") return;
       let outerNodeContent = outerNode.childNodes;
@@ -97,8 +103,25 @@ export default class BubbleUtil {
         }
       } else {
         // There is no inner layer in the bubble
-        if (outerNode.tagName == "BR") callback(null, null, true);
-        else callback(outerNode, newOuterNode);
+        if (outerNode.tagName == "BR") {
+          callback(null, null, true);
+        } else {
+          if (originalOuterNodes.length > 1) {
+            if (index == 0) {
+              originalOuterNodes.forEach((outerNode, index) => {
+                if (index == originalOuterNodes.length - 1 && outerNode.tagName == "BR") return;
+                if (outerNode.tagName == "BR") {
+                  callback(null, null, true);
+                } else {
+                  callback(outerNode, newOuterNode);
+                }
+              });
+              alreadyIterated = true;
+            }
+          } else {
+            callback(outerNode, newOuterNode);
+          }
+        }
       }
       // Apply any changes to the replacement bubble
       if (applyChanges) newContentElement.appendChild(newOuterNode);
@@ -109,7 +132,7 @@ export default class BubbleUtil {
 
   /**
    * Creates and returns a new, detached Bubble textual node.
-   * @param {String} text The text content of the node.
+   * @param {DocumentFragment} content The content of the node. Can include non-textual nodes.
    * @param {Object} args A set of parameters for the new node.
    * @param {TextColor} args.color The color attribute of the node.
    * @param {TextSize} args.size The size attribute of the node.
@@ -117,9 +140,9 @@ export default class BubbleUtil {
    * if either are not specified.
    * @returns {Node} The new node.
    */
-  static newTextNode(text, args) {
+  static newTextNode(content, args) {
     let newSpan = document.createElement("span");
-    newSpan.textContent = text;
+    newSpan.appendChild(content);
     let newColor = args?.color || args?.node?.getAttribute?.("data-color");
     if (newColor) newSpan.setAttribute("data-color", newColor);
     let newSize = args?.size || args?.node?.getAttribute?.("data-size");
