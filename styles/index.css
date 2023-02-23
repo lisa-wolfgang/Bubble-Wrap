@@ -366,6 +366,7 @@ label {
   display: block;
   content: attr(placeholder);
   cursor: text;
+  pointer-events: none;
   color: var(--dialog-text-white-color);
   opacity: 0.55;
 }
