@@ -240,6 +240,7 @@ export default class BubbleUtil {
    */
   static newNonTextNode(args, callback) {
     let newSpan = document.createElement("span");
+    newSpan.setAttribute("contenteditable", false);
     if (args.pause) {
       newSpan.setAttribute("data-pause", args.pause);
       newSpan.setAttribute("title", `Pause (${args.pause}${isNaN(args.pause) ? "" : " frames"})`);
