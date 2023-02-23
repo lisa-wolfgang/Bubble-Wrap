@@ -2,6 +2,7 @@ import TextColor from "./enums/TextColor.js";
 import TextSize from "./enums/TextSize.js";
 import PauseDuration from "./enums/PauseDuration.js";
 import Bubble from "./Bubble.js";
+import BubbleManager from "./BubbleManager.js";
 
 /** A collection of utility methods for working with a Bubble object. */
 export default class BubbleUtil {
@@ -38,8 +39,10 @@ export default class BubbleUtil {
    * to be inserted into the new independent `<span>`.
    */
   static splitParentAndInsert(range, callback) {
+    const bubbleObj = BubbleManager.getBubbleFromNode(range.startContainer);
+    if (!bubbleObj) return;
     BubbleUtil.reconstructBubble(
-      this,
+      bubbleObj,
       (node) => range.intersectsNode(node),
       (currentNode, newParentNode) => {
         if (currentNode.textContent == "") {
@@ -56,29 +59,25 @@ export default class BubbleUtil {
           preFormatRange.setStart(range.startContainer, 0);
           preFormatRange.setEnd(range.startContainer, range.startOffset);
           const preFormatContent = preFormatRange.cloneContents();
-          if (preFormatContent.childNodes.length > 0) {
-            newParentNode.appendChild(
-              BubbleUtil.newTextNode(preFormatContent, {
-                node: currentNode
-              })
-            );
-          }
+          newParentNode.appendChild(
+            BubbleUtil.newTextNode(preFormatContent, {
+              node: currentNode
+            })
+          );
         }
         const formatRange = new Range();
         formatRange.selectNodeContents(currentNode);
         if (isStart) formatRange.setStart(range.startContainer, range.startOffset);
         if (isEnd) formatRange.setEnd(range.endContainer, range.endOffset);
         const formatContent = formatRange.cloneContents();
-        if (formatContent.childNodes.length > 0) {
-          if (callback) {
-            newParentNode.appendChild(callback(formatContent, currentNode));
-          } else {
-            newParentNode.appendChild(
-              BubbleUtil.newTextNode(formatContent, {
-                node: currentNode
-              })
-            );
-          }
+        if (callback) {
+          newParentNode.appendChild(callback(formatContent, currentNode));
+        } else {
+          newParentNode.appendChild(
+            BubbleUtil.newTextNode(formatContent, {
+              node: currentNode
+            })
+          );
         }
         if (isEnd) {
           const postFormatRange = new Range();
@@ -86,13 +85,11 @@ export default class BubbleUtil {
           postFormatRange.setStart(range.endContainer, range.endOffset);
           if (!postFormatRange.collapsed) {
             const postFormatContent = postFormatRange.cloneContents();
-            if (postFormatContent.childNodes.length > 0) {
-              newParentNode.appendChild(
-                BubbleUtil.newTextNode(postFormatContent, {
-                  node: currentNode
-                })
-              );
-            }
+            newParentNode.appendChild(
+              BubbleUtil.newTextNode(postFormatContent, {
+                node: currentNode
+              })
+            );
           }
         }
       }

@@ -18,6 +18,18 @@ export default class BubbleManager {
   }
 
   /**
+   * Returns the Bubble object associated with the given node.
+   * @param {Node} bubbleNode A node to associate with a Bubble object.
+   * @returns {Bubble | null} The associated Bubble object, if one exists.
+   */
+  static getBubbleFromNode(bubbleNode) {
+    const element = bubbleNode.tagName ? bubbleNode : bubbleNode.parentElement;
+    const bubbleElement = element.closest(".bubble");
+    if (!bubbleElement) return null;
+    return BubbleManager.bubbles.find((item) => bubbleElement == item.element);
+  }
+
+  /**
    * Inserts a new bubble below the specified parent.
    * @param {Bubble} parentBubble The bubble to create this one under.
    * @param {string} text (optional) A string to prefill the new bubble with.

@@ -167,7 +167,9 @@ export default class Bubble {
     if (range) {
       // Collapse the selection to the end point so `Range.insertNode()` inserts at the end point
       range.collapse(false);
-      range.insertNode(pauseNode);
+      BubbleUtil.splitParentAndInsert(range, () => {
+        return pauseNode;
+      });
     } else {
       this.bubbleContentElement.appendChild(pauseNode);
     }

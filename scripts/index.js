@@ -73,7 +73,7 @@ if (devMode) {
   }
 
   // Test control nodes
-  BubbleManager.testBubbles[0].bubbleContentElement.innerHTML = '<div><span data-color="red">aaaaaaa</span><span data-color="white">aaaaaa</span></div><div><span data-size="125">llamallamallamallam</span><span data-size="100">allamallama<span data-pause="short">llamallamallama</span><br></div>';
+  BubbleManager.testBubbles[0].bubbleContentElement.innerHTML = '<div><span data-color="red">aaaaaaa</span><span data-color="white">aaaaaa</span></div><div><span data-size="125">llamallamallamallam</span><span data-size="100">allamallama</span><span data-pause="short"></span><span data-size="100">llamallamallama</span><br></div>';
   testResult = MSYTParser.export(BubbleManager.testBubbles);
   if (testResult == "      - control:\n" + "          kind: set_colour\n" + "          colour: red\n" + '      - text: "aaaaaaa"\n' + "      - control:\n" + "          kind: reset_colour\n" + '      - text: "aaaaaa\\n"\n' + "      - control:\n" + "          kind: text_size\n" + "          percent: 125\n" + '      - text: "llamallamallamallam"\n' + "      - control:\n" + "          kind: text_size\n" + "          percent: 100\n" + '      - text: "allamallama"\n' + "      - control:\n" + "          kind: pause\n" + "          length: short\n" + '      - text: "llamal\\nlamallama"') {
     pushTestPass("Color/size control nodes");
