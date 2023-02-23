@@ -35,13 +35,15 @@ export default class BubbleTools {
       }
       let range = getSelection().getRangeAt(0);
       let selectedBubble = BubbleManager.getBubbleFromNode(range.endContainer);
-      selectedBubble.insertPauseNode(duration, range);
+      const newNode = selectedBubble.insertPauseNode(duration, range);
       // Replace focus and hide the dropdown
       BubbleTools.addPauseBtnElement.blur();
       let dropdown = BubbleTools.addPauseBtnElement.querySelector(".select-action-container");
       dropdown.classList.add("just-clicked");
       // Give browser time to paint before cleaning up class
       setTimeout(() => dropdown.classList.remove("just-clicked"), 20);
+      // Move cursor after the pause
+      range.setStartAfter(newNode);
     });
 
     // Toggle appearance on bubble focus/blur

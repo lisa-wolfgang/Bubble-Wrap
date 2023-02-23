@@ -203,7 +203,12 @@ export default class BubbleUtil {
       if (applyChanges) newContentElement.appendChild(newOuterNode);
     });
     // Apply any changes to the actual bubble
-    if (applyChanges) bubble.bubbleContentElement.innerHTML = newContentElement.innerHTML;
+    if (applyChanges) {
+      bubble.bubbleContentElement.innerHTML = "";
+      newContentElement.childNodes.forEach((el) => {
+        bubble.bubbleContentElement.append(el);
+      });
+    }
   }
 
   /**

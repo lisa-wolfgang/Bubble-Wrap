@@ -110,13 +110,16 @@ export default class Bubble {
           let range = getSelection().getRangeAt(0);
           let color = e.currentTarget.getAttribute("data-color");
           let size = e.currentTarget.getAttribute("data-size");
+          let newNode;
           BubbleUtil.splitParentAndInsert(range, (formatContent, currentNode) => {
-            return BubbleUtil.newTextNode(formatContent, {
+            newNode = BubbleUtil.newTextNode(formatContent, {
               color: color,
               size: size,
               node: currentNode
             });
+            return newNode;
           });
+          range.setStartAfter(newNode);
         });
       }
     });
@@ -172,6 +175,7 @@ export default class Bubble {
    * @param {PauseDuration | number} duration The duration value of the pause node.
    * @param {Range} [range] If provided, the node will be inserted at the end position of this range.
    * Otherwise, it will be appended to the bubble.
+   * @returns {Node} The new Node.
    */
   insertPauseNode(duration, range) {
     let pauseNode = BubbleUtil.newNonTextNode({ pause: duration }, Bubble.pauseNodeCallback);
@@ -188,6 +192,8 @@ export default class Bubble {
     // if one exists, remove it
     const previousSibling = pauseNode.previousElementSibling;
     if (previousSibling?.getAttribute("data-pause")) previousSibling.remove();
+
+    return pauseNode;
   }
 
   static pauseNodeCallback = (e) => {
