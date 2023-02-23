@@ -39,8 +39,10 @@ export default class Bubble {
     this.bubbleFontSize = parseInt(window.getComputedStyle(this.bubbleContentElement).getPropertyValue("font-size"));
     this.bubbleValue = "";
 
-    // Populate bubble with instantiation text
-    this.bubbleContentElement.textContent = text;
+    // Populate bubble with first line
+    const initLine = document.createElement("div");
+    initLine.textContent = text;
+    this.bubbleContentElement.appendChild(initLine);
 
     // If this is not the initial or test bubble, autofocus
     if (index > 0) {
@@ -63,6 +65,14 @@ export default class Bubble {
     this.element.querySelector(".bubble-content-container").addEventListener("click", (e) => {
       if (e.target == this.element.querySelector(".bubble-content-container")) e.preventDefault(); // prevents unfocus on text when clicked
       this.bubbleContentElement.focus();
+    });
+
+    // If text is cleared, repopulate with a `<div>`
+    this.bubbleContentElement.addEventListener("keyup", () => {
+      if (this.bubbleContentElement.childNodes.length == 0) {
+        const newDiv = document.createElement("div");
+        this.bubbleContentElement.appendChild(newDiv);
+      }
     });
 
     // Show formatting popup when text within bubble is selected

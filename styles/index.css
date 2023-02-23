@@ -362,9 +362,9 @@ label {
   outline: none;
 }
 
-.bubble:only-child .bubble-content:empty:not(:focus, .deleting .bubble-content, .test-bubble .bubble-content)::before {
-  display: block;
-  content: attr(placeholder);
+.bubble:only-child .bubble-content:not(:focus) div:empty:not(:focus, .deleting .bubble-content, .test-bubble .bubble-content)::before {
+  display: inline;
+  content: "Type text here and it will be wrapped automatically...";
   cursor: text;
   pointer-events: none;
   color: var(--dialog-text-white-color);
@@ -374,6 +374,10 @@ label {
 .test-bubble .bubble-content {
   padding: 0;
   margin: 1rem;
+}
+
+.bubble-content:focus div:empty:not(:focus, .deleting .bubble-content, .test-bubble .bubble-content) {
+  height: 1.25rem;
 }
 
 .bubble-btn-container {
