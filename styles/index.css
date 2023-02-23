@@ -233,6 +233,7 @@ label {
   flex-direction: column;
   align-items: center;
   overflow: auto;
+  user-select: none;
 }
 
 .editor-section {
