@@ -34,12 +34,8 @@ export default class BubbleTools {
         }
       }
       let range = getSelection().getRangeAt(0);
-      let selectedBubbleElement = range.endContainer.parentElement.closest(".bubble");
-      let selectedBubbleIndex = Array.from(BubbleManager.container.children).indexOf(selectedBubbleElement);
-      let selectedBubble = BubbleManager.bubbles[selectedBubbleIndex];
+      let selectedBubble = BubbleManager.getBubbleFromNode(range.endContainer);
       selectedBubble.insertPauseNode(duration, range);
-      // Collapse range to end so subsequent typing doesn't delete the pause
-      range.collapse(false);
       // Replace focus and hide the dropdown
       BubbleTools.addPauseBtnElement.blur();
       let dropdown = BubbleTools.addPauseBtnElement.querySelector(".select-action-container");
