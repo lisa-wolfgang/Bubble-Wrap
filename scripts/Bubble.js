@@ -72,6 +72,7 @@ export default class Bubble {
       if (this.bubbleContentElement.childNodes.length == 0) {
         const newDiv = document.createElement("div");
         this.bubbleContentElement.appendChild(newDiv);
+        getSelection().getRangeAt(0).setStart(newDiv, 0);
       }
     });
 
