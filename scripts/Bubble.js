@@ -51,6 +51,8 @@ export default class Bubble {
       this.element.addEventListener("animationstart", () => {
         // Trigger autofocus once all post-click events have occurred
         this.bubbleContentElement.focus();
+        const range = getSelection().getRangeAt(0);
+        range.setStart(initLine, 0);
       });
       this.element.addEventListener("animationend", () => {
         // The delete button was disabled on the parent element earlier to prevent weird flickering,
