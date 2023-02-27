@@ -96,7 +96,7 @@ export default class BubbleTools {
     if (bubbleOnly) {
       // Toggle appearance on bubble focus/blur
       const appearCheck = (e) => {
-        if (!e.target.matches(".bubble-content")) return;
+        if (!e.target.matches(".bubble-content") && !e.target.matches(".bubble-content-container")) return;
         const isFocusOut = e.type == "focusout";
         const isAvailable = appearCondition ? appearCondition() : document.activeElement?.closest(".bubble");
         if (isAvailable && !isFocusOut) {
