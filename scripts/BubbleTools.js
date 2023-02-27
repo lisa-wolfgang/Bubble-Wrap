@@ -95,9 +95,11 @@ export default class BubbleTools {
 
     if (bubbleOnly) {
       // Toggle appearance on bubble focus/blur
-      const appearCheck = () => {
-        let isAvailable = appearCondition ? appearCondition() : document.activeElement?.closest(".bubble");
-        if (isAvailable) {
+      const appearCheck = (e) => {
+        if (!e.target.matches(".bubble-content")) return;
+        const isFocusOut = e.type == "focusout";
+        const isAvailable = appearCondition ? appearCondition() : document.activeElement?.closest(".bubble");
+        if (isAvailable && !isFocusOut) {
           element.classList.add("available");
         } else {
           element.classList.remove("available");
@@ -182,11 +184,11 @@ export default class BubbleTools {
       true,
       true,
       () => {
-        // Animation control nodes are dialogue-only
-        if (BubbleManager.type != "dialogue") return false;
         // Check that a bubble is selected
         const bubbleElement = document.activeElement?.closest(".bubble");
         if (!bubbleElement) return false;
+        // Animation control nodes are dialogue-only
+        if (BubbleManager.type != "dialogue") return false;
         // Repeated set of title button is for switching bubbles
         const selectedBubble = BubbleManager.getBubbleFromNode(bubbleElement);
         const titleElement = BubbleTools.setAnimationBtnElement.querySelector(".select-title");
@@ -247,11 +249,11 @@ export default class BubbleTools {
       false,
       true,
       () => {
-        // Sound control nodes are dialogue-only
-        if (BubbleManager.type != "dialogue") return false;
         // Check that a bubble is selected
         const bubbleElement = document.activeElement?.closest(".bubble");
         if (!bubbleElement) return false;
+        // Sound control nodes are dialogue-only
+        if (BubbleManager.type != "dialogue") return false;
         // Repeated set of title button is for switching bubbles
         const selectedBubble = BubbleManager.getBubbleFromNode(bubbleElement);
         const titleElement = BubbleTools.setSoundBtnElement.querySelector(".select-title");
@@ -297,9 +299,12 @@ export default class BubbleTools {
         // Move cursor after the pause
         range.setStartAfter(newNode);
       },
-      true,
+      false,
       true,
       () => {
+        // Check that a bubble is selected
+        const bubbleElement = document.activeElement?.closest(".bubble");
+        if (!bubbleElement) return false;
         // Pause control nodes are useless in signs because they show all text at once
         return BubbleManager.type != "sign";
       }
