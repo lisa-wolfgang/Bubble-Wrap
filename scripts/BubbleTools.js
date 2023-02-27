@@ -15,49 +15,82 @@ export default class BubbleTools {
   }
 
   /**
-   * Attaches event listeners to a custom dropdown.
+   * Constructs a custom dropdown.
    * @param {Element} element The top-level element of the dropdown.
-   * @param {Array<Object>} exceptions An array of information about dropdown options
-   * that require further user input.
-   * The `value` property is the `value` attribute of the dropdown option.
-   * The `prompt` property is the instruction presented to the user in the text prompt.
-   * The `parse` property is a callback provided the value that parses and returns its input.
-   * The `condition` property is a callback provided the value that returns whether the parsed
-   * input is valid.
-   * @param {Function} callback A function provided the value of the dropdown that is run when
-   * a value is selected.
+   * @param {String | null} title The title on the selector button shown in the UI. If set to
+   * `null`, it will always be set to the currently selected dropdown option.
+   * @param {Array<Object>} options An array of objects that each contain information about
+   * each dropdown option.
+   * - The `name` property is the user-facing text shown in the UI.
+   * - The `value` property is the `value` attribute of the dropdown option.
+   * - The `show` property is a callback that returns if the option should show in the UI. This is
+   * evaluated every time the dropdown is opened and whenever an option is selected. If not
+   * provided, defaults to true.
+   * - The `prompt` property is the text prompt, if any, that should be presented to the user
+   * to replace the value of the option. If not provided, defaults to showing no prompt.
+   * - The `parse` property is a callback provided the value that returns the input if it is valid
+   * and `null` if it is invalid. If not provided, defaults to accepting any input value.
+   * @param {Function} callback A function that is run when a value is selected. Provided:
+   * 1) the value of the dropdown
+   * 2) whether the value was entered by the user
    * @param {boolean} startShowing Whether the dropdown should initialize in the showing state.
    * @param {boolean} bubbleOnly Whether the dropdown should only show when a bubble is in focus.
    * @param {Function} appearCondition A custom function that returns whether the dropdown should
-   * show when focus changes in the bubble container.
+   * show. This is evaluated every time the bubble container is focused or unfocused.
    */
-  static initDropdown(element, exceptions, callback, startShowing, bubbleOnly, appearCondition) {
-    element.addEventListener("mousedown", (e) => {
-      e.preventDefault();
-      let el = e.target;
-      if (!el.matches(".select-action")) return;
-      let dropdownValue = el.getAttribute("value");
-      for (const ex of exceptions) {
-        if (dropdownValue == ex.value) {
+  static initDropdown(element, title, options, callback, startShowing, bubbleOnly, appearCondition) {
+    // Create title button
+    const titleBtn = document.createElement("button");
+    titleBtn.classList.add("select-title");
+    titleBtn.textContent = title || options[0].name;
+    element.appendChild(titleBtn);
+    // Create option container
+    const optionContainer = document.createElement("div");
+    optionContainer.classList.add("select-action-container");
+    element.appendChild(optionContainer);
+    // Create all options
+    for (const option of options) {
+      const optionBtn = document.createElement("button");
+      optionBtn.classList.add("select-action");
+      optionBtn.setAttribute("value", option.value);
+      optionBtn.textContent = option.name;
+      optionBtn.addEventListener("mousedown", (e) => {
+        e.preventDefault();
+        let dropdownValue = option.value;
+        if (option.prompt) {
           dropdownValue = undefined;
-          let customValue = prompt(ex.prompt);
+          let customValue = prompt(option.prompt);
           while (dropdownValue == undefined) {
             if (customValue == "") return;
-            dropdownValue = ex.parse(customValue);
-            if (!ex.condition(dropdownValue)) {
+            dropdownValue = option.parse ? option.parse(customValue) : customValue;
+            if (!dropdownValue) {
               dropdownValue = undefined;
-              customValue = prompt("Invalid input. " + ex.prompt);
+              customValue = prompt("Invalid input. " + option.prompt);
             }
           }
         }
-      }
-      callback(dropdownValue);
-      // Replace focus and hide the dropdown
-      element.blur();
-      let dropdown = element.querySelector(".select-action-container");
-      dropdown.classList.add("just-clicked");
-      // Give browser time to paint before cleaning up class
-      setTimeout(() => dropdown.classList.remove("just-clicked"), 20);
+        callback(dropdownValue, option.prompt);
+        // Replace focus and hide the dropdown
+        element.blur();
+        let dropdown = element.querySelector(".select-action-container");
+        dropdown.classList.add("just-clicked");
+        // Give browser time to paint before cleaning up class
+        setTimeout(() => dropdown.classList.remove("just-clicked"), 20);
+      });
+      const optionShowCheck = () => {
+        if (option.show ? option.show() : true) {
+          optionBtn.classList.add("available");
+        } else {
+          optionBtn.classList.remove("available");
+        }
+      };
+      element.addEventListener("mouseenter", optionShowCheck);
+      element.addEventListener("focus", optionShowCheck);
+      optionContainer.appendChild(optionBtn);
+    }
+
+    element.addEventListener("mousedown", (e) => {
+      e.preventDefault();
     });
 
     if (bubbleOnly) {
@@ -77,33 +110,72 @@ export default class BubbleTools {
     }
   }
 
-  static setEmotionBtnElement = document.getElementById("bubble-set-emotion");
+  static setAnimationBtnElement = document.getElementById("bubble-set-animation");
+  static presetAnimations = ["normal", "pleasure", "anger", "sorrow", "shock", "thinking"];
   static {
     BubbleTools.initDropdown(
-      BubbleTools.setEmotionBtnElement,
-      [],
-      (emotion) => {
+      BubbleTools.setAnimationBtnElement,
+      null,
+      [
+        {
+          name: "No animation",
+          value: "none"
+        },
+        {
+          name: "Talking",
+          value: "normal"
+        },
+        {
+          name: "Excited",
+          value: "pleasure"
+        },
+        {
+          name: "Angry",
+          value: "anger"
+        },
+        {
+          name: "Sad",
+          value: "sorrow"
+        },
+        {
+          name: "Shocked",
+          value: "shock"
+        },
+        {
+          name: "Thinking",
+          value: "thinking"
+        },
+        {
+          name: "Other...",
+          value: "custom",
+          prompt: "Enter the name of an animation."
+        }
+      ],
+      (animationName, isCustom) => {
         const range = getSelection().getRangeAt(0);
         const selectedBubble = BubbleManager.getBubbleFromNode(range.endContainer);
-        selectedBubble.emotion = emotion;
-        const titleElement = BubbleTools.setEmotionBtnElement.querySelector(".select-title");
-        const titleValueBtn = BubbleTools.setEmotionBtnElement.querySelector(`[value="${emotion}"]`);
-        titleElement.textContent = titleValueBtn.textContent;
-        if (emotion != "none") {
-          BubbleTools.setSoundBtnElement.classList.add("available");
-        } else {
-          BubbleTools.setSoundBtnElement.classList.remove("available");
+        selectedBubble.animation = animationName;
+        const titleElement = BubbleTools.setAnimationBtnElement.querySelector(".select-title");
+        const titleValueBtn = BubbleTools.setAnimationBtnElement.querySelector(`[value="${animationName}"]`);
+        titleElement.textContent = isCustom ? "Animation: " : "";
+        titleElement.textContent += titleValueBtn?.textContent || animationName;
+        if (selectedBubble.sound == "animation" && (animationName == "none" || !isCustom)) {
+          selectedBubble.sound = "none";
+          const soundTitleElement = BubbleTools.setSoundBtnElement.querySelector(".select-title");
+          const soundTitleValueBtn = BubbleTools.setSoundBtnElement.querySelector(`[value="none"]`);
+          soundTitleElement.textContent = soundTitleValueBtn.textContent;
         }
       },
       true,
       true,
       () => {
+        // Repeated set of title button is for switching bubbles
         const bubbleElement = document.activeElement?.closest(".bubble");
         if (!bubbleElement) return false;
         const selectedBubble = BubbleManager.getBubbleFromNode(bubbleElement);
-        const titleElement = BubbleTools.setEmotionBtnElement.querySelector(".select-title");
-        const titleValueBtn = BubbleTools.setEmotionBtnElement.querySelector(`[value="${selectedBubble.emotion}"]`);
-        titleElement.textContent = titleValueBtn.textContent;
+        const titleElement = BubbleTools.setAnimationBtnElement.querySelector(".select-title");
+        const titleValueBtn = BubbleTools.setAnimationBtnElement.querySelector(`[value="${selectedBubble.animation}"]`);
+        titleElement.textContent = titleValueBtn?.textContent || "Animation: " + selectedBubble.animation;
         return true;
       }
     );
@@ -113,25 +185,53 @@ export default class BubbleTools {
   static {
     BubbleTools.initDropdown(
       BubbleTools.setSoundBtnElement,
-      [],
-      (sound) => {
+      null,
+      [
+        {
+          name: "No sound",
+          value: "none"
+        },
+        {
+          name: "Animation sound",
+          value: "animation",
+          show: () => {
+            const range = getSelection().getRangeAt(0);
+            const selectedBubble = BubbleManager.getBubbleFromNode(range.endContainer);
+            if (!selectedBubble) return false;
+            return BubbleTools.presetAnimations.includes(selectedBubble.animation);
+          }
+        },
+        {
+          name: "Other...",
+          value: "custom",
+          prompt: "Enter two sound values separated by a space.",
+          parse: (soundString) => {
+            const soundArray = soundString.trim().split(" ");
+            if (!soundArray.find((val) => isNaN(val))) return soundString;
+            else return null;
+          }
+        }
+      ],
+      (sound, isCustom) => {
         const range = getSelection().getRangeAt(0);
         const selectedBubble = BubbleManager.getBubbleFromNode(range.endContainer);
         selectedBubble.sound = sound;
         const titleElement = BubbleTools.setSoundBtnElement.querySelector(".select-title");
         const titleValueBtn = BubbleTools.setSoundBtnElement.querySelector(`[value="${sound}"]`);
-        titleElement.textContent = titleValueBtn.textContent;
+        titleElement.textContent = isCustom ? "Sound: " : "";
+        titleElement.textContent += titleValueBtn?.textContent || sound;
       },
       false,
       true,
       () => {
+        // Repeated set of title button is for switching bubbles
         const bubbleElement = document.activeElement?.closest(".bubble");
         if (!bubbleElement) return false;
         const selectedBubble = BubbleManager.getBubbleFromNode(bubbleElement);
         const titleElement = BubbleTools.setSoundBtnElement.querySelector(".select-title");
         const titleValueBtn = BubbleTools.setSoundBtnElement.querySelector(`[value="${selectedBubble.sound}"]`);
-        titleElement.textContent = titleValueBtn.textContent;
-        return selectedBubble.emotion != "none";
+        titleElement.textContent = titleValueBtn?.textContent || "Sound: " + selectedBubble.sound;
+        return true;
       }
     );
   }
@@ -140,12 +240,28 @@ export default class BubbleTools {
   static {
     BubbleTools.initDropdown(
       BubbleTools.addPauseBtnElement,
+      "Add pause",
       [
         {
+          name: "Short",
+          value: "short"
+        },
+        {
+          name: "Long",
+          value: "long"
+        },
+        {
+          name: "Longer",
+          value: "longer"
+        },
+        {
+          name: "Other...",
           value: "custom",
           prompt: "Enter a pause duration in number of frames.",
-          parse: (frameCount) => parseInt(frameCount),
-          condition: (frameCount) => !isNaN(frameCount)
+          parse: (frameCount) => {
+            const output = parseInt(frameCount);
+            return !isNaN(output) ? output : null;
+          }
         }
       ],
       (duration) => {

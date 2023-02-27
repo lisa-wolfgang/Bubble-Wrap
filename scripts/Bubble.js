@@ -38,8 +38,8 @@ export default class Bubble {
     this.btnDelBubbleElement = this.element.querySelector(".btn-del-bubble");
     this.bubbleFontSize = parseInt(window.getComputedStyle(this.bubbleContentElement).getPropertyValue("font-size"));
     this.bubbleValue = "";
-    this.emotion = "none";
-    this.sound = false;
+    this.animation = "none";
+    this.sound = "none";
 
     // Populate bubble with first line
     const initLine = document.createElement("div");

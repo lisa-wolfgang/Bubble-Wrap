@@ -143,10 +143,15 @@ button:active {
 .select-action,
 .select-action:hover,
 .select-action:active {
+  display: none;
   height: auto;
   border: none;
   border-radius: 0;
   text-align: left;
+}
+
+.select-action.available {
+  display: inherit;
 }
 
 body {
@@ -254,6 +259,7 @@ label {
 .chain-options {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   justify-content: center;
   gap: 0.5rem;
 }
