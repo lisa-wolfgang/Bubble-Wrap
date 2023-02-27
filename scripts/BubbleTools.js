@@ -113,6 +113,12 @@ export default class BubbleTools {
   static setAnimationBtnElement = document.getElementById("bubble-set-animation");
   static presetAnimations = ["normal", "pleasure", "anger", "sorrow", "shock", "thinking"];
   static {
+    const presetShowCheck = () => {
+      const range = getSelection().getRangeAt(0);
+      const selectedBubble = BubbleManager.getBubbleFromNode(range.endContainer);
+      if (!selectedBubble) return false;
+      return selectedBubble.sound == "none" || selectedBubble.sound == "animation";
+    };
     BubbleTools.initDropdown(
       BubbleTools.setAnimationBtnElement,
       null,
@@ -123,27 +129,33 @@ export default class BubbleTools {
         },
         {
           name: "Talking",
-          value: "normal"
+          value: "normal",
+          show: presetShowCheck
         },
         {
           name: "Excited",
-          value: "pleasure"
+          value: "pleasure",
+          show: presetShowCheck
         },
         {
           name: "Angry",
-          value: "anger"
+          value: "anger",
+          show: presetShowCheck
         },
         {
           name: "Sad",
-          value: "sorrow"
+          value: "sorrow",
+          show: presetShowCheck
         },
         {
           name: "Shocked",
-          value: "shock"
+          value: "shock",
+          show: presetShowCheck
         },
         {
           name: "Thinking",
-          value: "thinking"
+          value: "thinking",
+          show: presetShowCheck
         },
         {
           name: "Other...",
@@ -159,7 +171,8 @@ export default class BubbleTools {
         const titleValueBtn = BubbleTools.setAnimationBtnElement.querySelector(`[value="${animationName}"]`);
         titleElement.textContent = isCustom ? "Animation: " : "";
         titleElement.textContent += titleValueBtn?.textContent || animationName;
-        if (selectedBubble.sound == "animation" && (animationName == "none" || !isCustom)) {
+        const soundIsWronglyAnimation = selectedBubble.sound == "animation" && (animationName == "none" || isCustom);
+        if (soundIsWronglyAnimation) {
           selectedBubble.sound = "none";
           const soundTitleElement = BubbleTools.setSoundBtnElement.querySelector(".select-title");
           const soundTitleValueBtn = BubbleTools.setSoundBtnElement.querySelector(`[value="none"]`);
@@ -204,7 +217,7 @@ export default class BubbleTools {
         {
           name: "Other...",
           value: "custom",
-          prompt: "Enter two sound values separated by a space.",
+          prompt: 'Enter two sound values separated by a space. Note that this will disable the animation preset options for this bubble until the sound option is set to "No sound".',
           parse: (soundString) => {
             const soundArray = soundString.trim().split(" ");
             if (!soundArray.find((val) => isNaN(val))) return soundString;
@@ -220,6 +233,13 @@ export default class BubbleTools {
         const titleValueBtn = BubbleTools.setSoundBtnElement.querySelector(`[value="${sound}"]`);
         titleElement.textContent = isCustom ? "Sound: " : "";
         titleElement.textContent += titleValueBtn?.textContent || sound;
+        const animationIsWronglyPreset = BubbleTools.presetAnimations.includes(selectedBubble.animation) && isCustom;
+        if (animationIsWronglyPreset) {
+          selectedBubble.animation = "none";
+          const animationTitleElement = BubbleTools.setAnimationBtnElement.querySelector(".select-title");
+          const animationTitleValueBtn = BubbleTools.setAnimationBtnElement.querySelector(`[value="${selectedBubble.animation}"]`);
+          animationTitleElement.textContent += animationTitleValueBtn.textContent;
+        }
       },
       false,
       true,
