@@ -2,6 +2,7 @@ import TextColor from "./enums/TextColor.js";
 import TextSize from "./enums/TextSize.js";
 import BubbleUtil from "./BubbleUtil.js";
 import BubbleTester from "./BubbleTester.js";
+import BubbleTools from "./BubbleTools.js";
 
 /** Houses operations that deal with converting to or from MSYT text. */
 export default class MSYTParser {
@@ -29,6 +30,38 @@ export default class MSYTParser {
         window.alert("Your text is overflowing. Locate the red bubble(s), reformat your text, and try again.");
         return undefined;
       }
+
+      // Bubble property control nodes (animation, sound)
+      if (bubble.animation != "none" || bubble.sound != "none") {
+        if (textUnfinished) {
+          msytExport += '"\n';
+          textUnfinished = false;
+        }
+        if (bubble.animation != "none") {
+          if (BubbleTools.presetAnimations.includes(bubble.animation)) {
+            const animationValue = BubbleTools.presetAnimations.indexOf(bubble.animation);
+            const soundValue = bubble.sound == "animation" ? animationValue + 6 : animationValue;
+            msytExport += `      - control:\n`;
+            msytExport += `          kind: sound\n`;
+            msytExport += `          unknown:\n`;
+            msytExport += `            - ${soundValue} \n`;
+            msytExport += `            - 0 \n`;
+          } else {
+            msytExport += `      - control:\n`;
+            msytExport += `          kind: animation\n`;
+            msytExport += `          name: ${bubble.animation}\n`;
+          }
+        }
+        if (bubble.sound != "none" && bubble.sound != "animation") {
+          const soundArray = bubble.sound.split(" ");
+          msytExport += `      - control:\n`;
+          msytExport += `          kind: sound\n`;
+          msytExport += `          unknown:\n`;
+          msytExport += `            - ${soundArray[0]} \n`;
+          msytExport += `            - ${soundArray[1]} \n`;
+        }
+      }
+
       let nodes = BubbleTester.breakNodesAtWrap(bubble);
       let text;
       for (let line = 0; line < nodes.length; line++) {
