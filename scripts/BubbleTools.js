@@ -182,9 +182,12 @@ export default class BubbleTools {
       true,
       true,
       () => {
-        // Repeated set of title button is for switching bubbles
+        // Animation control nodes are dialogue-only
+        if (BubbleManager.type != "dialogue") return false;
+        // Check that a bubble is selected
         const bubbleElement = document.activeElement?.closest(".bubble");
         if (!bubbleElement) return false;
+        // Repeated set of title button is for switching bubbles
         const selectedBubble = BubbleManager.getBubbleFromNode(bubbleElement);
         const titleElement = BubbleTools.setAnimationBtnElement.querySelector(".select-title");
         const titleValueBtn = BubbleTools.setAnimationBtnElement.querySelector(`[value="${selectedBubble.animation}"]`);
@@ -244,9 +247,12 @@ export default class BubbleTools {
       false,
       true,
       () => {
-        // Repeated set of title button is for switching bubbles
+        // Sound control nodes are dialogue-only
+        if (BubbleManager.type != "dialogue") return false;
+        // Check that a bubble is selected
         const bubbleElement = document.activeElement?.closest(".bubble");
         if (!bubbleElement) return false;
+        // Repeated set of title button is for switching bubbles
         const selectedBubble = BubbleManager.getBubbleFromNode(bubbleElement);
         const titleElement = BubbleTools.setSoundBtnElement.querySelector(".select-title");
         const titleValueBtn = BubbleTools.setSoundBtnElement.querySelector(`[value="${selectedBubble.sound}"]`);
@@ -292,7 +298,11 @@ export default class BubbleTools {
         range.setStartAfter(newNode);
       },
       true,
-      true
+      true,
+      () => {
+        // Pause control nodes are useless in signs because they show all text at once
+        return BubbleManager.type != "sign";
+      }
     );
   }
 
