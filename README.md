@@ -10,7 +10,7 @@ The editor works just like a regular text box -- eliminating guesswork and provi
 
 ### Hassle-free control nodes
 
-Coloring, resizing, and adding pauses is as easy as selecting a portion of text and applying the desired effect. When it comes time to export, the control nodes are intelligently inserted so minimal manual tweakage is required.
+Say goodbye to extra and missing spaces in your text. Coloring, resizing, and adding pauses is as easy as selecting a portion of text and applying the desired effect. In addition, presets are available for the most common animation/sound control nodes, but with full support for custom values. When it comes time to export, the control nodes are intelligently inserted so minimal manual tweakage is required.
 
 ### Smart paste
 
