@@ -19,7 +19,7 @@ if (devMode) {
   BubbleManager.testBubbles.push(new Bubble(-1));
 
   // Test if single-line bubble = single-line MSYT node
-  BubbleManager.testBubbles[0].bubbleContentElement.innerHTML = "a";
+  BubbleManager.testBubbles[0].bubbleContentElement.innerHTML = "<div>a</div>";
   testResult = MSYTParser.export(BubbleManager.testBubbles);
   if (testResult == '      - text: "a"') {
     pushTestPass("Single-line bubble to MSYT");
@@ -27,10 +27,19 @@ if (devMode) {
     pushTestFail("Single-line bubble to MSYT", `got result '${testResult}'`);
   }
 
-  // Test if wrapping single-line bubble = multi-line MSYT node
-  BubbleManager.testBubbles[0].bubbleContentElement.innerHTML = "llamallamallamallamallamallamallamallamallama";
+  // Test if wrapping single-word bubble = multi-line MSYT node
+  BubbleManager.testBubbles[0].bubbleContentElement.innerHTML = "<div>llamallamallamallamallamallamallamallamallama</div>";
   testResult = MSYTParser.export(BubbleManager.testBubbles);
   if (testResult == '      - text: "llamallamallamallamallamallamallamallamal\\nlama"') {
+    pushTestPass("Wrapping single-word bubble to MSYT");
+  } else {
+    pushTestFail("Wrapping single-word bubble to MSYT", `got result '${testResult}'`);
+  }
+
+  // Test if wrapping single-line bubble = multi-line MSYT node
+  BubbleManager.testBubbles[0].bubbleContentElement.innerHTML = "<div>What they don't know is that we added one of those fancy switches to open the gate. We can access the room anytime...</div>";
+  testResult = MSYTParser.export(BubbleManager.testBubbles);
+  if (testResult == '      - text: "What they don\'t know is that we added\\none of those fancy switches to open the\\ngate. We can access the room anytime..."') {
     pushTestPass("Wrapping single-line bubble to MSYT");
   } else {
     pushTestFail("Wrapping single-line bubble to MSYT", `got result '${testResult}'`);
@@ -46,12 +55,21 @@ if (devMode) {
   }
 
   // Test if pasted two-line bubble = two-line MSYT node
-  BubbleManager.testBubbles[0].bubbleContentElement.innerHTML = "a<br>a";
+  BubbleManager.testBubbles[0].bubbleContentElement.innerHTML = "<div>a<br>a</div>";
   testResult = MSYTParser.export(BubbleManager.testBubbles);
   if (testResult == '      - text: "a\\na"') {
     pushTestPass("Pasted two-line bubble to MSYT");
   } else {
     pushTestFail("Pasted two-line bubble to MSYT", `got result '${testResult}'`);
+  }
+
+  // Test if pasted three-line bubble = two-line MSYT node
+  BubbleManager.testBubbles[0].bubbleContentElement.innerHTML = "<div>What they don't know is that we added<br>one of those fancy switches to open the<br>gate. We can access the room anytime...</div>";
+  testResult = MSYTParser.export(BubbleManager.testBubbles);
+  if (testResult == '      - text: "What they don\'t know is that we added\\none of those fancy switches to open the\\ngate. We can access the room anytime..."') {
+    pushTestPass("Pasted three-line bubble to MSYT");
+  } else {
+    pushTestFail("Pasted three-line bubble to MSYT", `got result '${testResult}'`);
   }
 
   // Test if manual three-line bubble = three-line MSYT node
@@ -82,7 +100,7 @@ if (devMode) {
   }
 
   // Test if two bubbles = two-bubble MSYT node
-  BubbleManager.testBubbles[0].bubbleContentElement.innerHTML = "a";
+  BubbleManager.testBubbles[0].bubbleContentElement.innerHTML = "<div>a</div>";
   BubbleManager.testBubbles.push(new Bubble(-1, "a"));
   testResult = MSYTParser.export(BubbleManager.testBubbles);
   if (testResult == '      - text: "a\\n\\n\\na"') {
@@ -93,7 +111,7 @@ if (devMode) {
 
   // Test if three-line bubble (one wrap, one manual) + single-line bubble = two-bubble MSYT node
   BubbleManager.testBubbles[0].bubbleContentElement.innerHTML = "<div>a</div><div>llamallamallamallamallamallamallamallamallama<br></div>";
-  BubbleManager.testBubbles[1].bubbleContentElement.innerHTML = "a";
+  BubbleManager.testBubbles[1].bubbleContentElement.innerHTML = "<div>a</div>";
   testResult = MSYTParser.export(BubbleManager.testBubbles);
   if (testResult == '      - text: "a\\nllamallamallamallamallamallamallamallamal\\nlama\\na"') {
     pushTestPass("Three-line bubble (one wrap, one manual) + single-line bubble to MSYT");
@@ -112,8 +130,8 @@ if (devMode) {
   }
 
   // Test if three bubbles = three-bubble MSYT node
-  BubbleManager.testBubbles[0].bubbleContentElement.innerHTML = "a";
-  BubbleManager.testBubbles[1].bubbleContentElement.innerHTML = "a";
+  BubbleManager.testBubbles[0].bubbleContentElement.innerHTML = "<div>a</div>";
+  BubbleManager.testBubbles[1].bubbleContentElement.innerHTML = "<div>a</div>";
   BubbleManager.testBubbles.push(new Bubble(-1, "a"));
   testResult = MSYTParser.export(BubbleManager.testBubbles);
   if (testResult == '      - text: "a\\n\\n\\na\\n\\n\\na"') {
@@ -123,9 +141,9 @@ if (devMode) {
   }
 
   // Test if the MSYT exporter skips over empty bubbles on export
-  BubbleManager.testBubbles[0].bubbleContentElement.innerHTML = "a";
-  BubbleManager.testBubbles[1].bubbleContentElement.innerHTML = "";
-  BubbleManager.testBubbles[2].bubbleContentElement.innerHTML = "a";
+  BubbleManager.testBubbles[0].bubbleContentElement.innerHTML = "<div>a</div>";
+  BubbleManager.testBubbles[1].bubbleContentElement.innerHTML = "<div></div>";
+  BubbleManager.testBubbles[2].bubbleContentElement.innerHTML = "<div>a</div>";
   testResult = MSYTParser.export(BubbleManager.testBubbles);
   if (testResult == '      - text: "a\\n\\n\\na"') {
     pushTestPass("Skip empty bubbles on export");
