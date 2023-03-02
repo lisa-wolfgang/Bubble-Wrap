@@ -160,44 +160,24 @@ export default class BubbleUtil {
   static iterateInsideBubble(bubble, callback, applyChanges) {
     let originalOuterNodes = bubble.bubbleContentElement.childNodes;
     let newContentElement = document.createElement("div");
-    let alreadyIterated = false;
     originalOuterNodes.forEach((outerNode, index) => {
-      if (alreadyIterated) return;
       // Each outer div (lines separated by manual line breaks)
       if (index == originalOuterNodes.length - 1 && outerNode.tagName == "BR") return;
       let outerNodeContent = outerNode.childNodes;
       let newOuterNode = document.createElement("div");
-      if (outerNode.hasChildNodes() && outerNode.tagName == "DIV") {
-        // Scan each inner span / text node
-        outerNodeContent.forEach((innerNode, innerIndex) => {
-          if (innerIndex == outerNodeContent.length - 1 && innerNode.tagName == "BR") return;
-          callback(innerNode, newOuterNode);
-        });
-        // Signal manual line break
-        if (index != originalOuterNodes.length - 1) {
+      // Scan each inner span / text node
+      outerNodeContent.forEach((innerNode, innerIndex) => {
+        if (innerIndex == outerNodeContent.length - 1 && innerNode.tagName == "BR") return;
+        if (innerNode.tagName == "BR") {
           callback(null, null, true);
-        }
-      } else {
-        // There is no inner layer in the bubble
-        if (outerNode.tagName == "BR") {
-          callback(null, null, true);
+          return;
         } else {
-          if (originalOuterNodes.length > 1) {
-            if (index == 0) {
-              originalOuterNodes.forEach((outerNode, index) => {
-                if (index == originalOuterNodes.length - 1 && outerNode.tagName == "BR") return;
-                if (outerNode.tagName == "BR") {
-                  callback(null, null, true);
-                } else {
-                  callback(outerNode, newOuterNode);
-                }
-              });
-              alreadyIterated = true;
-            }
-          } else {
-            callback(outerNode, newOuterNode);
-          }
+          callback(innerNode, newOuterNode);
         }
+      });
+      // Signal manual line break
+      if (index != originalOuterNodes.length - 1) {
+        callback(null, null, true);
       }
       // Apply any changes to the replacement bubble
       if (applyChanges) newContentElement.appendChild(newOuterNode);
