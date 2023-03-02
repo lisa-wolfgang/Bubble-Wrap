@@ -69,14 +69,14 @@ export default class BubbleTester {
    */
   static breakNodesAtWrap(b) {
     let wrappingBubbleContainer = BubbleManager.wrappingBubble.bubbleContentElement;
-    wrappingBubbleContainer.textContent = "";
+    resetWrapContainer();
     let output = [[]];
     let currentLine = 0;
     BubbleUtil.iterateInsideBubble(b, (currentNode, newParentNode, isManualLineBreak) => {
       if (isManualLineBreak) {
         output.push([]);
         currentLine++;
-        wrappingBubbleContainer.textContent = "";
+        resetWrapContainer();
       } else {
         let text = currentNode.textContent;
         let words = text.split(" ");
@@ -120,7 +120,7 @@ export default class BubbleTester {
                 output[currentLine].push(newNode.cloneNode(true));
                 output.push([]);
                 currentLine++;
-                wrappingBubbleContainer.textContent = "";
+                resetWrapContainer(newNode);
                 outputWord = "";
                 newNode.textContent = "";
               }
@@ -132,7 +132,7 @@ export default class BubbleTester {
             output[currentLine].push(newNode.cloneNode(true));
             output.push([]);
             currentLine++;
-            wrappingBubbleContainer.textContent = "";
+            resetWrapContainer(newNode);
             newNode.textContent = "";
           }
         }
@@ -140,5 +140,10 @@ export default class BubbleTester {
       }
     });
     return output;
+
+    function resetWrapContainer(newNode) {
+      wrappingBubbleContainer.textContent = "";
+      if (newNode) wrappingBubbleContainer.appendChild(newNode);
+    }
   }
 }
