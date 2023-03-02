@@ -42,9 +42,7 @@ export default class Bubble {
     this.sound = "none";
 
     // Populate bubble with first line
-    const initLine = document.createElement("div");
-    initLine.textContent = text;
-    this.bubbleContentElement.appendChild(initLine);
+    const initLine = this.initializeContents(text);
 
     // If this is not the initial or test bubble, autofocus
     if (index > 0) {
@@ -164,6 +162,18 @@ export default class Bubble {
       BubbleManager.deleteBubble(this);
       // if (confirm("Are you sure you want to delete this bubble? There is no undo!"))
     });
+  }
+
+  /**
+   * Sets or resets the contents to the bubble to the initial format.
+   * @param {String} [text] The text to include in the initialized format.
+   * @returns {Node} The first instance at which content can be inserted.
+   */
+  initializeContents(text) {
+    this.bubbleContentElement.textContent = "";
+    const initLine = document.createElement("div");
+    initLine.textContent = text || "";
+    this.bubbleContentElement.appendChild(initLine);
   }
 
   /**
