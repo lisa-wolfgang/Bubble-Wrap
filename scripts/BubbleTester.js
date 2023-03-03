@@ -80,6 +80,15 @@ export default class BubbleTester {
       } else {
         let text = currentNode.textContent;
         let words = text.split(" ");
+        words.forEach((word, i) => {
+          if (word.includes("-")) {
+            const newWords = word.split("-");
+            newWords.forEach((newWord, ni) => {
+              if (ni != newWords.length - 1) newWords[ni] += "-";
+            });
+            words.splice(i, 1, ...newWords);
+          }
+        });
         let testString;
         let outputString = "";
         let newNode = currentNode.cloneNode();
@@ -95,7 +104,7 @@ export default class BubbleTester {
             else isFirstIteration = false;
             if (words.length == 0) break;
             testString += words[0];
-            if (words.length > 1) testString += " ";
+            if (words.length > 1 && !testString.endsWith("-")) testString += " ";
             newNode.textContent = testString;
           }
           // Handle words longer than one line
@@ -128,7 +137,11 @@ export default class BubbleTester {
             words.splice(0, 1);
           }
           if (words.length > 0) {
-            newNode.textContent = newNode.textContent.split(" ").slice(0, -2).join(" ");
+            // Filter out singular end spaces
+            if (outputString.endsWith(" ") && !outputString.endsWith("  ")) {
+              outputString = outputString.slice(0, -1);
+            }
+            newNode.textContent = outputString;
             output[currentLine].push(newNode.cloneNode(true));
             output.push([]);
             currentLine++;
