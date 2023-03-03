@@ -388,7 +388,7 @@ label {
 }
 
 /* Strange hack to fix spontaneous `<span>` creation on Chromium */
-.bubble-content > div > span {
+.bubble-content span {
   background-color: inherit;
   color: inherit;
 }
@@ -533,37 +533,37 @@ span[data-pause] .node-select:hover::before {
   padding-right: 0.75rem;
 }
 
-[data-color="white"],
+.bubble-content [data-color="white"],
 .formatting-overlay button[data-color="white"] {
   color: var(--dialog-text-white-color);
 }
 
-[data-color="grey"],
+.bubble-content [data-color="grey"],
 .formatting-overlay button[data-color="grey"] {
   color: var(--dialog-text-grey-color);
 }
 
-[data-color="blue"],
+.bubble-content [data-color="blue"],
 .formatting-overlay button[data-color="blue"] {
   color: var(--dialog-text-blue-color);
 }
 
-[data-color="red"],
+.bubble-content [data-color="red"],
 .formatting-overlay button[data-color="red"] {
   color: var(--dialog-text-red-color);
 }
 
-[data-size="80"],
+.bubble-content [data-size="80"],
 .formatting-overlay button[data-size="80"] {
   font-size: 0.8em;
 }
 
-[data-size="100"],
+.bubble-content [data-size="100"],
 .formatting-overlay button[data-size="100"] {
   font-size: 1em;
 }
 
-[data-size="125"],
+.bubble-content [data-size="125"],
 .formatting-overlay button[data-size="125"] {
   font-size: 1.25em;
 }
