@@ -45,6 +45,15 @@ if (devMode) {
     pushTestFail("Wrapping single-line bubble to MSYT", `got result '${testResult}'`);
   }
 
+  // Test if single-line bubble wrapped on hyphen = multi-line MSYT node
+  BubbleManager.testBubbles[0].bubbleContentElement.innerHTML = "<div>This is our final hour. All of this sword-swinging, arrow-slinging, bomb-flinging nonsense ends today!</div>";
+  testResult = MSYTParser.export(BubbleManager.testBubbles);
+  if (testResult == '      - text: "This is our final hour. All of this sword-\\nswinging, arrow-slinging, bomb-flinging\\nnonsense ends today!"') {
+    pushTestPass("Wrapping single-line bubble to MSYT");
+  } else {
+    pushTestFail("Wrapping single-line bubble to MSYT", `got result '${testResult}'`);
+  }
+
   // Test if manual two-line bubble = two-line MSYT node
   BubbleManager.testBubbles[0].bubbleContentElement.innerHTML = "<div>a</div><div>a<br></div>";
   testResult = MSYTParser.export(BubbleManager.testBubbles);
