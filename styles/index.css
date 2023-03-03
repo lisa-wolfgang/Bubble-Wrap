@@ -387,6 +387,12 @@ label {
   height: 1.25rem;
 }
 
+/* Strange hack to fix spontaneous `<span>` creation on Chromium */
+.bubble-content > div > span {
+  background-color: inherit;
+  color: inherit;
+}
+
 .bubble-btn-container {
   display: flex;
   position: absolute;
