@@ -174,6 +174,7 @@ export default class Bubble {
     const initLine = document.createElement("div");
     initLine.textContent = text || "";
     this.bubbleContentElement.appendChild(initLine);
+    return initLine;
   }
 
   /**
