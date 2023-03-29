@@ -184,10 +184,7 @@ export default class BubbleUtil {
     });
     // Apply any changes to the actual bubble
     if (applyChanges) {
-      bubble.bubbleContentElement.innerHTML = "";
-      newContentElement.childNodes.forEach((el) => {
-        bubble.bubbleContentElement.append(el);
-      });
+      bubble.bubbleContentElement.replaceChildren(...newContentElement.childNodes);
     }
   }
 
