@@ -130,7 +130,8 @@ export default class MSYTParser {
           if (textUnfinished) {
             msytExport += `\\n`;
           } else {
-            msytExport += `      - text: "\\n"\n`;
+            msytExport += `      - text: "\\n`;
+            textUnfinished = true;
           }
           lineCount++;
         }
