@@ -126,8 +126,12 @@ export default class MSYTParser {
           msytExport += `${text}`;
           textUnfinished = true;
         }
-        if (textUnfinished && line != nodes.length - 1) {
-          msytExport += `\\n`;
+        if (line != nodes.length - 1) {
+          if (textUnfinished) {
+            msytExport += `\\n`;
+          } else {
+            msytExport += `      - text: "\\n"\n`;
+          }
           lineCount++;
         }
       }
