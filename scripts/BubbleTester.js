@@ -81,9 +81,11 @@ export default class BubbleTester {
         let text = currentNode.textContent;
         let words = text.split(" ");
         words.forEach((word, i) => {
-          if (word.includes("-")) {
+          // Treat hyphenated words as separate
+          if (word.includes("-") && word != "-") {
             const newWords = word.split("-");
             newWords.forEach((newWord, ni) => {
+              // Attach hyphens to ends of words
               if (ni != newWords.length - 1) newWords[ni] += "-";
             });
             words.splice(i, 1, ...newWords);
@@ -104,7 +106,7 @@ export default class BubbleTester {
             else isFirstIteration = false;
             if (words.length == 0) break;
             testString += words[0];
-            if (words.length > 1 && !testString.endsWith("-")) testString += " ";
+            if (words.length > 1 && (!testString.endsWith("-") || testString == "-")) testString += " ";
             newNode.textContent = testString;
           }
           // Handle words longer than one line
