@@ -213,7 +213,7 @@ export default class Bubble {
 
   static pauseNodeCallback = (e) => {
     const duration = e.currentTarget.getAttribute("data-pause");
-    if (confirm(`Delete this ${duration}${typeof duration == "number" ? "-frame" : ""} pause?`)) {
+    if (confirm(`Delete this ${duration}${isNaN(duration) ? "" : "-frame"} pause?`)) {
       e.currentTarget.remove();
     }
   };
