@@ -1,6 +1,6 @@
 # Bubble Wrap
 
-A visual text bubble editor for Breath of the Wild.
+A visual text bubble editor for The Legend of Zelda: Breath of the Wild.
 
 ## Features
 
