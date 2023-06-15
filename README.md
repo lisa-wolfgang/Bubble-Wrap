@@ -18,7 +18,7 @@ Simply paste a set of dialogue from your planning document into a bubble -- the 
 
 ### Effortless MSYT export
 
-When you're ready to use your text in your mod, simply hit the button or keyboard shortcut to export everything into a single MSYT text node and have it copied to the clipboard. Never type a `\n` again.
+When you're ready to use your text in your mod, simply hit the button or keyboard shortcut to export everything into a single MSYT entry and have it copied to the clipboard. Never type a `\n` again.
 
 ## Install
 
