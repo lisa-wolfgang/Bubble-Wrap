@@ -321,7 +321,8 @@ export default class BubbleTools {
   }
 
   static putMsytToClipboard() {
-    let result = MSYTParser.export(BubbleManager.bubbles, true);
+    let parser = new MSYTParser();
+    let result = parser.export(BubbleManager.bubbles, true);
     if (result) {
       navigator.clipboard.writeText(result).then(
         () => {
