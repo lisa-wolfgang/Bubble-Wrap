@@ -60,10 +60,15 @@ export default class MSYTParser extends Parser {
     this.plaintextExport += `          ${isNaN(duration) ? "length" : "frames"}: ${duration}\n`;
   }
 
-  addColorNode(color, reset) {
+  addColorNode(color) {
     this.plaintextExport += `      - control:\n`;
-    this.plaintextExport += `          kind: ${reset ? "re" : ""}set_colour\n`;
-    if (!reset) this.plaintextExport += `          colour: ${color}\n`;
+    this.plaintextExport += `          kind: set_colour\n`;
+    this.plaintextExport += `          colour: ${color}\n`;
+  }
+
+  addResetColorNode() {
+    this.plaintextExport += `      - control:\n`;
+    this.plaintextExport += `          kind: reset_colour\n`;
   }
 
   addSizeNode(size) {

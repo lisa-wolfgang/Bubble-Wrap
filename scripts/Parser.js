@@ -1,8 +1,11 @@
-import TextColor from "./enums/TextColor.js";
-import TextSize from "./enums/TextSize.js";
-import BubbleUtil from "./BubbleUtil.js";
+import Bubble from "./Bubble.js";
 import BubbleTester from "./BubbleTester.js";
 import BubbleTools from "./BubbleTools.js";
+import BubbleUtil from "./BubbleUtil.js";
+
+import TextColor from "./enums/TextColor.js";
+import TextSize from "./enums/TextSize.js";
+import PauseDuration from "./enums/PauseDuration.js";
 
 /** A base class for converting Bubble Wrap data to or from plaintext formats. */
 export default class Parser {
@@ -91,7 +94,11 @@ export default class Parser {
               textUnfinished = false;
             }
             let reset = color == TextColor.DEFAULT && !isFirst;
-            this.addColorNode(color, reset);
+            if (reset) {
+              this.addResetColorNode();
+            } else {
+              this.addColorNode(color);
+            }
           }
 
           // Get size node information
@@ -144,13 +151,53 @@ export default class Parser {
   }
 
   // The following methods are to be defined in child classes:
+
+  /**
+   * Adds any syntax that must precede a text node.
+   */
   startTextNode() {}
+  /**
+   * Inserts a line break in the current text node.
+   */
   addLineBreak() {}
-  endTextNode() {}
-  addPresetAnimNode() {}
-  addAnimationNode() {}
-  addSoundNode() {}
-  addPauseNode() {}
-  addColorNode() {}
-  addSizeNode() {}
+  /**
+   * Adds any syntax that must be appended to a text node.
+   * @param {boolean} isFinal Whether this follows the final node in the export.
+   */
+  endTextNode(isFinal) {}
+  /**
+   * Inserts some configuration of control nodes as defined by the selected animation/sound preset.
+   * (This function will not be called if a custom animation/sound is entered.)
+   * @param {Bubble} bubble The {@link Bubble} to get animation/sound information from.
+   */
+  addPresetAnimNode(bubble) {}
+  /**
+   * Inserts a control node that sets a custom (non-preset) animation for the bubble.
+   * @param {string} animation The name of the animation for the bubble.
+   */
+  addAnimationNode(animation) {}
+  /**
+   * Inserts a control node that sets a custom (non-preset) sound for the bubble.
+   * @param {string} sound The sound data from the bubble.
+   */
+  addSoundNode(sound) {}
+  /**
+   * Inserts a pause node with the given duration.
+   * @param {string|number} duration Either a string of type {@link PauseDuration} or a number of frames.
+   */
+  addPauseNode(duration) {}
+  /**
+   * Inserts a color node with the given color.
+   * @param {*} color A string of type {@link TextColor}.
+   */
+  addColorNode(color) {}
+  /**
+   * Inserts a color-reset node.
+   */
+  addResetColorNode() {}
+  /**
+   * Inserts a size node with the given size.
+   * @param {number} size A number of type {@link TextSize}.
+   */
+  addSizeNode(size) {}
 }
