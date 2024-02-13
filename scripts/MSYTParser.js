@@ -1,6 +1,6 @@
 import Parser from "./Parser.js";
 
-import BubbleTools from "./BubbleTools.js";
+import PresetAnimation from "./enums/PresetAnimation.js";
 
 /** Extends {@link Parser} to use MSYT as the plaintext format. */
 export default class MSYTParser extends Parser {
@@ -30,7 +30,7 @@ export default class MSYTParser extends Parser {
   }
 
   addPresetAnimNode(bubble) {
-    const animationValue = BubbleTools.presetAnimations.indexOf(bubble.animation);
+    const animationValue = PresetAnimation.OPTIONS.indexOf(bubble.animation);
     const soundValue = bubble.sound == "animation" ? animationValue + 6 : animationValue;
     this.plaintextExport += `      - control:\n`;
     this.plaintextExport += `          kind: sound\n`;

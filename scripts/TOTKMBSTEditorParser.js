@@ -1,6 +1,6 @@
 import Parser from "./Parser.js";
 
-import BubbleTools from "./BubbleTools.js";
+import PresetAnimation from "./enums/PresetAnimation.js";
 
 /** Extends {@link Parser} to use MSBT Editor's syntax for TOTK as the plaintext format. */
 export default class TOTKMBSTEditorParser extends Parser {
@@ -26,7 +26,7 @@ export default class TOTKMBSTEditorParser extends Parser {
 
   addPresetAnimNode(bubble) {
     // Mappings discovered by @Qw2#8979 and @dt12345#0389 on Discord
-    const animationValue = BubbleTools.presetAnimations.indexOf(bubble.animation);
+    const animationValue = PresetAnimation.OPTIONS.indexOf(bubble.animation);
     let soundValue = animationValue;
     if (bubble.sound == "animation") soundValue += animationValue + 7; // TODO: Add support for "serious"
     soundValue = soundValue.toString(16); // convert to hex

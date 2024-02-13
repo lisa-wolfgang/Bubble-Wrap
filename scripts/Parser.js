@@ -1,11 +1,11 @@
 import Bubble from "./Bubble.js";
 import BubbleTester from "./BubbleTester.js";
-import BubbleTools from "./BubbleTools.js";
 import BubbleUtil from "./BubbleUtil.js";
 
 import TextColor from "./enums/TextColor.js";
 import TextSize from "./enums/TextSize.js";
 import PauseDuration from "./enums/PauseDuration.js";
+import PresetAnimation from "./enums/PresetAnimation.js";
 
 /** A base class for converting Bubble Wrap data to or from plaintext formats. */
 export default class Parser {
@@ -50,7 +50,7 @@ export default class Parser {
           textUnfinished = false;
         }
         if (bubble.animation != "none") {
-          if (BubbleTools.presetAnimations.includes(bubble.animation)) {
+          if (PresetAnimation.OPTIONS.includes(bubble.animation)) {
             // Preset animation/sound
             this.addPresetAnimNode(bubble);
           } else {

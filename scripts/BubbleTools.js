@@ -1,5 +1,6 @@
 import BubbleManager from "./BubbleManager.js";
 import MSYTParser from "./MSYTParser.js";
+import PresetAnimation from "./enums/PresetAnimation.js";
 
 /**
  * Manages the UI of all functions that work with Bubbles
@@ -113,7 +114,6 @@ export default class BubbleTools {
   }
 
   static setAnimationBtnElement = document.getElementById("bubble-set-animation");
-  static presetAnimations = ["normal", "pleasure", "anger", "sorrow", "shock", "thinking"];
   static {
     const presetShowCheck = () => {
       const range = getSelection().getRangeAt(0);
@@ -216,7 +216,7 @@ export default class BubbleTools {
             const range = getSelection().getRangeAt(0);
             const selectedBubble = BubbleManager.getBubbleFromNode(range.endContainer);
             if (!selectedBubble) return false;
-            return BubbleTools.presetAnimations.includes(selectedBubble.animation);
+            return PresetAnimation.OPTIONS.includes(selectedBubble.animation);
           }
         },
         {
@@ -238,7 +238,7 @@ export default class BubbleTools {
         const titleValueBtn = BubbleTools.setSoundBtnElement.querySelector(`[value="${sound}"]`);
         titleElement.textContent = isCustom ? "Sound: " : "";
         titleElement.textContent += titleValueBtn?.textContent || sound;
-        const animationIsWronglyPreset = BubbleTools.presetAnimations.includes(selectedBubble.animation) && isCustom;
+        const animationIsWronglyPreset = PresetAnimation.OPTIONS.includes(selectedBubble.animation) && isCustom;
         if (animationIsWronglyPreset) {
           selectedBubble.animation = "none";
           const animationTitleElement = BubbleTools.setAnimationBtnElement.querySelector(".select-title");
