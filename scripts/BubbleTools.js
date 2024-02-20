@@ -1,6 +1,4 @@
 import BubbleManager from "./BubbleManager.js";
-import MSYTParser from "./MSYTParser.js";
-import TOTKMSBTEditorParser from "./TOTKMSBTEditorParser.js";
 
 import PresetAnimation from "./enums/PresetAnimation.js";
 import ExportType from "./enums/ExportType.js";

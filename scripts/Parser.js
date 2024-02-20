@@ -12,7 +12,7 @@ export default class Parser {
   /** Creates a new {@link Parser}. */
   constructor() {
     if (this.constructor == Parser) {
-      throw new Error("`Parser` should not be instantiated directly. Use `MSYTParser` or `TOTKMSBTEditorParser` instead.");
+      throw new Error("`Parser` should not be instantiated directly. Use a subclass that is written to export in a specific format.");
     }
     this.plaintextExport = "";
   }
