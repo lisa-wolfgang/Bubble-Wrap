@@ -116,6 +116,10 @@ button:active {
   display: flex;
 }
 
+.sidebar .select-title {
+  text-align: left;
+}
+
 .select-action-container {
   display: none;
   flex-direction: column;
@@ -211,11 +215,20 @@ body {
   margin: 0;
 }
 
+.sidebar-select-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  height: 2.25rem;
+  gap: 0.25rem;
+}
+
 h2 {
   margin: 0 0 0.5rem 0;
 }
 
 label {
+  align-self: center;
   padding-right: 0.5rem;
   font-weight: bold;
 }

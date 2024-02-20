@@ -20,8 +20,12 @@
           </div>
           <div class="sidebar-section">
             <h2>Export</h2>
-            <button class="action" id="export-btn" title="Exports all bubbles as a singular MSYT entry, then copies the output to the clipboard.">Copy chain as MSYT</button>
-            <a class="description" href="https://zeldamods.org/wiki/Help:Text_modding" target="_blank">Learn how to use this output</a>
+            <div class="sidebar-select-container">
+              <label>Format</label>
+              <div id="export-set-format" class="select-container"></div>
+            </div>
+            <button class="action" id="export-btn" title="Exports all bubbles to the clipboard with the selected format.">Copy to clipboard</button>
+            <a class="description" id="export-docs" href="" target="_blank"></a>
           </div>
           <div class="sidebar-section">
             <h2>About</h2>

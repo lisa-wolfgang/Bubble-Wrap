@@ -1,6 +1,9 @@
 import BubbleManager from "./BubbleManager.js";
 import MSYTParser from "./MSYTParser.js";
+import TOTKMSBTEditorParser from "./TOTKMSBTEditorParser.js";
+
 import PresetAnimation from "./enums/PresetAnimation.js";
+import ExportType from "./enums/ExportType.js";
 
 /**
  * Manages the UI of all functions that work with Bubbles
@@ -311,22 +314,62 @@ export default class BubbleTools {
     );
   }
 
+  static exportFormat = ExportType.MSYT;
+  static setExportFormatBtnElement = document.getElementById("export-set-format");
+  static setExportDocsElement = document.getElementById("export-docs");
+  static updateExportDocsLink() {
+    BubbleTools.setExportDocsElement.textContent = BubbleTools.exportFormat.docsLabel;
+    BubbleTools.setExportDocsElement.setAttribute("href", BubbleTools.exportFormat.docsLink);
+  }
+  static {
+    BubbleTools.initDropdown(
+      BubbleTools.setExportFormatBtnElement,
+      null,
+      [
+        {
+          name: ExportType.MSYT.optionLabel,
+          value: ExportType.MSYT.id
+        },
+        {
+          name: ExportType.TOTKMSBTEditor.optionLabel,
+          value: ExportType.TOTKMSBTEditor.id
+        }
+      ],
+      (format) => {
+        // Set export type value
+        BubbleTools.exportFormat = ExportType[format];
+        // Update button label
+        const titleElement = BubbleTools.setExportFormatBtnElement.querySelector(".select-title");
+        const titleValueBtn = BubbleTools.setExportFormatBtnElement.querySelector(`[value="${format}"]`);
+        titleElement.textContent = titleValueBtn?.textContent;
+        // Update docs link
+        BubbleTools.updateExportDocsLink();
+      },
+      true,
+      false,
+      () => {
+        return true;
+      }
+    );
+    BubbleTools.updateExportDocsLink();
+  }
+
   static exportBtnElement = document.getElementById("export-btn");
   static {
-    // Put the bubble text on the clipboard in MSYT format
-    BubbleTools.exportBtnElement.addEventListener("click", () => BubbleTools.putMsytToClipboard(true));
+    // Put the bubble text on the clipboard in the selected format
+    BubbleTools.exportBtnElement.addEventListener("click", () => BubbleTools.exportToClipboard(true));
     document.addEventListener("keydown", (e) => {
-      if (e.code == "Enter" && e.ctrlKey && e.altKey) BubbleTools.putMsytToClipboard();
+      if (e.code == "Enter" && e.ctrlKey && e.altKey) BubbleTools.exportToClipboard();
     });
   }
 
-  static putMsytToClipboard() {
-    let parser = new MSYTParser();
+  static exportToClipboard() {
+    const parser = new BubbleTools.exportFormat.parser();
     let result = parser.export(BubbleManager.bubbles, true);
     if (result) {
       navigator.clipboard.writeText(result).then(
         () => {
-          let alertMsg = "The MSYT output has been copied to your clipboard.";
+          let alertMsg = "The output has been copied to your clipboard.";
           window.alert(alertMsg);
         },
         () => {
