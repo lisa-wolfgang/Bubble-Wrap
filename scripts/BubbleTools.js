@@ -322,19 +322,17 @@ export default class BubbleTools {
     BubbleTools.setExportDocsElement.setAttribute("href", BubbleTools.exportFormat.docsLink);
   }
   static {
+    let dropdownOptions = [];
+    for (const type in ExportType) {
+      dropdownOptions.push({
+        name: ExportType[type].optionLabel,
+        value: ExportType[type].id
+      });
+    }
     BubbleTools.initDropdown(
       BubbleTools.setExportFormatBtnElement,
       null,
-      [
-        {
-          name: ExportType.MSYT.optionLabel,
-          value: ExportType.MSYT.id
-        },
-        {
-          name: ExportType.TOTKMSBTEditor.optionLabel,
-          value: ExportType.TOTKMSBTEditor.id
-        }
-      ],
+      dropdownOptions,
       (format) => {
         // Set export type value
         BubbleTools.exportFormat = ExportType[format];
