@@ -3,7 +3,7 @@ import Parser from "./Parser.js";
 import PresetAnimation from "./enums/PresetAnimation.js";
 
 /** Extends {@link Parser} to use MSBT Editor's syntax for TOTK as the plaintext format. */
-export default class TOTKMBSTEditorParser extends Parser {
+export default class TOTKMSBTEditorParser extends Parser {
   /**
    * Exports a set of Bubbles into MSBT Editor syntax for TOTK.
    * @param {Bubble[]} bubbles An array of Bubble objects.
