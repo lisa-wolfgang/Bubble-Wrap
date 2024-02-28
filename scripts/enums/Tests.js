@@ -129,7 +129,7 @@ export default [
     outputDescription: "Two-line text node",
     bubbles: ['<div><span>Looks like you need one of my </span><span data-color="blue">specialty </span><span>services! So what\'ll it be?</span></div>'],
     outputs: {
-      MSYT: '      - text: "Looks like you need one of my "\n      - control:\n          kind: set_colour\n          colour: blue\n      - text: "specialty "\n      - control:\n          kind: reset_colour\n      - text: "\nservices! So what\'ll it be?"',
+      MSYT: '      - text: "Looks like you need one of my "\n      - control:\n          kind: set_colour\n          colour: blue\n      - text: "specialty "\n      - control:\n          kind: reset_colour\n      - text: "services! So what\'ll it be?"',
       TOTKNXEditor: "  Looks like you need one of my <0 Type='3' Data='0100'/>specialty <0 Type='3' Data='ffff'/>\n  services! So what'll it be?",
       TOTKMSBTEditor: 'Looks like you need one of my {{color id="1"}}specialty {{color id="65535"}}\nservices! So what\'ll it be?'
     }
