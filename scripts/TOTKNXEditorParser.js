@@ -54,7 +54,7 @@ export default class TOTKNXEditorParser extends Parser {
       else if (duration == "longer") duration = 2;
       this.plaintextExport += `<5 Type='${duration}'/>`;
     } else {
-      this.plaintextExport += `<1 Type='0' Data='0${duration.toString(16)}00'/>`;
+      this.plaintextExport += `<1 Type='0' Data='0${parseInt(duration).toString(16)}00'/>`;
     }
   }
 
