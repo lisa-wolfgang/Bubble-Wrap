@@ -35,8 +35,8 @@ export default class MSYTParser extends Parser {
     this.plaintextExport += `      - control:\n`;
     this.plaintextExport += `          kind: sound\n`;
     this.plaintextExport += `          unknown:\n`;
-    this.plaintextExport += `            - ${soundValue} \n`;
-    this.plaintextExport += `            - 0 \n`;
+    this.plaintextExport += `            - ${soundValue}\n`;
+    this.plaintextExport += `            - 0\n`;
   }
 
   addAnimationNode(animation) {
@@ -50,8 +50,8 @@ export default class MSYTParser extends Parser {
     this.plaintextExport += `      - control:\n`;
     this.plaintextExport += `          kind: sound\n`;
     this.plaintextExport += `          unknown:\n`;
-    this.plaintextExport += `            - ${soundArray[0]} \n`;
-    this.plaintextExport += `            - ${soundArray[1]} \n`;
+    this.plaintextExport += `            - ${soundArray[0]}\n`;
+    this.plaintextExport += `            - ${soundArray[1]}\n`;
   }
 
   addPauseNode(duration) {
