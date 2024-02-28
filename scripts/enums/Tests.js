@@ -125,6 +125,16 @@ export default [
     }
   },
   {
+    inputDescription: "Wrapping single-line bubble with control node at wrap",
+    outputDescription: "Two-line text node",
+    bubbles: ['<div><span>Looks like you need one of my </span><span data-color="blue">specialty </span><span>services! So what\'ll it be?</span></div>'],
+    outputs: {
+      MSYT: '      - text: "Looks like you need one of my "\n      - control:\n          kind: set_colour\n          colour: blue\n      - text: "specialty "\n      - control:\n          kind: reset_colour\n      - text: "\nservices! So what\'ll it be?"',
+      TOTKNXEditor: "  Looks like you need one of my <0 Type='3' Data='0100'/>specialty <0 Type='3' Data='ffff'/>\n  services! So what'll it be?",
+      TOTKMSBTEditor: 'Looks like you need one of my {{color id="1"}}specialty {{color id="65535"}}\nservices! So what\'ll it be?'
+    }
+  },
+  {
     inputDescription: "Single-line bubble with nested control nodes",
     outputDescription: "Single-line text node with nested control nodes",
     bubbles: ['<div><span>Lots </span><span data-color="blue">of</span><span data-color="red"></span><span data-color="red"> </span><span data-color="red" data-size="125"></span><span data-color="red" data-size="125">con</span><span data-color="red"></span><span data-color="blue">t</span><span data-color="blue" data-size="80">r</span><span data-color="red" data-size="80">o</span><span data-color="red">l</span><span data-color="red"> n</span><span data-color="red" data-size="125">o</span><span data-color="white" data-size="125">d</span><span data-color="white">es</span><span data-color="red"></span><span></span></div>'],
