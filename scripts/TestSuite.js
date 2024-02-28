@@ -17,12 +17,14 @@ export default class TestSuite {
   run() {
     for (const test of Tests) {
       const results = new Test(test.bubbles, test.outputs).evaluate();
-      for (const result of results) {
+      for (const key in results) {
+        const result = results[key];
         if (result != null) {
           // Test failed
           this.failedTests.push({
             inputDescription: test.inputDescription,
             outputDescription: test.outputDescription,
+            format: key,
             result: result.result,
             expected: result.expected
           });
@@ -30,7 +32,8 @@ export default class TestSuite {
           // Test passed
           this.passedTests.push({
             inputDescription: test.inputDescription,
-            outputDescription: test.outputDescription
+            outputDescription: test.outputDescription,
+            format: key
           });
         }
       }
@@ -67,12 +70,12 @@ export default class TestSuite {
   }
 
   logTestPass(result) {
-    const testName = `${result.inputDescription} → ${result.outputDescription.toLowerCase()}`;
+    const testName = `[${result.format}] ${result.inputDescription} → ${result.outputDescription.toLowerCase()}`;
     console.log(`%c ✓ %c ${testName}`, "background-color: green; color: white; border-radius: 10px", "background-color: transparent; color: canvastext; border-radius: 0");
   }
 
   logTestFail(result) {
-    const testName = `${result.inputDescription} → ${result.outputDescription.toLowerCase()}`;
+    const testName = `[${result.format}] ${result.inputDescription} → ${result.outputDescription.toLowerCase()}`;
     console.groupCollapsed(`%c ! %c ${testName}`, "background-color: red; color: white; border-radius: 10px", "background-color: transparent; color: canvastext; border-radius: 0");
     console.log(`Test failed: got result:\n${result.result}\n\nThe expected result was:\n${result.expected}`);
     console.groupEnd();

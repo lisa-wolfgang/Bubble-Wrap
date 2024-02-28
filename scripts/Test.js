@@ -8,8 +8,7 @@ export default class Test {
   /**
    * Creates a new Test.
    * @param {string[]} bubbles An array containing the `bubbleContentElement.innerHTML` of each bubble to be tested.
-   * @param {string[]} outputs An array containing the expected output of the function for each export format.
-   *                           The values will be interpreted in the order defined by {@link ExportType}.
+   * @param {Object.string} outputs An object of strings containing the expected output of the test for each export format.
    */
   constructor(bubbles, outputs) {
     this.bubbles = bubbles;
@@ -19,8 +18,8 @@ export default class Test {
   /**
    * Exports the input bubble content as if it were a real bubble chain for each available export format,
    * then compares them against the expected outputs.
-   * @returns {(string | null)[]} An array containing the erroneous output (or `null` if the test evaluated
-   *                              as expected) for each export format.
+   * @returns {Object.string} An object of strings containing the erroneous output (or `null` if the test evaluated
+   *                          as expected) for each export format.
    */
   evaluate() {
     // Prepare test bubble content
@@ -36,15 +35,16 @@ export default class Test {
       BubbleManager.testBubbles = BubbleManager.testBubbles.slice(0, this.bubbles.length);
     }
     // Test exporting the bubbles to all export formats with expected outputs
-    const results = [];
-    for (let i = 0; i < this.outputs.length; i++) {
-      const type = Object.values(ExportType)[i];
+    const results = Object.create(this.outputs);
+    for (const key in this.outputs) {
+      const type = ExportType[key];
+      if (!type) throw new Error(`"${key}" is not a defined ExportType. Check for typos or create a new ExportType.`);
       const parser = new type.parser();
       const result = parser.export(BubbleManager.testBubbles);
-      if (result === this.outputs[i]) {
-        results.push(null);
+      if (result === this.outputs[key]) {
+        results[key] = null;
       } else {
-        results.push({ result: result, expected: this.outputs[i] });
+        results[key] = { result: result, expected: this.outputs[key] };
       }
     }
     return results;
