@@ -44,7 +44,7 @@ export default class TOTKNXEditorParser extends Parser {
   }
 
   addSoundNode(sound) {
-    this.plaintextExport += `<1 Type='3' Data='${sound.toString(16).padStart(2, "0")}00'/>`;
+    this.plaintextExport += `<1 Type='3' Data='${parseInt(sound).toString(16).padStart(2, "0")}00'/>`;
   }
 
   addPauseNode(duration) {
@@ -71,6 +71,6 @@ export default class TOTKNXEditorParser extends Parser {
   }
 
   addSizeNode(size) {
-    this.plaintextExport += `<0 Type='2' Data='${size.toString(16).padStart(2, "0")}00'/>`;
+    this.plaintextExport += `<0 Type='2' Data='${parseInt(size).toString(16).padStart(2, "0")}00'/>`;
   }
 }
