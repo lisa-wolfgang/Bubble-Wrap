@@ -147,7 +147,7 @@ export default class Parser {
     if (textUnfinished) {
       this.endTextNode(true);
     }
-    return this.plaintextExport;
+    return this.postProcess(this.plaintextExport);
   }
 
   // The following methods are to be defined in child classes:
@@ -200,4 +200,12 @@ export default class Parser {
    * @param {number} size A number of type {@link TextSize}.
    */
   addSizeNode(size) {}
+  /**
+   * Performs any needed post-processing on the output.
+   * @param {string} output The output to process.
+   * @returns {string} The processed output.
+   */
+  postProcess(output) {
+    return output;
+  }
 }

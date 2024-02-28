@@ -76,4 +76,8 @@ export default class MSYTParser extends Parser {
     this.plaintextExport += `          kind: text_size\n`;
     this.plaintextExport += `          percent: ${size}\n`;
   }
+
+  postProcess(output) {
+    return output.trimEnd();
+  }
 }
