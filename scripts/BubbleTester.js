@@ -109,8 +109,8 @@ export default class BubbleTester {
             if (words.length > 1 && (!testString.endsWith("-") || testString == "-")) testString += " ";
             newNode.textContent = testString;
           }
-          // Handle words longer than one line
-          if (!outputString && words[0]) {
+          // Handle words/nodes that spill across lines
+          if (!outputString && words[0] && (!newNode.offsetHeight || words.length == 1)) {
             let word = words[0].split("");
             let outputWordString;
             let outputWord = "";
