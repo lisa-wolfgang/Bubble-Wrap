@@ -115,6 +115,26 @@ export default [
     }
   },
   {
+    inputDescription: "Single-line bubble with custom-length pause node",
+    outputDescription: "Single-line text node with pause control node",
+    bubbles: ['<div><span>Just your average bubble...</span><span data-pause="25"></span></div>'],
+    outputs: {
+      MSYT: '      - text: "Just your average bubble..."\n      - control:\n          kind: pause\n          frames: 25',
+      TOTKNXEditor: "  Just your average bubble...<1 Type='0' Data='1900'/>",
+      TOTKMSBTEditor: 'Just your average bubble...{{delay frames="25"}}'
+    }
+  },
+  {
+    inputDescription: "Single-line bubble with nested control nodes",
+    outputDescription: "Single-line text node with nested control nodes",
+    bubbles: ['<div><span>Lots </span><span data-color="blue">of</span><span data-color="red"></span><span data-color="red"> </span><span data-color="red" data-size="125"></span><span data-color="red" data-size="125">con</span><span data-color="red"></span><span data-color="blue">t</span><span data-color="blue" data-size="80">r</span><span data-color="red" data-size="80">o</span><span data-color="red">l</span><span data-color="red"> n</span><span data-color="red" data-size="125">o</span><span data-color="white" data-size="125">d</span><span data-color="white">es</span><span data-color="red"></span><span></span></div>'],
+    outputs: {
+      MSYT: '      - text: "Lots "\n      - control:\n          kind: set_colour\n          colour: blue\n      - text: "of"\n      - control:\n          kind: set_colour\n          colour: red\n      - text: " "\n      - control:\n          kind: text_size\n          percent: 125\n      - text: "con"\n      - control:\n          kind: set_colour\n          colour: blue\n      - control:\n          kind: text_size\n          percent: 100\n      - text: "t"\n      - control:\n          kind: text_size\n          percent: 80\n      - text: "r"\n      - control:\n          kind: set_colour\n          colour: red\n      - text: "o"\n      - control:\n          kind: text_size\n          percent: 100\n      - text: "l n"\n      - control:\n          kind: text_size\n          percent: 125\n      - text: "o"\n      - control:\n          kind: reset_colour\n      - text: "d"\n      - control:\n          kind: text_size\n          percent: 100\n      - text: "es"',
+      TOTKNXEditor: "  Lots <0 Type='3' Data='0100'/>of<0 Type='3' Data='0000'/> <0 Type='2' Data='7d00'/>con<0 Type='3' Data='0100'/><0 Type='2' Data='6400'/>t<0 Type='2' Data='5000'/>r<0 Type='3' Data='0000'/>o<0 Type='2' Data='6400'/>l n<0 Type='2' Data='7d00'/>o<0 Type='3' Data='ffff'/>d<0 Type='2' Data='6400'/>es",
+      TOTKMSBTEditor: 'Lots {{color id="1"}}of{{color id="0"}} {{size value="125"}}con{{color id="1"}}{{size value="100"}}t{{size value="80"}}r{{color id="0"}}o{{size value="100"}}l n{{size value="125"}}o{{color id="65535"}}d{{size value="100"}}es'
+    }
+  },
+  {
     inputDescription: "Two single-line bubbles",
     outputDescription: "Two-bubble text node",
     bubbles: ["<div>a</div>", "<div>a</div>"],
@@ -164,4 +184,5 @@ export default [
       TOTKMSBTEditor: "a\n\n\na"
     }
   }
+  // TODO: Add tests for animation/sound control nodes
 ];
