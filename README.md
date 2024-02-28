@@ -1,6 +1,6 @@
 # Bubble Wrap
 
-A visual text bubble editor for The Legend of Zelda: Breath of the Wild.
+A visual text bubble editor for _The Legend of Zelda: Breath of the Wild_ and _The Legend of Zelda: Tears of the Kingdom_.
 
 ## Features
 
@@ -16,9 +16,9 @@ Say goodbye to extra and missing spaces in your text. Coloring, resizing, and ad
 
 Simply paste a set of dialogue from your planning document into a bubble -- the text will automatically be wrapped and broken into multiple bubbles based on line breaks. Plus, sneaky variants of apostrophes and other characters are weeded out and replaced with the correct in-game versions.
 
-### Effortless MSYT export
+### Effortless syntax export
 
-When you're ready to use your text in your mod, simply hit the button or keyboard shortcut to export everything into a single MSYT entry and have it copied to the clipboard. Never type a `\n` again.
+Easily export your bubbles for use in MSYT files, NX Editor, or MSBT Editor. Select your game and format of choice, then hit the button or keyboard shortcut to copy the syntax to the clipboard. Never type a `\n` again.
 
 ## Install
 
