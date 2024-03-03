@@ -47,7 +47,9 @@ export default class TestSuite {
       alertPopup.textContent = "All tests passed.";
       alertPopup.classList.add("alertPopup", "alertPopup-testPass");
     } else {
-      alertPopup.textContent = `${this.failedTests.length} ${this.failedTests.length == 1 ? "test" : "tests"} failed. View console for details.`;
+      alertPopup.textContent = `${this.failedTests.length} ${
+        this.failedTests.length == 1 ? "test" : "tests"
+      } failed. View console for details.`;
       alertPopup.classList.add("alertPopup", "alertPopup-testFail");
     }
     document.body.appendChild(alertPopup);
@@ -56,9 +58,17 @@ export default class TestSuite {
   /** Prints individual test results to the console. */
   printResults() {
     if (this.failedTests.length == 0) {
-      console.groupCollapsed(`%c ✓ %c All tests passed`, "background-color: green; color: white; border-radius: 10px", "background-color: transparent; color: canvastext; border-radius: 0");
+      console.groupCollapsed(
+        `%c ✓ %c All tests passed`,
+        "background-color: green; color: white; border-radius: 10px",
+        "background-color: transparent; color: canvastext; border-radius: 0"
+      );
     } else {
-      console.group(`%c ! %c ${this.failedTests.length} ${this.failedTests.length == 1 ? "test" : "tests"} failed`, "background-color: red; color: white; border-radius: 10px", "background-color: transparent; color: canvastext; border-radius: 0");
+      console.group(
+        `%c ! %c ${this.failedTests.length} ${this.failedTests.length == 1 ? "test" : "tests"} failed`,
+        "background-color: red; color: white; border-radius: 10px",
+        "background-color: transparent; color: canvastext; border-radius: 0"
+      );
       this.failedTests.forEach((e) => {
         this.logTestFail(e);
       });
@@ -71,12 +81,20 @@ export default class TestSuite {
 
   logTestPass(result) {
     const testName = `[${result.format}] ${result.inputDescription} → ${result.outputDescription.toLowerCase()}`;
-    console.log(`%c ✓ %c ${testName}`, "background-color: green; color: white; border-radius: 10px", "background-color: transparent; color: canvastext; border-radius: 0");
+    console.log(
+      `%c ✓ %c ${testName}`,
+      "background-color: green; color: white; border-radius: 10px",
+      "background-color: transparent; color: canvastext; border-radius: 0"
+    );
   }
 
   logTestFail(result) {
     const testName = `[${result.format}] ${result.inputDescription} → ${result.outputDescription.toLowerCase()}`;
-    console.groupCollapsed(`%c ! %c ${testName}`, "background-color: red; color: white; border-radius: 10px", "background-color: transparent; color: canvastext; border-radius: 0");
+    console.groupCollapsed(
+      `%c ! %c ${testName}`,
+      "background-color: red; color: white; border-radius: 10px",
+      "background-color: transparent; color: canvastext; border-radius: 0"
+    );
     console.log(`Test failed: got result:\n${result.result}\n\nThe expected result was:\n${result.expected}`);
     console.groupEnd();
   }

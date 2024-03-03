@@ -87,7 +87,8 @@ export default class Bubble {
         let thisRect = this.bubbleFormattingOverlay.getBoundingClientRect();
         let selectionRect = selection.getBoundingClientRect();
         this.bubbleFormattingOverlay.style.bottom = parentRect.bottom - selectionRect.top + "px";
-        this.bubbleFormattingOverlay.style.left = selectionRect.left + selectionRect.width / 2 - thisRect.width / 2 - parentRect.left + "px";
+        this.bubbleFormattingOverlay.style.left =
+          selectionRect.left + selectionRect.width / 2 - thisRect.width / 2 - parentRect.left + "px";
         this.bubbleFormattingOverlay.classList.add("visible");
         setTimeout(() => {
           this.bubbleFormattingOverlay.style.transitionProperty = "opacity, transform, bottom, left";
@@ -267,7 +268,12 @@ export default class Bubble {
       if (Bubble.lineIsPunctuated(line) && line != "") {
         let isEndingLastLine = relativeLineIndex >= 2;
         let isEndingSecondLine = relativeLineIndex == 1 && nextLine != undefined && !Bubble.lineIsPunctuated(nextLine);
-        let isEndingFirstLine = relativeLineIndex == 0 && nextLine != undefined && !Bubble.lineIsPunctuated(nextLine) && nextNextLine != undefined && !Bubble.lineIsPunctuated(nextNextLine);
+        let isEndingFirstLine =
+          relativeLineIndex == 0 &&
+          nextLine != undefined &&
+          !Bubble.lineIsPunctuated(nextLine) &&
+          nextNextLine != undefined &&
+          !Bubble.lineIsPunctuated(nextNextLine);
         if (isEndingLastLine || isEndingSecondLine || isEndingFirstLine || !nextLine || nextLine == "") {
           setTextChunkToOffset();
         }
@@ -305,6 +311,15 @@ export default class Bubble {
   static lineIsPunctuated(line) {
     let punctuation = [".", "?", "!"];
     let exceptionEndings = ['"', "»", ")"];
-    return punctuation.some((p) => line.endsWith(p) || exceptionEndings.some((x) => line.endsWith(x) && (line.endsWith(p, line.length - 1) || exceptionEndings.some((x2) => line.endsWith(x2, line.length - 1) && line.endsWith(p, line.length - 2)))));
+    return punctuation.some(
+      (p) =>
+        line.endsWith(p) ||
+        exceptionEndings.some(
+          (x) =>
+            line.endsWith(x) &&
+            (line.endsWith(p, line.length - 1) ||
+              exceptionEndings.some((x2) => line.endsWith(x2, line.length - 1) && line.endsWith(p, line.length - 2)))
+        )
+    );
   }
 }

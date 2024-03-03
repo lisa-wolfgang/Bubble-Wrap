@@ -223,7 +223,8 @@ export default class BubbleTools {
         {
           name: "Other...",
           value: "custom",
-          prompt: 'Enter a numeric sound value. (For BOTW, enter two sound values separated by a space.) Note that this will disable the animation preset options for this bubble until the sound option is set to "No sound".',
+          prompt:
+            'Enter a numeric sound value. (For BOTW, enter two sound values separated by a space.) Note that this will disable the animation preset options for this bubble until the sound option is set to "No sound".',
           parse: (soundString) => {
             const soundArray = soundString.trim().split(" ");
             if (!soundArray.find((val) => isNaN(val))) return soundString;
