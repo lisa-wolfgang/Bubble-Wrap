@@ -289,12 +289,10 @@ label {
   align-items: center;
   justify-content: center;
   position: relative;
-  width: 502px;
-  height: 75px;
-  font-size: 20px;
+  width: 566px;
+  height: 107px;
+  flex-shrink: 0;
   border: 0;
-  padding: 16px 32px;
-  color: var(--dialog-text-white-color);
   background-color: var(--dialog-bg-color);
   cursor: text;
   transition-property: margin-bottom, filter, transform, border-radius, background-color;
@@ -349,37 +347,30 @@ label {
   border-radius: 6px;
 }
 
-.bubble-content-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: inherit;
-  height: inherit;
-  padding: 1rem;
-  scrollbar-width: none;
-}
-
-.bubble-content-container::-webkit-scrollbar {
-  display: none;
-}
-
-.bubble.overflow .bubble-content-container {
-  overflow: scroll;
-}
-
 /* TODO: https://jsfiddle.net/527z755p/13/ */
 
 .bubble-content {
+  box-sizing: border-box;
   white-space: break-spaces;
   overflow-wrap: anywhere;
   line-height: 1.25;
-  padding: 1rem;
+  scrollbar-width: none;
+  font-size: 20px;
   font-family: "Calamity";
+  color: var(--dialog-text-white-color);
   filter: var(--dialog-text-shadow);
+}
+
+.bubble-content::-webkit-scrollbar {
+  display: none;
 }
 
 .bubble-content:focus {
   outline: none;
+}
+
+.bubble.overflow .bubble-content {
+  overflow: scroll;
 }
 
 .bubble:only-child .bubble-content:not(:focus) div:empty:not(:focus, .deleting .bubble-content, .test-bubble .bubble-content)::before {
@@ -391,13 +382,16 @@ label {
   opacity: 0.55;
 }
 
-.test-bubble .bubble-content {
-  padding: 0;
-  margin: 1rem;
-}
-
 .bubble-content:focus div:empty:not(:focus, .deleting .bubble-content, .test-bubble .bubble-content) {
   height: 1.25rem;
+}
+
+.bubble.dialogue .bubble-content {
+  padding-inline: calc(calc(100% - 438px) / 2);
+}
+
+.bubble.signboard .bubble-content {
+  padding-inline: calc(calc(100% - 438px) / 2);
 }
 
 /* Strange hack to fix spontaneous `<span>` creation on Chromium */

@@ -60,12 +60,8 @@ export default class Bubble {
     }
 
     // Focus the bubble text input when any part of the bubble is clicked
-    this.element.addEventListener("click", (e) => {
+    this.element.addEventListener("mousedown", (e) => {
       if (e.target == this.element) e.preventDefault(); // prevents unfocus on text when clicked
-      this.bubbleContentElement.focus();
-    });
-    this.element.querySelector(".bubble-content-container").addEventListener("click", (e) => {
-      if (e.target == this.element.querySelector(".bubble-content-container")) e.preventDefault(); // prevents unfocus on text when clicked
       this.bubbleContentElement.focus();
     });
 
