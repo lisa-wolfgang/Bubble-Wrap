@@ -1,4 +1,5 @@
 import Bubble from "./Bubble.js";
+import BubbleManager from "./BubbleManager.js";
 import BubbleTester from "./BubbleTester.js";
 import BubbleUtil from "./BubbleUtil.js";
 
@@ -139,7 +140,11 @@ export default class Parser {
       }
       // Add the remaining "empty lines" to get to the next bubble
       // TODO: Setting for skipping over blank bubbles on export
-      while (b != bubbles.length - 1 && bubble.bubbleContentElement.textContent && (lineCount == originalLineCount || lineCount % 3 != 1)) {
+      while (
+        b != bubbles.length - 1 &&
+        bubble.bubbleContentElement.textContent &&
+        (lineCount == originalLineCount || lineCount % BubbleManager.type.lineCount != 1)
+      ) {
         this.addLineBreak();
         lineCount++;
       }
