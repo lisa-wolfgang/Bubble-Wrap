@@ -76,6 +76,14 @@ export default class Bubble {
         const newDiv = document.createElement("div");
         this.bubbleContentElement.appendChild(newDiv);
         getSelection().getRangeAt(0).setStart(newDiv, 0);
+      } else if (this.bubbleContentElement.childNodes.length == 1 && !this.bubbleContentElement.firstElementChild) {
+        // This content should be put in a node
+        const newDiv = document.createElement("div");
+        newDiv.textContent = this.bubbleContentElement.textContent;
+        this.bubbleContentElement.textContent = "";
+        this.bubbleContentElement.appendChild(newDiv);
+        getSelection().getRangeAt(0).selectNodeContents(newDiv);
+        getSelection().collapseToEnd();
       }
     });
 
