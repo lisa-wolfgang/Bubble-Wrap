@@ -67,11 +67,30 @@ export default class BubbleManager {
   static updateType(type) {
     const typeObj = BubbleType[type];
     if (!typeObj) throw new Error(`"${type}" is not the identifier of a defined \`BubbleType\`. Check for typos.`);
+    // Handle multiple bubbles on switch to singleton type
+    if (typeObj.isSingleton && BubbleManager.bubbles.length > 1) {
+      const msg = `The mode you're switching to only allows a single bubble, but you currently have multiple bubbles of a different type. Continue and remove all existing bubbles?`;
+      if (confirm(msg)) {
+        for (let i = BubbleManager.bubbles.length - 1; i >= 0; i--) {
+          BubbleManager.deleteBubble(BubbleManager.bubbles[i]);
+        }
+        BubbleManager.bubbles.push(new Bubble(0));
+      } else {
+        BubbleTools.bubbleTypeElement.value = BubbleManager.type.className;
+        return;
+      }
+    }
+    // Convert bubbles to the new type
     const oldType = BubbleManager.type;
     BubbleManager.type = typeObj;
     for (let bubble of BubbleManager.bubbles) {
       if (oldType) bubble.element.classList.remove(oldType.className);
       bubble.element.classList.add(typeObj.className);
+      if (typeObj.isSingleton) {
+        bubble.element.classList.add("singleton");
+      } else {
+        bubble.element.classList.remove("singleton");
+      }
       bubble.inputHandler(); // to recalculate overflow
     }
   }

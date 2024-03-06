@@ -627,6 +627,10 @@ span[data-pause] .node-select:hover::before {
   height: calc(0.75rem * 3 / 2);
 }
 
+.bubble.singleton .btn-add-bubble {
+  display: none;
+}
+
 .bubble:only-child .btn-del-bubble,
 .del-disabled .btn-del-bubble {
   display: none;
