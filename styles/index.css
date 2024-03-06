@@ -296,13 +296,11 @@ label {
   align-items: center;
   justify-content: center;
   position: relative;
-  width: 566px;
-  height: 107px;
   flex-shrink: 0;
   border: 0;
   background-color: var(--dialog-bg-color);
   cursor: text;
-  transition-property: margin-bottom, filter, transform, border-radius, background-color;
+  transition-property: width, height, margin-bottom, filter, transform, border-radius, background-color;
   transition-timing-function: var(--transition-function);
   transition-duration: var(--transition-duration);
   animation: slidein var(--transition-duration) var(--transition-function);
@@ -344,6 +342,12 @@ label {
 
 .bubble.overflow {
   background-color: var(--dialog-invalid-bg-color);
+}
+
+.bubble.dialogue,
+.bubble.signboard {
+  width: 566px;
+  height: 107px;
 }
 
 .bubble.dialogue {
