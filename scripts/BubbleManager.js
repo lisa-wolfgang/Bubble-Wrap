@@ -1,6 +1,8 @@
 import Bubble from "./Bubble.js";
 import BubbleTools from "./BubbleTools.js";
 
+import BubbleType from "./enums/BubbleType.js";
+
 /** Tracks and manages the states of all Bubbles. */
 export default class BubbleManager {
   static container = document.querySelector(".bubble-container");
@@ -40,7 +42,7 @@ export default class BubbleManager {
     parentBubble.element.classList.add("del-disabled");
     let newBubble = new Bubble(index, text);
     BubbleManager.bubbles.splice(index + 1, 0, newBubble);
-    BubbleManager.updateType(BubbleManager.type);
+    BubbleManager.updateType(BubbleManager.type.className);
   }
 
   static deleteBubble(toDelete) {
@@ -63,10 +65,14 @@ export default class BubbleManager {
   }
 
   static updateType(type) {
+    const typeObj = BubbleType[type];
+    if (!typeObj) throw new Error(`"${type}" is not the identifier of a defined \`BubbleType\`. Check for typos.`);
+    const oldType = BubbleManager.type;
+    BubbleManager.type = typeObj;
     for (let bubble of BubbleManager.bubbles) {
-      bubble.element.classList.remove(BubbleManager.type);
-      bubble.element.classList.add(type);
+      if (oldType) bubble.element.classList.remove(oldType.className);
+      bubble.element.classList.add(typeObj.className);
+      bubble.inputHandler(); // to recalculate overflow
     }
-    BubbleManager.type = type;
   }
 }

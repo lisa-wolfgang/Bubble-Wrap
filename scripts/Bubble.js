@@ -128,24 +128,7 @@ export default class Bubble {
     this.bubbleContentElement.addEventListener("paste", (e) => this.parsePaste(e));
     this.bubbleContentElement.addEventListener("drop", (e) => this.parseDrop(e));
 
-    this.bubbleContentElement.addEventListener("input", (e) => {
-      // Clear if <br> is the only content
-      if (this.bubbleContentElement.innerHTML == "<br>") {
-        this.bubbleContentElement.innerHTML = "";
-      }
-
-      // Flag input over three lines long
-      BubbleManager.wrappingBubble.bubbleContentElement.innerHTML = this.bubbleContentElement.innerHTML;
-      let heightAndPadding = BubbleManager.wrappingBubble.bubbleContentElement.offsetHeight;
-      let padding = 2 * parseInt(getComputedStyle(BubbleManager.wrappingBubble.bubbleContentElement).padding);
-      if (heightAndPadding - padding > this.bubbleFontSize * 1.25 * 1.25 * 3) {
-        // this.bubbleContentElement.innerHTML = this.bubbleValue;
-        this.element.classList.add("overflow");
-      } else {
-        this.bubbleValue = this.bubbleContentElement.innerHTML;
-        this.element.classList.remove("overflow");
-      }
-    });
+    this.bubbleContentElement.addEventListener("input", () => this.inputHandler());
 
     // When bubble add button is clicked, create a new bubble below this one
     this.btnAddBubbleElement?.addEventListener("mousedown", (e) => {
@@ -181,6 +164,32 @@ export default class Bubble {
    */
   getIndex() {
     return BubbleManager.bubbles.indexOf(this);
+  }
+
+  inputHandler() {
+    // Clear if <br> is the only content
+    if (this.bubbleContentElement.innerHTML == "<br>") {
+      this.bubbleContentElement.innerHTML = "";
+    }
+
+    // Flag input over the line count or character limit
+    let charCount = 0;
+    for (const div of this.bubbleContentElement.childNodes) {
+      // Clear if <br> is the only content
+      if (div.innerHTML == "<br>") {
+        div.innerHTML = "";
+      }
+      charCount += div.textContent.length;
+    }
+    const exceedsLineCount = BubbleTester.breakNodesAtWrap(this).length > BubbleManager.type.lineCount;
+    const exceedsCharLimit = BubbleManager.type.charLimit && charCount > BubbleManager.type.charLimit;
+    if (exceedsLineCount || exceedsCharLimit) {
+      // this.bubbleContentElement.innerHTML = this.bubbleValue;
+      this.element.classList.add("overflow");
+    } else {
+      this.bubbleValue = this.bubbleContentElement.innerHTML;
+      this.element.classList.remove("overflow");
+    }
   }
 
   /**

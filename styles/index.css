@@ -412,8 +412,9 @@ label {
   opacity: 0.55;
 }
 
+/* Make empty lines influence vertical text alignment */
 .bubble-content:focus div:empty:not(:focus, .deleting .bubble-content, .test-bubble .bubble-content) {
-  height: 1.25rem;
+  height: 1.25em;
 }
 
 .bubble.dialogue .bubble-content,
