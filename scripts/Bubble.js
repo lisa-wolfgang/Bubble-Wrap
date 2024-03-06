@@ -64,6 +64,10 @@ export default class Bubble {
     this.element.addEventListener("mousedown", (e) => {
       if (e.target == this.element) e.preventDefault(); // prevents unfocus on text when clicked
       this.bubbleContentElement.focus();
+      // Ensure the cursor is inside the initial `<div>` when the bubble is empty
+      if (!this.bubbleContentElement.firstElementChild.textContent) {
+        getSelection().setPosition(this.bubbleContentElement.firstElementChild, 0);
+      }
     });
 
     // If text is cleared, repopulate with a `<div>`
@@ -168,17 +172,16 @@ export default class Bubble {
 
   inputHandler() {
     // Clear if <br> is the only content
-    if (this.bubbleContentElement.innerHTML == "<br>") {
+    const isIsolatedBreak = this.bubbleContentElement.innerHTML == "<br>";
+    const isIsolatedBreakNode =
+      this.bubbleContentElement.childElementCount == 1 && this.bubbleContentElement.firstElementChild.innerHTML == "<br>";
+    if (isIsolatedBreak || isIsolatedBreakNode) {
       this.bubbleContentElement.innerHTML = "";
     }
 
     // Flag input over the line count or character limit
     let charCount = 0;
     for (const div of this.bubbleContentElement.childNodes) {
-      // Clear if <br> is the only content
-      if (div.innerHTML == "<br>") {
-        div.innerHTML = "";
-      }
       charCount += div.textContent.length;
     }
     const exceedsLineCount = BubbleTester.breakNodesAtWrap(this).length > BubbleManager.type.lineCount;
