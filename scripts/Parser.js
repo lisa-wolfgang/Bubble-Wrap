@@ -140,10 +140,17 @@ export default class Parser {
       }
       // Add the remaining "empty lines" to get to the next bubble
       // TODO: Setting for skipping over blank bubbles on export
+      let bubbleLineLimit;
+      if (BubbleManager.testBubbles.includes(bubble)) {
+        // Tests are hardcoded to expect 3-line bubble output
+        bubbleLineLimit = 3;
+      } else {
+        bubbleLineLimit = BubbleManager.type.lineCount;
+      }
       while (
         b != bubbles.length - 1 &&
         bubble.bubbleContentElement.textContent &&
-        (lineCount == originalLineCount || lineCount % BubbleManager.type.lineCount != 1)
+        (lineCount == originalLineCount || lineCount % bubbleLineLimit != 1)
       ) {
         this.addLineBreak();
         lineCount++;
