@@ -21,6 +21,7 @@ export default class Bubble {
     this.element.innerHTML = BubbleManager.template;
     if (index == -1) {
       this.element.classList.add("test-bubble");
+      this.element.classList.add("dialogue");
       document.body.appendChild(this.element);
     } else {
       let indexBubble = BubbleManager.container.children[index];

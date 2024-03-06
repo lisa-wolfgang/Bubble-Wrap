@@ -12,7 +12,14 @@
 
 @font-face {
   font-family: "Calamity";
+  font-weight: bold;
   src: url(../assets/fonts/Calamity-Bold.woff2) format("woff2");
+}
+
+@font-face {
+  font-family: "Calamity";
+  font-weight: normal;
+  src: url(../assets/fonts/Calamity-Regular.woff2) format("woff2");
 }
 
 :root {
@@ -347,6 +354,24 @@ label {
   border-radius: 6px;
 }
 
+.bubble.item,
+.bubble.questBOTW,
+.bubble.questTOTK {
+  width: 498px;
+}
+
+.bubble.item {
+  height: 140px;
+}
+
+.bubble.questBOTW {
+  height: 315px;
+}
+
+.bubble.questTOTK {
+  height: 240px;
+}
+
 /* TODO: https://jsfiddle.net/527z755p/13/ */
 
 .bubble-content {
@@ -359,6 +384,11 @@ label {
   font-family: "Calamity";
   color: var(--dialog-text-white-color);
   filter: var(--dialog-text-shadow);
+}
+
+/* Allows overflow to scroll while playing nice with test behavior */
+.bubble-content:not(.test-bubble .bubble-content) {
+  max-height: 100%;
 }
 
 .bubble-content::-webkit-scrollbar {
@@ -386,12 +416,18 @@ label {
   height: 1.25rem;
 }
 
-.bubble.dialogue .bubble-content {
-  padding-inline: calc(calc(100% - 438px) / 2);
-}
-
+.bubble.dialogue .bubble-content,
 .bubble.signboard .bubble-content {
   padding-inline: calc(calc(100% - 438px) / 2);
+  font-weight: bold;
+}
+
+.bubble.item .bubble-content,
+.bubble.questBOTW .bubble-content,
+.bubble.questTOTK .bubble-content {
+  align-self: flex-start;
+  width: 100%;
+  padding: 20px;
 }
 
 /* Strange hack to fix spontaneous `<span>` creation on Chromium */
