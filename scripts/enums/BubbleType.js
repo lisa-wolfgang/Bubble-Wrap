@@ -1,4 +1,16 @@
-/** A bubble configuration. */
+/**
+ * A bubble type configuration.
+ * @typedef {Object} BubbleConfig
+ * @property {string} className The internal identifier used for this bubble type.
+ * @property {number | null} charLimit The maximum character count allowed per bubble, or `null` for no limit.
+ * @property {number} lineCount The number of lines per bubble.
+ * @property {boolean} isSingleton Whether more than one bubble should be allowed at once.
+ */
+
+/**
+ * A collection of bubble type configurations.
+ * @type {Object.BubbleConfig}
+ */
 export default {
   dialogue: {
     className: "dialogue",

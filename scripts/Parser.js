@@ -40,7 +40,9 @@ export default class Parser {
         return undefined;
       }
       if (verbose && bubble.element.classList.contains("overflow")) {
-        window.alert("Your text is overflowing. Locate the red bubble(s), reformat your text, and try again.");
+        window.alert(
+          "Your text is overflowing. The red bubbles indicate bubbles with too many lines or too many characters. Reformat your text, and try again."
+        );
         return undefined;
       }
 

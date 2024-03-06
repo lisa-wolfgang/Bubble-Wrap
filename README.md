@@ -6,7 +6,12 @@ A visual text bubble editor for _The Legend of Zelda: Breath of the Wild_ and _T
 
 ### Automatic text wrapping
 
-The editor works just like a regular text box -- eliminating guesswork and providing instant visual feedback. The spacing and wrapping behaviors have been tested for accuracy against a variety of vanilla dialogue. NPC and sign dialogs are currently supported.
+The editor works just like a regular text box -- eliminating guesswork and providing instant visual feedback. The spacing and wrapping behaviors have been tested for accuracy against a variety of vanilla text. The currently supported formats are:
+
+- NPC dialogue
+- Sign dialogs
+- Item descriptions (also accounts for the in-game character limit)
+- Quest logs
 
 ### Hassle-free control nodes
 
