@@ -361,19 +361,19 @@ label {
 .bubble.item,
 .bubble.questBOTW,
 .bubble.questTOTK {
-  width: 498px;
+  width: 508px;
 }
 
 .bubble.item {
-  height: 140px;
+  height: 150px;
 }
 
 .bubble.questBOTW {
-  height: 315px;
+  height: 325px;
 }
 
 .bubble.questTOTK {
-  height: 240px;
+  height: 250px;
 }
 
 /* TODO: https://jsfiddle.net/527z755p/13/ */
@@ -432,7 +432,7 @@ label {
 .bubble.questTOTK .bubble-content {
   align-self: flex-start;
   width: 100%;
-  padding: 20px;
+  padding: 1.25em;
 }
 
 /* Strange hack to fix spontaneous `<span>` creation on Chromium */
