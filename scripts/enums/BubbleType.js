@@ -41,6 +41,12 @@ export default {
     charLimit: null,
     lineCount: 8,
     isSingleton: true
+  },
+  tip: {
+    className: "tip",
+    charLimit: null,
+    lineCount: 3,
+    isSingleton: true
   }
 };
 // TODO: Test for what actual `charLimit` values are

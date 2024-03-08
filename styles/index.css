@@ -376,6 +376,11 @@ label {
   height: 250px;
 }
 
+.bubble.tip {
+  width: 634px;
+  height: 100px;
+}
+
 /* TODO: https://jsfiddle.net/527z755p/13/ */
 
 .bubble-content {
@@ -429,10 +434,16 @@ label {
 
 .bubble.item .bubble-content,
 .bubble.questBOTW .bubble-content,
-.bubble.questTOTK .bubble-content {
+.bubble.questTOTK .bubble-content,
+.bubble.tip .bubble-content {
   align-self: flex-start;
   width: 100%;
   padding: 1.25em;
+}
+
+.bubble.tip .bubble-content {
+  font-size: 16px;
+  font-weight: bold;
 }
 
 /* Strange hack to fix spontaneous `<span>` creation on Chromium */
