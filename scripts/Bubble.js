@@ -147,7 +147,7 @@ export default class Bubble {
       BubbleManager.addBubble(this);
     });
     this.element.addEventListener("keydown", (e) => {
-      if (e.code == "Enter" && e.ctrlKey && !e.altKey) BubbleManager.addBubble(this);
+      if (e.code == "Enter" && e.ctrlKey && !e.altKey && !BubbleManager.type.isSingleton) BubbleManager.addBubble(this);
     });
 
     // When bubble delete button is clicked, delete this bubble
@@ -308,7 +308,7 @@ export default class Bubble {
 
     function setTextChunkToOffsetFunc() {
       let textChunk = textLines.slice(bubbleStartIndex, lineIndex + 1).join("\n");
-      if (bubbleStartIndex > 0) {
+      if (bubbleStartIndex > 0 && !BubbleManager.type.isSingleton) {
         BubbleManager.addBubble(BubbleManager.bubbles[bubbleManagerIndex], textChunk);
         bubbleManagerIndex++;
       } else {
