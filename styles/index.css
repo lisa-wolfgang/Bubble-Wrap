@@ -412,7 +412,7 @@ label {
   overflow: scroll;
 }
 
-.bubble:only-child .bubble-content:not(:focus) div:empty:not(:focus, .deleting .bubble-content, .test-bubble .bubble-content)::before {
+.bubble:only-child .bubble-content:not(:focus) div:first-child:empty:not(:focus, .deleting .bubble-content, .test-bubble .bubble-content)::before {
   display: inline;
   content: "Type text here and it will be wrapped automatically...";
   cursor: text;
