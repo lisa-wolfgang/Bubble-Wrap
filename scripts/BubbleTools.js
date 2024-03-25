@@ -307,8 +307,8 @@ export default class BubbleTools {
         // Check that a bubble is selected
         const bubbleElement = document.activeElement?.closest(".bubble");
         if (!bubbleElement) return false;
-        // Pause control nodes are useless in signs because they show all text at once
-        return BubbleManager.type.className != "signboard";
+        // Pause control nodes are useless outside dialogue
+        return BubbleManager.type.className == "dialogue";
       }
     );
   }
