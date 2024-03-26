@@ -30,6 +30,12 @@ export default {
     lineCount: 4,
     isSingleton: true
   },
+  compendium: {
+    className: "compendium",
+    charLimit: null,
+    lineCount: 9,
+    isSingleton: true
+  },
   questBOTW: {
     className: "questBOTW",
     charLimit: null,

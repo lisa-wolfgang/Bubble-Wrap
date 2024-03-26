@@ -359,6 +359,7 @@ label {
 }
 
 .bubble.item,
+.bubble.compendium,
 .bubble.questBOTW,
 .bubble.questTOTK {
   width: 508px;
@@ -366,6 +367,10 @@ label {
 
 .bubble.item {
   height: 150px;
+}
+
+.bubble.compendium {
+  height: 275px;
 }
 
 .bubble.questBOTW {
@@ -433,6 +438,7 @@ label {
 }
 
 .bubble.item .bubble-content,
+.bubble.compendium .bubble-content,
 .bubble.questBOTW .bubble-content,
 .bubble.questTOTK .bubble-content,
 .bubble.tip .bubble-content {
