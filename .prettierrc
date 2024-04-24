@@ -1,5 +1,5 @@
 {
-  "htmlWhitespaceSensitivity": "ignore",
+  "htmlWhitespaceSensitivity": "css",
   "printWidth": 140,
   "singleAttributePerLine": false,
   "tabWidth": 2,
