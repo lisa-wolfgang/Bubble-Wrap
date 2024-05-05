@@ -1,6 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/web-manifest-combined.json",
   "name": "Bubble Wrap",
-  "description": "A visual dialogue editor for Breath of the Wild.",
+  "description": "A visual text bubble editor for The Legend of Zelda: Breath of the Wild and Tears of the Kingdom.",
   "display": "fullscreen"
 }
