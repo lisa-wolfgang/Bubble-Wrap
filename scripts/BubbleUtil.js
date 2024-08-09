@@ -190,7 +190,7 @@ export default class BubbleUtil {
 
   /**
    * Creates and returns a new, detached Bubble textual node.
-   * @param {DocumentFragment} content The content of the node. Can include non-textual nodes.
+   * @param {Node} content The content of the node. Can include non-textual nodes.
    * @param {Object} args A set of parameters for the new node.
    * @param {TextColor} args.color The color attribute of the node.
    * @param {TextSize} args.size The size attribute of the node.

@@ -223,6 +223,49 @@ export default class Bubble {
   }
 
   /**
+   * Inserts a textual node into this bubble.
+   * @param {Node} content The content of the node. Can include non-textual nodes.
+   * @param {Object} args A set of parameters for the new node. See {@link BubbleUtil.newTextNode()}.
+   * @param {Range} [range] If provided, the node will be inserted at the end position of this range.
+   * Otherwise, it will be appended to the bubble.
+   * @returns {Node} The new Node.
+   */
+  insertTextNode(content, args, range) {
+    const newNode = BubbleUtil.newTextNode(content, args);
+    if (range) {
+      BubbleUtil.splitParentAndInsert(range, () => {
+        return newNode;
+      });
+      range.deleteContents();
+    } else {
+      this.bubbleContentElement.appendChild(newNode);
+    }
+    return newNode;
+  }
+
+  /**
+   * Inserts a non-textual node into this bubble.
+   * @param {Object} args A set of parameters for the new node. See {@link BubbleUtil.newNonTextNode()}.
+   * @param {Function} callback The callback to run when the UI of this node is clicked.
+   * @param {Range} [range] If provided, the node will be inserted at the end position of this range.
+   * Otherwise, it will be appended to the bubble.
+   * @returns {Node} The new Node.
+   */
+  insertNonTextNode(args, callback, range) {
+    const newNode = BubbleUtil.newNonTextNode(args, callback);
+    if (range) {
+      // Collapse the selection to the end point so `Range.insertNode()` inserts at the end point
+      range.collapse(false);
+      BubbleUtil.splitParentAndInsert(range, () => {
+        return newNode;
+      });
+    } else {
+      this.bubbleContentElement.appendChild(newNode);
+    }
+    return newNode;
+  }
+
+  /**
    * Inserts a pause control node into this bubble.
    * @param {PauseDuration | number} duration The duration value of the pause node.
    * @param {Range} [range] If provided, the node will be inserted at the end position of this range.
@@ -230,16 +273,8 @@ export default class Bubble {
    * @returns {Node} The new Node.
    */
   insertPauseNode(duration, range) {
-    let pauseNode = BubbleUtil.newNonTextNode({ pause: duration }, Bubble.pauseNodeCallback);
-    if (range) {
-      // Collapse the selection to the end point so `Range.insertNode()` inserts at the end point
-      range.collapse(false);
-      BubbleUtil.splitParentAndInsert(range, () => {
-        return pauseNode;
-      });
-    } else {
-      this.bubbleContentElement.appendChild(pauseNode);
-    }
+    let pauseNode = this.insertNonTextNode({ pause: duration }, Bubble.pauseNodeCallback, range);
+
     // Check for a pause node immediately preceding the current one;
     // if one exists, remove it
     const previousSibling = pauseNode.previousElementSibling;
