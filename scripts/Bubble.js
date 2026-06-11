@@ -200,13 +200,15 @@ export default class Bubble {
     }
     if (this.bubbleHeight != bubbleHeight) {
       // Cached line count is invalid, so recalculate
-      this.bubbleContentElement.classList.add("test-line-count");
+      const testBubble = new Bubble(-1);
+      testBubble.bubbleContentElement.classList.add("test-line-count");
       this.lineCount = 0;
       for (const el of this.bubbleContentElement.children) {
-        // Counts lines of text when display is set to inline
-        this.lineCount += el.getClientRects().length;
+        testBubble.bubbleContentElement.innerHTML = el.outerHTML;
+        // getClientRects() counts lines of text when display is set to inline
+        this.lineCount += testBubble.bubbleContentElement.firstChild.getClientRects().length;
       }
-      this.bubbleContentElement.classList.remove("test-line-count");
+      testBubble.element.remove();
       this.bubbleHeight = bubbleHeight;
     }
     const exceedsLineCount = this.lineCount > BubbleManager.type.lineCount;
