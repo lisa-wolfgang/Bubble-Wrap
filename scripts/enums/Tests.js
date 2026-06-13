@@ -142,7 +142,7 @@ export default [
       TOTKNXEditor:
         "  <0 Type='3' Data='0000'/>aaaaaaa<0 Type='3' Data='ffff'/>aaaaaa\n  <0 Type='2' Data='7d00'/>llamallamallamallam<0 Type='2' Data='6400'/>allamallama<5 Type='0'/>llamal\n  lamallama",
       TOTKMSBTEditor:
-        '{{color id="0"}}aaaaaaa{{color id="65535"}}aaaaaa\n{{size value="125"}}llamallamallamallam{{size value="100"}}allamallama{{delay1}}llamal\nlamallama'
+        '{{color id="Orange"}}aaaaaaa{{color id="Default"}}aaaaaa\n{{size value="125"}}llamallamallamallam{{size value="100"}}allamallama{{delay1}}llamal\nlamallama'
     }
   },
   {
@@ -165,7 +165,7 @@ export default [
       MSYT: '      - text: "Looks like you need one of my "\n      - control:\n          kind: set_colour\n          colour: blue\n      - text: "specialty \\n"\n      - control:\n          kind: reset_colour\n      - text: "services! So what\'ll it be?"',
       TOTKNXEditor:
         "  Looks like you need one of my <0 Type='3' Data='0100'/>specialty \n  <0 Type='3' Data='ffff'/>services! So what'll it be?",
-      TOTKMSBTEditor: 'Looks like you need one of my {{color id="1"}}specialty \n{{color id="65535"}}services! So what\'ll it be?'
+      TOTKMSBTEditor: 'Looks like you need one of my {{color id="Cyan"}}specialty \n{{color id="Default"}}services! So what\'ll it be?'
     }
   },
   {
@@ -179,7 +179,7 @@ export default [
       TOTKNXEditor:
         "  Lots <0 Type='3' Data='0100'/>of<0 Type='3' Data='0000'/> <0 Type='2' Data='7d00'/>con<0 Type='3' Data='0100'/><0 Type='2' Data='6400'/>t<0 Type='2' Data='5000'/>r<0 Type='3' Data='0000'/>o<0 Type='2' Data='6400'/>l n<0 Type='2' Data='7d00'/>o<0 Type='3' Data='ffff'/>d<0 Type='2' Data='6400'/>es",
       TOTKMSBTEditor:
-        'Lots {{color id="1"}}of{{color id="0"}} {{size value="125"}}con{{color id="1"}}{{size value="100"}}t{{size value="80"}}r{{color id="0"}}o{{size value="100"}}l n{{size value="125"}}o{{color id="65535"}}d{{size value="100"}}es'
+        'Lots {{color id="Cyan"}}of{{color id="Orange"}} {{size value="125"}}con{{color id="Cyan"}}{{size value="100"}}t{{size value="80"}}r{{color id="Orange"}}o{{size value="100"}}l n{{size value="125"}}o{{color id="Default"}}d{{size value="100"}}es'
     }
   },
   {
@@ -214,7 +214,7 @@ export default [
       TOTKNXEditor:
         "  Hello, Link.\n  I have been awaiting your return for quite\n  some time.\n  Now I can finally avenge the <0 Type='3' Data='0200'/><0 Type='2' Data='5000'/>embarrassing\n  <0 Type='3' Data='ffff'/><0 Type='2' Data='6400'/>death of my master...",
       TOTKMSBTEditor:
-        'Hello, Link.\nI have been awaiting your return for quite\nsome time.\nNow I can finally avenge the {{color id="2"}}{{size value="80"}}embarrassing\n{{color id="65535"}}{{size value="100"}}death of my master...'
+        'Hello, Link.\nI have been awaiting your return for quite\nsome time.\nNow I can finally avenge the {{color id="Gray"}}{{size value="80"}}embarrassing\n{{color id="Default"}}{{size value="100"}}death of my master...'
     }
   },
   {
