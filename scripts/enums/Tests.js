@@ -142,7 +142,7 @@ export default [
       TOTKNXEditor:
         "  <0 Type='3' Data='0000'/>aaaaaaa<0 Type='3' Data='ffff'/>aaaaaa\n  <0 Type='2' Data='7d00'/>llamallamallamallam<0 Type='2' Data='6400'/>allamallama<5 Type='0'/>llamal\n  lamallama",
       TOTKMSBTEditor:
-        '{{color id="Orange"}}aaaaaaa{{color id="Default"}}aaaaaa\n{{size value="125"}}llamallamallamallam{{size value="100"}}allamallama{{delay1}}llamal\nlamallama'
+        '{{color id="Orange"}}aaaaaaa{{color id="Default"}}aaaaaa\n{{size value="125"}}llamallamallamallam{{size value="100"}}allamallama{{delay8}}llamal\nlamallama'
     }
   },
   {

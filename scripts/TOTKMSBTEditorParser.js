@@ -50,7 +50,7 @@ export default class TOTKMSBTEditorParser extends Parser {
   }
 
   addAnimationNode(animation) {
-    this.plaintextExport += `{{anim type="${animation}"}}`;
+    this.plaintextExport += `{{setVoice asset="${animation}"}}`;
   }
 
   addSoundNode(sound) {
@@ -59,9 +59,9 @@ export default class TOTKMSBTEditorParser extends Parser {
 
   addPauseNode(duration) {
     if (isNaN(duration)) {
-      if (duration == "short") duration = 1;
-      else if (duration == "long") duration = 2;
-      else if (duration == "longer") duration = 3;
+      if (duration == "short") duration = 8;
+      else if (duration == "long") duration = 15;
+      else if (duration == "longer") duration = 30;
       this.plaintextExport += `{{delay${duration}}}`;
     } else {
       this.plaintextExport += `{{delay frames="${duration}"}}`;
@@ -69,8 +69,10 @@ export default class TOTKMSBTEditorParser extends Parser {
   }
 
   addColorNode(color) {
-    if (color == "red") color = "Orange"; // 3 in popup text
-    else if (color == "blue") color = "Cyan"; // 4 in credits
+    if (color == "red")
+      color = "Orange"; // 3 in popup text
+    else if (color == "blue")
+      color = "Cyan"; // 4 in credits
     else if (color == "grey") color = "Gray";
     else return this.addResetColorNode();
     this.plaintextExport += `{{color id="${color}"}}`;
