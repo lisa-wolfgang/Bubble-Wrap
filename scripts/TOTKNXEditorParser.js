@@ -27,10 +27,11 @@ export default class TOTKNXEditorParser extends Parser {
   addPresetAnimNode(bubble) {
     // Mappings discovered by @Qw2#8979 and @dt12345#0389 on Discord
     const animationValue = PresetAnimation.OPTIONS.indexOf(bubble.animation);
-    let soundValue = animationValue;
-    if (bubble.sound == "animation") soundValue += animationValue + 7; // TODO: Add support for "serious"
+    let soundValue = animationValue + 7; // TODO: Add support for "serious"
     soundValue = soundValue.toString(16); // convert to hex
-    this.plaintextExport += `<3 Type='0' Data='0${soundValue}01'/>`;
+    let noVoice = 1;
+    if (bubble.sound == "animation") noVoice = 0;
+    this.plaintextExport += `<3 Type='0' Data='0${soundValue}0${noVoice}'/>`;
   }
 
   addAnimationNode(animation) {

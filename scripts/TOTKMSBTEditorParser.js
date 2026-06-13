@@ -27,10 +27,26 @@ export default class TOTKMSBTEditorParser extends Parser {
   addPresetAnimNode(bubble) {
     // Mappings discovered by @Qw2#8979 and @dt12345#0389 on Discord
     const animationValue = PresetAnimation.OPTIONS.indexOf(bubble.animation);
-    let soundValue = animationValue;
-    if (bubble.sound == "animation") soundValue += animationValue + 7; // TODO: Add support for "serious"
-    soundValue = soundValue.toString(16); // convert to hex
-    this.plaintextExport += `{{resetAnim arg="[${soundValue},1]"}}`;
+    const emotionDict = [
+      "Normal_Face",
+      "Pleasure_Face",
+      "Anger_Face",
+      "Sorrow_Face",
+      "Surprise_Face",
+      "Thinking_Face",
+      "Serious_Face",
+      "Normal",
+      "Pleasure",
+      "Angry",
+      "Sorrow",
+      "Surprise",
+      "Thinking",
+      "Serious"
+    ];
+    const emotion = emotionDict[animationValue + 7]; // TODO: Add support for "serious" and face-only
+    let noVoice = "true";
+    if (bubble.sound == "animation") noVoice = "false";
+    this.plaintextExport += `{{setEmotion emotion="${emotion}" noVoice="${noVoice}"}}`;
   }
 
   addAnimationNode(animation) {
