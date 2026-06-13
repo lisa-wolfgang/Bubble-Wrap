@@ -367,6 +367,10 @@ export default class BubbleTools {
       navigator.clipboard.writeText(result).then(
         () => {
           let alertMsg = "The output has been copied to your clipboard.";
+          if (BubbleTools.exportFormat == ExportType.TOTKMSBTEditor) {
+            alertMsg +=
+              "\n\nBefore pasting, make sure that the TOTK game config is up-to-date. In MSBT Editor's toolbar, click Data > Change Game Config > Download Configs.";
+          }
           window.alert(alertMsg);
         },
         () => {
