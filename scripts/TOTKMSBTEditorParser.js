@@ -53,15 +53,15 @@ export default class TOTKMSBTEditorParser extends Parser {
   }
 
   addColorNode(color) {
-    if (color == "red") color = 0; // 3 in popup text
-    else if (color == "blue") color = 1; // 4 in credits
-    else if (color == "grey") color = 2;
+    if (color == "red") color = "Orange"; // 3 in popup text
+    else if (color == "blue") color = "Cyan"; // 4 in credits
+    else if (color == "grey") color = "Gray";
     else return this.addResetColorNode();
     this.plaintextExport += `{{color id="${color}"}}`;
   }
 
   addResetColorNode() {
-    this.plaintextExport += `{{color id="65535"}}`;
+    this.plaintextExport += `{{color id="Default"}}`;
   }
 
   addSizeNode(size) {
