@@ -21,6 +21,7 @@ export default class MSYTParser extends Parser {
   createTokensFromPlaintext(plaintext) {
     const tokens = [];
     const tokensData = load(plaintext);
+    if (!(tokensData instanceof Array)) throw "Input is not YAML";
     for (const tokenData of tokensData) {
       if (tokenData.text) {
         tokens.push(new BubbleToken(tokenData.text, "newTextNode"));

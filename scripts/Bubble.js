@@ -327,7 +327,6 @@ export default class Bubble {
     const wasMSYTImportSuccess = parser.import(plaintext);
     if (wasMSYTImportSuccess) return;
     // Otherwise paste as plaintext
-    // TODO: Fix this
     else Parser.appendAsBubbles(plaintext, this);
   }
 }

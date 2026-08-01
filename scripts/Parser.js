@@ -126,7 +126,7 @@ export default class Parser {
     try {
       tokens = this.createTokensFromPlaintext(text);
     } catch (error) {
-      console.error(error);
+      console.log(`Could not import text with ${this.constructor.name}: ${error}`);
       return false;
     }
     // Populate new bubbles
