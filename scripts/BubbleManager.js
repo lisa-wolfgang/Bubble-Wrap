@@ -35,6 +35,7 @@ export default class BubbleManager {
    * Inserts a new bubble below the specified parent.
    * @param {Bubble} parentBubble The bubble to create this one under.
    * @param {string} text (optional) A string to prefill the new bubble with.
+   * @returns {Bubble} The newly created bubble.
    */
   static addBubble(parentBubble, text) {
     let index = parentBubble.getIndex();
@@ -42,6 +43,7 @@ export default class BubbleManager {
     parentBubble.element.classList.add("del-disabled");
     let newBubble = new Bubble(index, text);
     BubbleManager.bubbles.splice(index + 1, 0, newBubble);
+    return newBubble;
   }
 
   static deleteBubble(toDelete) {

@@ -2,6 +2,7 @@ import BubbleUtil from "./BubbleUtil.js";
 import BubbleManager from "./BubbleManager.js";
 import BubbleTester from "./BubbleTester.js";
 import Parser from "./Parser.js";
+import MSYTParser from "./MSYTParser.js";
 import PauseDuration from "./enums/PauseDuration.js";
 
 /** Manages the UI for an individual text box. */
@@ -223,14 +224,30 @@ export default class Bubble {
   }
 
   /**
-   * Inserts a textual node into this bubble.
+   * Appends a node to this bubble. Creates a new line by default (or if this bubble is empty.)
+   * @param {Node} node The node to append.
+   * @param {boolean} [appendToLine] Whether the new node will be appended to the existing last line of the bubble.
+   */
+  appendNode(node, appendToLine) {
+    const lastLine = this.bubbleContentElement.lastChild;
+    if (appendToLine && lastLine) {
+      lastLine.appendChild(node);
+    } else {
+      const newLine = document.createElement("div");
+      newLine.appendChild(node);
+      this.bubbleContentElement.appendChild(newLine);
+    }
+  }
+
+  /**
+   * Inserts a textual node into this bubble. The default behavior is to append it as a new line in the bubble.
    * @param {Node} content The content of the node. Can include non-textual nodes.
    * @param {Object} args A set of parameters for the new node. See {@link BubbleUtil.newTextNode()}.
-   * @param {Range} [range] If provided, the node will be inserted at the end position of this range.
-   * Otherwise, it will be appended to the bubble.
+   * @param {boolean} [appendToLine] Whether the new node will be appended to the existing last line of the bubble.
+   * @param {Range} [range] If provided, the node will replace this range.
    * @returns {Node} The new Node.
    */
-  insertTextNode(content, args, range) {
+  insertTextNode(content, args, appendToLine, range) {
     const newNode = BubbleUtil.newTextNode(content, args);
     if (range) {
       BubbleUtil.splitParentAndInsert(range, () => {
@@ -238,8 +255,10 @@ export default class Bubble {
       });
       range.deleteContents();
     } else {
-      this.bubbleContentElement.appendChild(newNode);
+      this.appendNode(newNode, appendToLine);
     }
+    // Recalculate overflow status
+    this.inputHandler();
     return newNode;
   }
 
@@ -248,7 +267,7 @@ export default class Bubble {
    * @param {Object} args A set of parameters for the new node. See {@link BubbleUtil.newNonTextNode()}.
    * @param {Function} callback The callback to run when the UI of this node is clicked.
    * @param {Range} [range] If provided, the node will be inserted at the end position of this range.
-   * Otherwise, it will be appended to the bubble.
+   * Otherwise, it will be appended to the existing last line of the bubble.
    * @returns {Node} The new Node.
    */
   insertNonTextNode(args, callback, range) {
@@ -260,7 +279,7 @@ export default class Bubble {
         return newNode;
       });
     } else {
-      this.bubbleContentElement.appendChild(newNode);
+      this.appendNode(newNode, true);
     }
     return newNode;
   }
@@ -303,7 +322,12 @@ export default class Bubble {
   }
 
   parsePastedContent(plaintext) {
-    const filteredText = Parser.filter(plaintext);
-    Parser.appendAsBubbles(filteredText, this);
+    // Try parsing as MSYT
+    let parser = new MSYTParser();
+    const wasMSYTImportSuccess = parser.import(plaintext);
+    if (wasMSYTImportSuccess) return;
+    // Otherwise paste as plaintext
+    // TODO: Fix this
+    else Parser.appendAsBubbles(plaintext, this);
   }
 }

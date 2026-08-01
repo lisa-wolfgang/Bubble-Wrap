@@ -8,7 +8,7 @@ import TextSize from "./enums/TextSize.js";
 import PauseDuration from "./enums/PauseDuration.js";
 import PresetAnimation from "./enums/PresetAnimation.js";
 
-/** A base class for converting Bubble Wrap data to or from plaintext formats. */
+/** A base class for converting between Bubble Wrap data and plaintext formats. */
 export default class Parser {
   /** Creates a new {@link Parser}. */
   constructor() {
@@ -20,7 +20,6 @@ export default class Parser {
 
   static filter(plaintext) {
     // Convert certain characters to the variants used in-game
-    // (also remove some MSYT artifacts)
     let replaceDict = {
       "\\n": "\n",
       "\\\\n": "\n",
@@ -34,10 +33,6 @@ export default class Parser {
     };
     for (const [key, val] of Object.entries(replaceDict)) {
       plaintext = plaintext.replaceAll(key, val);
-    }
-    // If this is a text node, parse out the respective MSYT artifacts
-    if (plaintext.trim().startsWith('- text: "') && plaintext.trim().endsWith('"')) {
-      plaintext = plaintext.trim().slice(9, -1);
     }
     return plaintext;
   }
@@ -69,7 +64,7 @@ export default class Parser {
    * @param {Bubble} parent The bubble to append the text to.
    */
   static appendAsBubbles(plaintext, parent) {
-    let plaintextChunks = plaintext.split("\n");
+    let plaintextChunks = Parser.filter(plaintext).split("\n");
     let textLines = [];
     plaintextChunks.forEach((chunk) => {
       textLines = textLines.concat(BubbleTester.breakTextAtWrap(chunk));
@@ -117,6 +112,74 @@ export default class Parser {
         plaintext = null;
       }
       bubbleStartIndex = lineIndex + 1;
+    }
+  }
+
+  /**
+   * Imports plaintext as a set of Bubbles.
+   * @param {string} text The plaintext to import.
+   * @returns {boolean} Whether the import was successful.
+   */
+  import(text) {
+    // Attempt to process plaintext
+    let tokens;
+    try {
+      tokens = this.createTokensFromPlaintext(text);
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+    // Populate new bubbles
+    this.executeTokensOnChain(tokens);
+    return true;
+  }
+
+  /**
+   * Creates new bubbles using the provided tokens.
+   * @param {BubbleToken[]} tokens
+   */
+  executeTokensOnChain(tokens) {
+    // Start inserting at/after selected bubble
+    let currentBubble;
+    let range = getSelection()?.getRangeAt(0);
+    if (range) currentBubble = BubbleManager.getBubbleFromNode(range.endContainer);
+    else currentBubble = BubbleManager.bubbles.at(-1);
+    if (currentBubble.lineCount > 1 || currentBubble.bubbleContentElement.firstChild?.hasChildNodes()) {
+      currentBubble = BubbleManager.addBubble(currentBubble);
+    }
+
+    const currentTextAttrs = {
+      color: undefined,
+      size: undefined
+    };
+    for (const token of tokens) {
+      if (token.instruction === "newTextNode") {
+        // Fill new bubbles without compensating for line wrapping
+        const textLines = Parser.filter(token.value);
+        textLines.split("\n").forEach((textLine, i) => {
+          let isNewLine = i > 0;
+          const manualLineCount = currentBubble.bubbleContentElement.children.length;
+          if (isNewLine && (!currentBubble || manualLineCount >= BubbleManager.type.lineCount)) {
+            currentBubble = BubbleManager.addBubble(currentBubble);
+            isNewLine = false; // new line is created with new bubble
+          }
+          const textArgs = Object.assign({}, currentTextAttrs); // make unique copy
+          currentBubble.insertTextNode(new Text(textLine), textArgs, !isNewLine);
+        });
+      } else if (token.instruction === "newNonTextNode") {
+        if (token.type === "pause") {
+          currentBubble.insertPauseNode(token.value);
+        }
+      } else if (token.instruction === "setTextAttr") {
+        // Set given property of next text token
+        currentTextAttrs[token.type] = token.value;
+      } else if (token.instruction === "setBubbleAttr") {
+        if (token.type === "animation") {
+          currentBubble.animation = token.value;
+        } else if (token.type === "sound") {
+          currentBubble.sound = token.value;
+        }
+      }
     }
   }
 
@@ -269,6 +332,15 @@ export default class Parser {
   // The following methods are to be defined in child classes:
 
   /**
+   * Converts the import's plaintext into {@link BubbleToken}s.
+   * The validation is lax; this function will only throw an error if the syntax is malformed.
+   * Some format-specific errors may be ignored, and any malformed or unsupported tags will be excluded.
+   * @param {string} plaintext
+   * @returns {Array<BubbleToken>}
+   */
+  createTokensFromPlaintext(plaintext) {}
+
+  /**
    * Adds any syntax that must precede a text node.
    */
   startTextNode() {}
@@ -323,5 +395,20 @@ export default class Parser {
    */
   postProcess(output) {
     return output;
+  }
+}
+
+/** An intermediary instruction between plaintext formats and Bubble data. */
+export class BubbleToken {
+  /**
+   * Creates a new {@link BubbleToken}.
+   * @param {*} value The data to apply with this instruction.
+   * @param {"newTextNode" | "newNonTextNode" | "setTextAttr" | "setBubbleAttr"} instruction
+   * @param {"color" | "size" | "pause" | "animation" | "sound" | undefined} type
+   */
+  constructor(value, instruction, type = undefined) {
+    this.value = value;
+    this.instruction = instruction;
+    this.type = type;
   }
 }

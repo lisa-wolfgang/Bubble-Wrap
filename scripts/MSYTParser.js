@@ -1,4 +1,6 @@
-import Parser from "./Parser.js";
+import { load } from "./libs/js-yaml.esm.min.mjs";
+
+import Parser, { BubbleToken } from "./Parser.js";
 
 import PresetAnimation from "./enums/PresetAnimation.js";
 
@@ -13,6 +15,65 @@ export default class MSYTParser extends Parser {
   export(bubbles, verbose) {
     return super.export(bubbles, verbose);
   }
+
+  // Import overrides
+
+  createTokensFromPlaintext(plaintext) {
+    const tokens = [];
+    const tokensData = load(plaintext);
+    for (const tokenData of tokensData) {
+      if (tokenData.text) {
+        tokens.push(new BubbleToken(tokenData.text, "newTextNode"));
+      } else if (tokenData.control) {
+        if (tokenData.control.kind == "set_colour" && ["grey", "red", "blue"].includes(tokenData.control.colour)) {
+          // Set color
+          tokens.push(new BubbleToken(tokenData.control.colour, "setTextAttr", "color"));
+        } else if (tokenData.control.kind == "reset_colour") {
+          // Reset color
+          tokens.push(new BubbleToken(undefined, "setTextAttr", "color"));
+        } else if (tokenData.control.kind == "text_size" && ["80", "125"].includes(tokenData.control.percent)) {
+          // Set size
+          tokens.push(new BubbleToken(tokenData.control.percent, "setTextAttr", "size"));
+        } else if (tokenData.control.kind == "text_size" && tokenData.control.percent == 100) {
+          // Reset size
+          tokens.push(new BubbleToken(undefined, "setTextAttr", "size"));
+        } else if (tokenData.control.kind == "pause") {
+          // Add pause node
+          let pauseVal;
+          if (["short", "long", "longer"].includes(tokenData.control.length)) {
+            pauseVal = tokenData.control.length;
+          } else if (!isNaN(tokenData.control.frames)) {
+            pauseVal = Number(tokenData.control.frames);
+          }
+          if (pauseVal !== undefined) {
+            tokens.push(new BubbleToken(pauseVal, "newNonTextNode", "pause"));
+          }
+        } else if (tokenData.control.kind == "animation" && tokenData.control.name) {
+          // Set bubble animation
+          tokens.push(new BubbleToken(tokenData.control.name, "setBubbleAttr", "animation"));
+        } else if (tokenData.control.kind == "sound") {
+          const soundValues = tokenData.control.unknown;
+          if (soundValues) {
+            // Set preset animation (if valid)
+            const presetAnimCount = PresetAnimation.OPTIONS.length;
+            if (soundValues[1] == 0 && soundValues[0] < presetAnimCount * 2) {
+              const presetAnimName = PresetAnimation.OPTIONS[soundValues[0] % presetAnimCount];
+              tokens.push(new BubbleToken(presetAnimName, "setBubbleAttr", "animation"));
+              if (soundValues[0] >= presetAnimCount) {
+                tokens.push(new BubbleToken("animation", "setBubbleAttr", "sound"));
+              }
+            } else {
+              // Otherwise set bubble sound generically
+              tokens.push(new BubbleToken(soundValues.join(" "), "setBubbleAttr", "sound"));
+            }
+          }
+        }
+      }
+    }
+    return tokens;
+  }
+
+  // Export overrides
 
   startTextNode() {
     this.plaintextExport += `      - text: "`;
