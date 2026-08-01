@@ -42,22 +42,7 @@ export default class Bubble {
     this.sound = "none";
 
     // Populate bubble with first line
-    const initLine = this.initializeContents(text);
-
-    // If this is not the initial or test bubble, autofocus
-    if (index > 0) {
-      this.element.addEventListener("animationstart", () => {
-        // Trigger autofocus once all post-click events have occurred
-        this.bubbleContentElement.focus();
-        const range = getSelection().getRangeAt(0);
-        range.setStart(initLine, 0);
-      });
-      this.element.addEventListener("animationend", () => {
-        // The delete button was disabled on the parent element earlier to prevent weird flickering,
-        // but it can safely be re-enabled now
-        BubbleManager.bubbles[index - 1].element.classList.remove("del-disabled");
-      });
-    }
+    this.initializeContents(text);
 
     // Add UI logic for visible bubbles
     if (index > -1) {
@@ -145,17 +130,25 @@ export default class Bubble {
       this.inputHandler(); // run once to evaluate overflow status
 
       // When bubble add button is clicked, create a new bubble below this one
-      this.btnAddBubbleElement?.addEventListener("mousedown", (e) => {
-        BubbleManager.addBubble(this);
-      });
+      const addAndAutofocusBubble = () => {
+        const newBubble = BubbleManager.addBubble(this);
+        newBubble.focus();
+      };
+      this.btnAddBubbleElement?.addEventListener("mousedown", addAndAutofocusBubble);
       this.element.addEventListener("keydown", (e) => {
-        if (e.code == "Enter" && e.ctrlKey && !e.altKey && !BubbleManager.type.isSingleton) BubbleManager.addBubble(this);
+        if (e.code == "Enter" && e.ctrlKey && !e.altKey && !BubbleManager.type.isSingleton) addAndAutofocusBubble();
       });
 
       // When bubble delete button is clicked, delete this bubble
       this.btnDelBubbleElement?.addEventListener("mousedown", (e) => {
         BubbleManager.deleteBubble(this);
         // if (confirm("Are you sure you want to delete this bubble? There is no undo!"))
+      });
+
+      this.element.addEventListener("animationend", () => {
+        // The delete button was disabled on the parent element earlier to prevent weird flickering,
+        // but it can safely be re-enabled now
+        if (index > 0) BubbleManager.bubbles[index - 1].element.classList.remove("del-disabled");
       });
     }
   }
@@ -179,6 +172,17 @@ export default class Bubble {
    */
   getIndex() {
     return BubbleManager.bubbles.indexOf(this);
+  }
+
+  /** Focuses the end of the bubble's contents. */
+  focus() {
+    this.element.addEventListener("animationstart", () => {
+      // Trigger once all post-click events have occurred
+      this.bubbleContentElement.focus();
+      const range = getSelection()?.getRangeAt(0);
+      const initLine = this.bubbleContentElement.lastChild;
+      if (range && initLine) range.setStartAfter(initLine);
+    });
   }
 
   inputHandler() {
