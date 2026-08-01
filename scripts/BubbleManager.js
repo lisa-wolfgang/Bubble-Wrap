@@ -43,6 +43,7 @@ export default class BubbleManager {
     parentBubble.element.classList.add("del-disabled");
     let newBubble = new Bubble(index, text);
     BubbleManager.bubbles.splice(index + 1, 0, newBubble);
+    newBubble.focus();
     return newBubble;
   }
 

@@ -130,13 +130,11 @@ export default class Bubble {
       this.inputHandler(); // run once to evaluate overflow status
 
       // When bubble add button is clicked, create a new bubble below this one
-      const addAndAutofocusBubble = () => {
-        const newBubble = BubbleManager.addBubble(this);
-        newBubble.focus();
-      };
-      this.btnAddBubbleElement?.addEventListener("mousedown", addAndAutofocusBubble);
+      this.btnAddBubbleElement?.addEventListener("mousedown", () => BubbleManager.addBubble(this));
       this.element.addEventListener("keydown", (e) => {
-        if (e.code == "Enter" && e.ctrlKey && !e.altKey && !BubbleManager.type.isSingleton) addAndAutofocusBubble();
+        if (e.code == "Enter" && e.ctrlKey && !e.altKey && !BubbleManager.type.isSingleton) {
+          BubbleManager.addBubble(this);
+        }
       });
 
       // When bubble delete button is clicked, delete this bubble
