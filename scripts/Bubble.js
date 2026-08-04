@@ -3,6 +3,8 @@ import BubbleManager from "./BubbleManager.js";
 import BubbleTester from "./BubbleTester.js";
 import Parser from "./Parser.js";
 import MSYTParser from "./MSYTParser.js";
+import TOTKNXEditorParser from "./TOTKNXEditorParser.js";
+
 import PauseDuration from "./enums/PauseDuration.js";
 
 /** Manages the UI for an individual text box. */
@@ -328,6 +330,9 @@ export default class Bubble {
     let parser = new MSYTParser();
     const wasMSYTImportSuccess = parser.import(plaintext);
     if (wasMSYTImportSuccess) return;
+    parser = new TOTKNXEditorParser();
+    const wasNXImportSuccess = parser.import(plaintext);
+    if (wasNXImportSuccess) return;
     // Otherwise paste as plaintext
     else Parser.appendAsBubbles(plaintext, this);
   }

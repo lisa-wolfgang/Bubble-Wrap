@@ -135,6 +135,24 @@ export default class Parser {
   }
 
   /**
+   * Parses plaintext containing control tag syntax into an equivalent DOM format.
+   * @param {string} plaintext The plaintext to import.
+   * @param {string} tagStart The syntax that denotes an opening tag.
+   * @param {string} tagEnd The syntax that denotes a closing tag.
+   * @param {boolean} handleIllegalTagNames Whether tag names should be prefixed with "control-".
+   * @returns {NodeList}
+   */
+  parseTaggedText(plaintext, tagStart, tagEnd, handleIllegalTagNames = true) {
+    // Make content parsable by DOMParser
+    let xmlLike = plaintext.replaceAll(tagStart, handleIllegalTagNames ? "<control-" : "<");
+    xmlLike = xmlLike.replaceAll(tagEnd, "/>");
+    xmlLike = "<root>" + xmlLike + "</root>";
+
+    const domObj = new DOMParser().parseFromString(xmlLike, "application/xml").firstChild;
+    return domObj?.childNodes || new NodeList();
+  }
+
+  /**
    * Creates new bubbles using the provided tokens.
    * @param {BubbleToken[]} tokens
    */
