@@ -19,6 +19,10 @@ export default class MSYTParser extends Parser {
   // Import overrides
 
   createTokensFromPlaintext(plaintext) {
+    // Fix first line's indentation before parsing
+    if (!plaintext.startsWith("      ") && plaintext.includes("\n      ")) {
+      while (!plaintext.startsWith("      ")) plaintext = " " + plaintext;
+    }
     const tokens = [];
     const tokensData = load(plaintext);
     if (!(tokensData instanceof Array)) throw "Input is not YAML";
