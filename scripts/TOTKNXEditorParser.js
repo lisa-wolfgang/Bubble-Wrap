@@ -67,7 +67,7 @@ export default class TOTKNXEditorParser extends Parser {
         } else if (tokenData.nodeName == "control-3" && controlType == "0") {
           // Set bubble animation/sound preset (if valid)
           const presetIndex = this.getHexByte(controlValue) - 7;
-          if (presetIndex < 0 || presetIndex > PresetAnimation.OPTIONS.length) continue;
+          if (presetIndex < 0 || presetIndex >= PresetAnimation.OPTIONS.length) continue;
           const convertedValue = PresetAnimation.OPTIONS[presetIndex];
           tokens.push(new BubbleToken(convertedValue, "setBubbleAttr", "animation"));
           const noVoice = this.getHexByte(controlValue.slice(2));
