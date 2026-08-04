@@ -2,9 +2,8 @@ import BubbleUtil from "./BubbleUtil.js";
 import BubbleManager from "./BubbleManager.js";
 import BubbleTester from "./BubbleTester.js";
 import Parser from "./Parser.js";
-import MSYTParser from "./MSYTParser.js";
-import TOTKNXEditorParser from "./TOTKNXEditorParser.js";
 
+import ExportType from "./enums/ExportType.js";
 import PauseDuration from "./enums/PauseDuration.js";
 
 /** Manages the UI for an individual text box. */
@@ -326,14 +325,13 @@ export default class Bubble {
   }
 
   parsePastedContent(plaintext) {
-    // Try parsing as MSYT
-    let parser = new MSYTParser();
-    const wasMSYTImportSuccess = parser.import(plaintext);
-    if (wasMSYTImportSuccess) return;
-    parser = new TOTKNXEditorParser();
-    const wasNXImportSuccess = parser.import(plaintext);
-    if (wasNXImportSuccess) return;
+    // Try parsing as each supported import format
+    for (const format of ["MSYT", "TOTKNXEditor", "TOTKMSBTEditor"]) {
+      const parser = ExportType[format].parser;
+      const wasImportSuccess = new parser().import(plaintext);
+      if (wasImportSuccess) return;
+    }
     // Otherwise paste as plaintext
-    else Parser.appendAsBubbles(plaintext, this);
+    Parser.appendAsBubbles(plaintext, this);
   }
 }
