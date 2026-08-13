@@ -118,6 +118,17 @@ export default [
     }
   },
   {
+    bubbleDescription: "Manual three-line bubble with empty middle line",
+    exportDescription: "Three-line text node",
+    bubbleContents: ['<div>a</div><div></div><div><span data-color="red">a</span><br></div>'],
+    importContents: ['<div>a</div><div></div><div><span data-color="red">a</span></div>'],
+    exportFormats: {
+      MSYT: '      - text: "a\\n\\n"\n      - control:\n          kind: set_colour\n          colour: red\n      - text: "a"',
+      TOTKNXEditor: "  a\n  \n  <0 Type='3' Data='0000'/>a",
+      TOTKMSBTEditor: 'a\n\n{{color id="Orange"}}a'
+    }
+  },
+  {
     bubbleDescription: "Three-line bubble (one manual, one wrapping)",
     exportDescription: "Three-line text node",
     bubbleContents: ["<div>a</div><div>llamallamallamallamallamallamallamallamallama<br></div>"],

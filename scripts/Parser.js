@@ -169,6 +169,10 @@ export default class Parser {
       currentBubble = this.addBubble(currentBubble);
     }
 
+    let lineCount = 1;
+    let createNewLine = false;
+    let thisLineContent = "";
+    let emptyLines = 0;
     const currentTextAttrs = {
       color: undefined,
       size: undefined
@@ -176,16 +180,31 @@ export default class Parser {
     for (const token of tokens) {
       if (token.instruction === "newTextNode") {
         // Fill new bubbles without compensating for line wrapping
-        const textLines = Parser.filter(token.value);
-        textLines.split("\n").forEach((textLine, i) => {
-          let isNewLine = i > 0;
-          const manualLineCount = currentBubble.bubbleContentElement.children.length;
-          if (isNewLine && (!currentBubble || manualLineCount >= BubbleManager.type.lineCount)) {
+        const textFragments = Parser.filter(token.value);
+        textFragments.split("\n").forEach((textFragment, isLineBreak) => {
+          if (isLineBreak) {
+            lineCount++;
+            createNewLine = true;
+            if (thisLineContent === "") emptyLines++;
+            thisLineContent = "";
+          }
+          thisLineContent += textFragment;
+          if (createNewLine && (!currentBubble || lineCount > BubbleManager.type.lineCount)) {
             currentBubble = this.addBubble(currentBubble);
-            isNewLine = false; // new line is created with new bubble
+            lineCount = 1;
+            createNewLine = false; // new line is created with new bubble
+            emptyLines = 0;
           }
           const textArgs = Object.assign({}, currentTextAttrs); // make unique copy
-          currentBubble.insertTextNode(new Text(textLine), textArgs, !isNewLine);
+          if (thisLineContent !== "") {
+            while (emptyLines > 0) {
+              currentBubble.insertTextNode(new Text(), undefined, !createNewLine);
+              emptyLines--;
+            }
+            currentBubble.insertTextNode(new Text(textFragment), textArgs, !createNewLine);
+            createNewLine = false;
+            emptyLines = 0;
+          }
         });
       } else if (token.instruction === "newNonTextNode") {
         if (token.type === "pause") {
