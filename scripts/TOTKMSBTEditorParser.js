@@ -36,7 +36,7 @@ export default class TOTKMSBTEditorParser extends Parser {
   createTokensFromPlaintext(plaintext) {
     const tokens = [];
     const tokensData = this.parseTaggedText(plaintext, "{{", "}}", false);
-    if (tokensData.length <= 1) throw "Could not find text formatted with MSBT Editor control tag syntax";
+    if (!this.testMode && tokensData.length <= 1) throw "Could not find text formatted with MSBT Editor control tag syntax";
     for (const tokenData of tokensData) {
       if (tokenData.textContent) {
         tokens.push(new BubbleToken(tokenData.textContent, "newTextNode"));

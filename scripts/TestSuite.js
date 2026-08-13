@@ -20,26 +20,28 @@ export default class TestSuite {
     const userType = BubbleManager.type;
     BubbleManager.updateType("dialogue");
     // Run tests
-    for (const test of Tests) {
-      const results = new Test(test.bubbles, test.outputs).evaluate();
-      for (const key in results) {
-        const result = results[key];
-        if (result != null) {
-          // Test failed
-          this.failedTests.push({
-            inputDescription: test.inputDescription,
-            outputDescription: test.outputDescription,
-            format: key,
-            result: result.result,
-            expected: result.expected
-          });
-        } else {
-          // Test passed
-          this.passedTests.push({
-            inputDescription: test.inputDescription,
-            outputDescription: test.outputDescription,
-            format: key
-          });
+    for (const testData of Tests) {
+      const test = new Test(testData);
+      for (const results of [test.tryImport(), test.tryExport()]) {
+        for (const key in results) {
+          const result = results[key];
+          if (result.expected) {
+            // Test failed
+            this.failedTests.push({
+              inputDescription: result.inputDescription,
+              outputDescription: result.outputDescription,
+              format: key,
+              result: result.result,
+              expected: result.expected
+            });
+          } else {
+            // Test passed
+            this.passedTests.push({
+              inputDescription: result.inputDescription,
+              outputDescription: result.outputDescription,
+              format: key
+            });
+          }
         }
       }
     }

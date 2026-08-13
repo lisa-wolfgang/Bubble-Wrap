@@ -11,10 +11,11 @@ import PresetAnimation from "./enums/PresetAnimation.js";
 /** A base class for converting between Bubble Wrap data and plaintext formats. */
 export default class Parser {
   /** Creates a new {@link Parser}. */
-  constructor() {
+  constructor(testMode = false) {
     if (this.constructor == Parser) {
       throw new Error("`Parser` should not be instantiated directly. Use a subclass that is written to export in a specific format.");
     }
+    this.testMode = testMode;
     this.plaintextExport = "";
   }
 
@@ -159,11 +160,13 @@ export default class Parser {
   executeTokensOnChain(tokens) {
     // Start inserting at/after selected bubble
     let currentBubble;
-    let range = getSelection()?.getRangeAt(0);
-    if (range) currentBubble = BubbleManager.getBubbleFromNode(range.endContainer);
-    else currentBubble = BubbleManager.bubbles.at(-1);
-    if (currentBubble.lineCount > 1 || currentBubble.bubbleContentElement.firstChild?.hasChildNodes()) {
-      currentBubble = BubbleManager.addBubble(currentBubble);
+    if (!this.testMode) {
+      let range = getSelection()?.getRangeAt(0);
+      if (range) currentBubble = BubbleManager.getBubbleFromNode(range.endContainer);
+      else currentBubble = BubbleManager.bubbles.at(-1);
+    }
+    if (this.testMode || currentBubble.lineCount > 1 || currentBubble.bubbleContentElement.firstChild?.hasChildNodes()) {
+      currentBubble = this.addBubble(currentBubble);
     }
 
     const currentTextAttrs = {
@@ -178,7 +181,7 @@ export default class Parser {
           let isNewLine = i > 0;
           const manualLineCount = currentBubble.bubbleContentElement.children.length;
           if (isNewLine && (!currentBubble || manualLineCount >= BubbleManager.type.lineCount)) {
-            currentBubble = BubbleManager.addBubble(currentBubble);
+            currentBubble = this.addBubble(currentBubble);
             isNewLine = false; // new line is created with new bubble
           }
           const textArgs = Object.assign({}, currentTextAttrs); // make unique copy
@@ -198,6 +201,16 @@ export default class Parser {
           currentBubble.sound = token.value;
         }
       }
+    }
+  }
+
+  addBubble(parentBubble) {
+    if (this.testMode) {
+      const testBubble = new Bubble(-1);
+      BubbleManager.testBubbles.push(testBubble);
+      return testBubble;
+    } else {
+      return BubbleManager.addBubble(parentBubble);
     }
   }
 
@@ -326,7 +339,7 @@ export default class Parser {
       // Add the remaining "empty lines" to get to the next bubble
       // TODO: Setting for skipping over blank bubbles on export
       let bubbleLineLimit;
-      if (BubbleManager.testBubbles.includes(bubble)) {
+      if (this.testMode) {
         // Tests are hardcoded to expect 3-line bubble output
         bubbleLineLimit = 3;
       } else {
