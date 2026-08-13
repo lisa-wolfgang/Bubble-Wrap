@@ -66,13 +66,7 @@ export default class TestSuite {
 
   /** Prints individual test results to the console. */
   printResults() {
-    if (this.failedTests.length == 0) {
-      console.groupCollapsed(
-        `%c ✓ %c All tests passed`,
-        "background-color: green; color: white; border-radius: 10px",
-        "background-color: transparent; color: canvastext; border-radius: 0"
-      );
-    } else {
+    if (this.failedTests.length > 0) {
       console.group(
         `%c ! %c ${this.failedTests.length} ${this.failedTests.length == 1 ? "test" : "tests"} failed`,
         "background-color: red; color: white; border-radius: 10px",
@@ -81,7 +75,13 @@ export default class TestSuite {
       this.failedTests.forEach((e) => {
         this.logTestFail(e);
       });
+      console.groupEnd();
     }
+    console.groupCollapsed(
+      `%c ✓ %c ${this.passedTests.length} ${this.passedTests.length == 1 ? "test" : "tests"} passed`,
+      "background-color: green; color: white; border-radius: 10px",
+      "background-color: transparent; color: canvastext; border-radius: 0"
+    );
     this.passedTests.forEach((e) => {
       this.logTestPass(e);
     });
