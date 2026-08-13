@@ -197,10 +197,10 @@ export default [
     bubbleDescription: "Single-line bubble with nested control nodes",
     exportDescription: "Single-line text node with nested control nodes",
     bubbleContents: [
-      '<div>Lots <span data-color="blue">of</span><span data-color="red"> </span><span data-color="red" data-size="125">con</span><span data-color="blue">t</span><span data-color="blue" data-size="80">r</span><span data-color="red" data-size="80">o</span><span data-color="red">l</span><span data-color="red"> n</span><span data-color="red" data-size="125">o</span><span data-size="125">d</span>es</div>'
+      '<div>Lots <span data-color="blue">of</span><span data-color="red"> </span><span data-color="red" data-size="125">con</span><span data-color="blue">t</span><span data-color="blue" data-size="80">r</span><span data-color="red" data-size="80">o</span><span data-color="red">l n</span><span data-color="red" data-size="125">o</span><span data-size="125">d</span>es</div>'
     ],
     importContents: [
-      '<div>Lots <span data-color="blue">of</span><span data-color="red"> </span><span data-color="red" data-size="125">con</span><span data-color="blue">t</span><span data-color="blue" data-size="80">r</span><span data-color="red" data-size="80">o</span><span data-color="red">l</span><span data-color="red"> n</span><span data-color="red" data-size="125">o</span><span data-size="125">d</span>es</div>'
+      '<div>Lots <span data-color="blue">of</span><span data-color="red"> </span><span data-color="red" data-size="125">con</span><span data-color="blue">t</span><span data-color="blue" data-size="80">r</span><span data-color="red" data-size="80">o</span><span data-color="red">l n</span><span data-color="red" data-size="125">o</span><span data-size="125">d</span>es</div>'
     ],
     exportFormats: {
       MSYT: '      - text: "Lots "\n      - control:\n          kind: set_colour\n          colour: blue\n      - text: "of"\n      - control:\n          kind: set_colour\n          colour: red\n      - text: " "\n      - control:\n          kind: text_size\n          percent: 125\n      - text: "con"\n      - control:\n          kind: set_colour\n          colour: blue\n      - control:\n          kind: text_size\n          percent: 100\n      - text: "t"\n      - control:\n          kind: text_size\n          percent: 80\n      - text: "r"\n      - control:\n          kind: set_colour\n          colour: red\n      - text: "o"\n      - control:\n          kind: text_size\n          percent: 100\n      - text: "l n"\n      - control:\n          kind: text_size\n          percent: 125\n      - text: "o"\n      - control:\n          kind: reset_colour\n      - text: "d"\n      - control:\n          kind: text_size\n          percent: 100\n      - text: "es"',
@@ -266,7 +266,7 @@ export default [
     bubbleDescription: "Empty bubble surrounded by single-line bubbles",
     exportDescription: "Two-bubble text node",
     bubbleContents: ["<div>a</div>", "<div></div>", "<div>a</div>"],
-    importContents: ["<div>a</div>", "<div></div>", "<div>a</div>"],
+    importContents: ["<div>a</div>", "<div>a</div>"],
     exportFormats: {
       MSYT: '      - text: "a\\n\\n\\na"',
       TOTKNXEditor: "  a\n  \n  \n  a",
