@@ -199,13 +199,17 @@ export default class BubbleUtil {
    * @returns {Node} The new node.
    */
   static newTextNode(content, args) {
-    let newSpan = document.createElement("span");
-    newSpan.appendChild(content);
-    let newColor = args?.color || args?.node?.getAttribute?.("data-color");
-    if (newColor) newSpan.setAttribute("data-color", newColor);
-    let newSize = args?.size || args?.node?.getAttribute?.("data-size");
-    if (newSize) newSpan.setAttribute("data-size", newSize);
-    return newSpan;
+    if (args?.color || args?.size) {
+      const newSpan = document.createElement("span");
+      newSpan.appendChild(content);
+      let newColor = args?.color || args?.node?.getAttribute?.("data-color");
+      if (newColor) newSpan.setAttribute("data-color", newColor);
+      let newSize = args?.size || args?.node?.getAttribute?.("data-size");
+      if (newSize) newSpan.setAttribute("data-size", newSize);
+      return newSpan;
+    } else {
+      return content;
+    }
   }
 
   /**
