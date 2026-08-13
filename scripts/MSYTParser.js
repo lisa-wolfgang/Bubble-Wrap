@@ -36,7 +36,7 @@ export default class MSYTParser extends Parser {
         } else if (tokenData.control.kind == "reset_colour") {
           // Reset color
           tokens.push(new BubbleToken(undefined, "setTextAttr", "color"));
-        } else if (tokenData.control.kind == "text_size" && ["80", "125"].includes(tokenData.control.percent)) {
+        } else if (tokenData.control.kind == "text_size" && [80, 125].includes(tokenData.control.percent)) {
           // Set size
           tokens.push(new BubbleToken(tokenData.control.percent, "setTextAttr", "size"));
         } else if (tokenData.control.kind == "text_size" && tokenData.control.percent == 100) {
