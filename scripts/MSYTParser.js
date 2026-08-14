@@ -6,16 +6,6 @@ import PresetAnimation from "./enums/PresetAnimation.js";
 
 /** Extends {@link Parser} to use MSYT as the plaintext format. */
 export default class MSYTParser extends Parser {
-  /**
-   * Exports a set of Bubbles into MSYT text.
-   * @param {Bubble[]} bubbles An array of Bubble objects.
-   * @param {boolean} verbose Whether or not the browser should warn the user about issues.
-   * @returns A string containing the exported MSYT text.
-   */
-  export(bubbles, verbose) {
-    return super.export(bubbles, verbose);
-  }
-
   // Import overrides
 
   createTokensFromPlaintext(plaintext) {
@@ -88,6 +78,17 @@ export default class MSYTParser extends Parser {
 
   startTextNode() {
     this.plaintextExport += `      - text: "`;
+  }
+
+  escape(text) {
+    let replaceDict = {
+      "\\": "\\\\",
+      '"': '\\"'
+    };
+    for (const [key, val] of Object.entries(replaceDict)) {
+      text = text.replaceAll(key, val);
+    }
+    return text;
   }
 
   addLineBreak() {

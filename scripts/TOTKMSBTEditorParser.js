@@ -21,16 +21,6 @@ export default class TOTKMSBTEditorParser extends Parser {
     "Serious"
   ];
 
-  /**
-   * Exports a set of Bubbles into MSBT Editor syntax for TOTK.
-   * @param {Bubble[]} bubbles An array of Bubble objects.
-   * @param {boolean} verbose Whether or not the browser should warn the user about issues.
-   * @returns A string containing the exported MSBT Editor syntax.
-   */
-  export(bubbles, verbose) {
-    return super.export(bubbles, verbose);
-  }
-
   // Import overrides
 
   createTokensFromPlaintext(plaintext) {
@@ -43,6 +33,7 @@ export default class TOTKMSBTEditorParser extends Parser {
       }
       plaintext = plaintext.slice(4);
     }
+    plaintext = plaintext.replaceAll("{{---}}", "---");
     const tokens = [];
     const tokensData = this.parseTaggedText(plaintext, "{{", "}}", false);
     if (!this.testMode && tokensData.length <= 1) throw "Could not find text formatted with MSBT Editor control tag syntax";
@@ -158,5 +149,13 @@ export default class TOTKMSBTEditorParser extends Parser {
 
   addSizeNode(size) {
     this.plaintextExport += `{{size value="${size}"}}`;
+  }
+
+  postProcess(output) {
+    // Escape text matching header syntax
+    output?.replaceAll("\n---\n", "\n{{---}}\n");
+    if (output?.startsWith("---\n")) output = "{{---}}\n" + output.slice(4);
+    if (output?.endsWith("\n---")) output = output.slice(0, -4) + "\n{{---}}";
+    return output;
   }
 }

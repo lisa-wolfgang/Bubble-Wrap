@@ -25,7 +25,7 @@ export default class Parser {
       "\\n": "\n",
       "\\\\n": "\n",
       '\\"': '"',
-      "--": "—",
+      " -- ": " — ",
       "‘": "'",
       "’": "'",
       "“": '"',
@@ -332,16 +332,7 @@ export default class Parser {
           }
 
           // Get text
-          text = node.textContent;
-          // Convenience conversions
-          let replaceDict = {
-            "--": "—",
-            '"': '\\"'
-          };
-          for (const [key, val] of Object.entries(replaceDict)) {
-            text = text.replaceAll(key, val);
-          }
-
+          text = this.escape(node.textContent);
           if (!textUnfinished) this.startTextNode();
           this.plaintextExport += `${text}`;
           textUnfinished = true;
@@ -394,6 +385,13 @@ export default class Parser {
    * Adds any syntax that must precede a text node.
    */
   startTextNode() {}
+  /**
+   * @param {*} text The text to process.
+   * @returns The text with escaped characters.
+   */
+  escape(text) {
+    return text;
+  }
   /**
    * Inserts a line break in the current text node.
    */

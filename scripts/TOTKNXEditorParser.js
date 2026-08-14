@@ -4,16 +4,6 @@ import PresetAnimation from "./enums/PresetAnimation.js";
 
 /** Extends {@link Parser} to use NX Editor's syntax for TOTK as the plaintext format. */
 export default class TOTKNXEditorParser extends Parser {
-  /**
-   * Exports a set of Bubbles into NX Editor syntax for TOTK.
-   * @param {Bubble[]} bubbles An array of Bubble objects.
-   * @param {boolean} verbose Whether or not the browser should warn the user about issues.
-   * @returns A string containing the exported NX Editor syntax.
-   */
-  export(bubbles, verbose) {
-    return "  " + super.export(bubbles, verbose);
-  }
-
   // Import overrides
 
   createTokensFromPlaintext(plaintext) {
@@ -160,5 +150,9 @@ export default class TOTKNXEditorParser extends Parser {
 
   addSizeNode(size) {
     this.plaintextExport += `<0 Type='2' Data='${parseInt(size).toString(16).padStart(2, "0")}00'/>`;
+  }
+
+  postProcess(output) {
+    return "  " + output;
   }
 }
