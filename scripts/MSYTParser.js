@@ -19,6 +19,12 @@ export default class MSYTParser extends Parser {
   // Import overrides
 
   createTokensFromPlaintext(plaintext) {
+    // Remove entry name and attributes before parsing
+    while (!plaintext.trim().startsWith("-")) {
+      const nextLineIndex = plaintext.indexOf("\n") + 1;
+      if (nextLineIndex === 0) throw "Input does not contain MSYT contents";
+      plaintext = plaintext.slice(nextLineIndex);
+    }
     // Fix first line's indentation before parsing
     if (!plaintext.startsWith("      ") && plaintext.includes("\n      ")) {
       while (!plaintext.startsWith("      ")) plaintext = " " + plaintext;

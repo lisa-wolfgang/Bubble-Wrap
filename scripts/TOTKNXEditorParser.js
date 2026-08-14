@@ -17,8 +17,15 @@ export default class TOTKNXEditorParser extends Parser {
   // Import overrides
 
   createTokensFromPlaintext(plaintext) {
+    // Remove entry name before parsing
+    let wasFullEntry = false;
+    if (plaintext.split("\n")[0].trim().endsWith("|")) {
+      wasFullEntry = true;
+      const nextLineIndex = plaintext.indexOf("\n") + 1;
+      plaintext = plaintext.slice(nextLineIndex);
+    }
     // Unindent before parsing
-    if (plaintext.startsWith("  ") && (plaintext.includes("\n  ") || this.testMode)) {
+    if (plaintext.startsWith("  ") && (plaintext.includes("\n  ") || wasFullEntry || this.testMode)) {
       plaintext = plaintext.slice(2).replaceAll("\n  ", "\n");
     }
     const tokens = [];

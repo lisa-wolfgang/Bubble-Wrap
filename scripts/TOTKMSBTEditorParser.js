@@ -34,6 +34,15 @@ export default class TOTKMSBTEditorParser extends Parser {
   // Import overrides
 
   createTokensFromPlaintext(plaintext) {
+    // Remove entry name and attributes before parsing
+    if (plaintext.split("\n")[0] === "---") {
+      plaintext = plaintext.slice(4);
+      while (plaintext.split("\n")[0] !== "---") {
+        const nextLineIndex = plaintext.indexOf("\n") + 1;
+        plaintext = plaintext.slice(nextLineIndex);
+      }
+      plaintext = plaintext.slice(4);
+    }
     const tokens = [];
     const tokensData = this.parseTaggedText(plaintext, "{{", "}}", false);
     if (!this.testMode && tokensData.length <= 1) throw "Could not find text formatted with MSBT Editor control tag syntax";
