@@ -1,4 +1,5 @@
 import BubbleManager from "./BubbleManager.js";
+import BubbleTools from "./BubbleTools.js";
 import Tests from "./enums/Tests.js";
 import Test from "./Test.js";
 import TestSubGroup from "./TestSubGroup.js";
@@ -11,8 +12,9 @@ export default class TestSuite {
    * Runs all available tests.
    */
   run() {
-    // Store user-defined bubble type to re-apply later
+    // Store user-defined bubble type and default export format to re-apply later
     const userType = BubbleManager.type;
+    const userExport = BubbleTools.exportFormat;
     BubbleManager.updateType("dialogue");
     // Run tests
     for (const testData of Tests) {
@@ -41,8 +43,10 @@ export default class TestSuite {
         }
       }
     }
-    // Re-apply user-defined bubble type
+    // Re-apply user-defined bubble type and default export format
     BubbleManager.updateType(userType.className);
+    BubbleManager.setParserMode(userExport.parser);
+    BubbleManager.parserMode = null;
   }
 
   /** Shows a popup notification with the number of tests failed. */
@@ -93,12 +97,12 @@ export default class TestSuite {
   }
 
   logTestPass(result) {
-    const testName = `[${result.format}] ${result.inputDescription} → ${result.outputDescription.toLowerCase()}`;
+    const testName = `[${result.format}] ${result.inputDescription} → ${result.outputDescription[0].toLowerCase()}${result.outputDescription.slice(1)}`;
     console.log(...this.testPassToConsoleMsg(testName));
   }
 
   logTestFail(result) {
-    const testName = `[${result.format}] ${result.inputDescription} → ${result.outputDescription.toLowerCase()}`;
+    const testName = `[${result.format}] ${result.inputDescription} → ${result.outputDescription[0].toLowerCase()}${result.outputDescription.slice(1)}`;
     console.groupCollapsed(...this.testFailToConsoleMsg(testName));
     console.log(`Test failed: got result:\n${result.result}\n\nThe expected result was:\n${result.expected}`);
     console.groupEnd();

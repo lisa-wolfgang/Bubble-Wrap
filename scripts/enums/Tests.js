@@ -222,6 +222,45 @@ export default [
     }
   },
   {
+    bubbleDescription: "Single-line bubble with unsupported control node (MSYT)",
+    exportDescription: "Single-line text node with unsupported control node (MSYT)",
+    bubbleContents: [
+      `<div>This is an <span contenteditable="false" data-raw="{&quot;kind&quot;:&quot;ancient&quot;,&quot;age&quot;:10000}" title="Unsupported control node:\n{&quot;kind&quot;:&quot;ancient&quot;,&quot;age&quot;:10000}"><span class="node-select"></span></span>ancient<span contenteditable="false" data-raw="{&quot;kind&quot;:&quot;ancient&quot;,&quot;age&quot;:0}" title="Unsupported control node:\n{&quot;kind&quot;:&quot;ancient&quot;,&quot;age&quot;:0}"><span class="node-select"></span></span> test.</div>`
+    ],
+    importContents: [
+      `<div>This is an <span contenteditable="false" data-raw="{&quot;kind&quot;:&quot;ancient&quot;,&quot;age&quot;:10000}" title="Unsupported control node:\n{&quot;kind&quot;:&quot;ancient&quot;,&quot;age&quot;:10000}"><span class="node-select"></span></span>ancient<span contenteditable="false" data-raw="{&quot;kind&quot;:&quot;ancient&quot;,&quot;age&quot;:0}" title="Unsupported control node:\n{&quot;kind&quot;:&quot;ancient&quot;,&quot;age&quot;:0}"><span class="node-select"></span></span> test.</div>`
+    ],
+    exportFormats: {
+      MSYT: '      - text: "This is an "\n      - control:\n          kind: ancient\n          age: 10000\n      - text: "ancient"\n      - control:\n          kind: ancient\n          age: 0\n      - text: " test."'
+    }
+  },
+  {
+    bubbleDescription: "Single-line bubble with unsupported control node (NX Editor)",
+    exportDescription: "Single-line text node with unsupported control node (NX Editor)",
+    bubbleContents: [
+      `<div>This is an <span contenteditable="false" data-raw="{&quot;group&quot;:&quot;control-9&quot;,&quot;type&quot;:&quot;9&quot;,&quot;argData&quot;:&quot;2710&quot;}" title="Unsupported control node:\n{&quot;group&quot;:&quot;control-9&quot;,&quot;type&quot;:&quot;9&quot;,&quot;argData&quot;:&quot;2710&quot;}"><span class="node-select"></span></span>ancient<span contenteditable="false" data-raw="{&quot;group&quot;:&quot;control-9&quot;,&quot;type&quot;:&quot;9&quot;,&quot;argData&quot;:&quot;ffff&quot;}" title="Unsupported control node:\n{&quot;group&quot;:&quot;control-9&quot;,&quot;type&quot;:&quot;9&quot;,&quot;argData&quot;:&quot;ffff&quot;}"><span class="node-select"></span></span> test.</div>`
+    ],
+    importContents: [
+      `<div>This is an <span contenteditable="false" data-raw="{&quot;group&quot;:&quot;control-9&quot;,&quot;type&quot;:&quot;9&quot;,&quot;argData&quot;:&quot;2710&quot;}" title="Unsupported control node:\n{&quot;group&quot;:&quot;control-9&quot;,&quot;type&quot;:&quot;9&quot;,&quot;argData&quot;:&quot;2710&quot;}"><span class="node-select"></span></span>ancient<span contenteditable="false" data-raw="{&quot;group&quot;:&quot;control-9&quot;,&quot;type&quot;:&quot;9&quot;,&quot;argData&quot;:&quot;ffff&quot;}" title="Unsupported control node:\n{&quot;group&quot;:&quot;control-9&quot;,&quot;type&quot;:&quot;9&quot;,&quot;argData&quot;:&quot;ffff&quot;}"><span class="node-select"></span></span> test.</div>`
+    ],
+    exportFormats: {
+      TOTKNXEditor: "  This is an <9 Type='9' Data='2710'/>ancient<9 Type='9' Data='ffff'/> test."
+    }
+  },
+  {
+    bubbleDescription: "Single-line bubble with unsupported control node (MSBT Editor)",
+    exportDescription: "Single-line text node with unsupported control node (MSBT Editor)",
+    bubbleContents: [
+      `<div>This is an <span contenteditable="false" data-raw="{&quot;_name&quot;:&quot;ancient&quot;,&quot;age&quot;:&quot;10000&quot;}" title="Unsupported control node:\n{&quot;_name&quot;:&quot;ancient&quot;,&quot;age&quot;:&quot;10000&quot;}"><span class="node-select"></span></span>ancient<span contenteditable="false" data-raw="{&quot;_name&quot;:&quot;ancient&quot;,&quot;age&quot;:&quot;-1&quot;}" title="Unsupported control node:\n{&quot;_name&quot;:&quot;ancient&quot;,&quot;age&quot;:&quot;-1&quot;}"><span class="node-select"></span></span> test.</div>`
+    ],
+    importContents: [
+      `<div>This is an <span contenteditable="false" data-raw="{&quot;_name&quot;:&quot;ancient&quot;,&quot;age&quot;:&quot;10000&quot;}" title="Unsupported control node:\n{&quot;_name&quot;:&quot;ancient&quot;,&quot;age&quot;:&quot;10000&quot;}"><span class="node-select"></span></span>ancient<span contenteditable="false" data-raw="{&quot;_name&quot;:&quot;ancient&quot;,&quot;age&quot;:&quot;-1&quot;}" title="Unsupported control node:\n{&quot;_name&quot;:&quot;ancient&quot;,&quot;age&quot;:&quot;-1&quot;}"><span class="node-select"></span></span> test.</div>`
+    ],
+    exportFormats: {
+      TOTKMSBTEditor: 'This is an {{ancient age="10000"}}ancient{{ancient age="-1"}} test.'
+    }
+  },
+  {
     bubbleDescription: "Two single-line bubbles",
     exportDescription: "Two-bubble text node",
     bubbleContents: ["<div>a</div>", "<div>a</div>"],

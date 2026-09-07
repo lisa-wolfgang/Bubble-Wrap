@@ -103,7 +103,7 @@ export default class BubbleManager {
   static setParserMode(parser) {
     // Clear unsupported nodes if requested parser mode differs
     // Confirm if unsupported nodes are present (not using cache because this does not update on delete via backspace, etc.)
-    if (BubbleManager.parserMode != parser && BubbleManager.container?.querySelector("[data-raw]")) {
+    if (BubbleManager.parserMode != parser && BubbleManager.container?.querySelector("[data-raw]:not(.test-bubble [data-raw])")) {
       const msg =
         "You have bubbles with unsupported control nodes (red lines). Unsupported nodes will be deleted if you switch export formats. Continue anyway?";
       if (!confirm(msg)) return false; // don't change anything if user cancels
