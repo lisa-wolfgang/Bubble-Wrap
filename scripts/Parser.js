@@ -210,6 +210,8 @@ export default class Parser {
       } else if (token.instruction === "newNonTextNode") {
         if (token.type === "pause") {
           currentBubble.insertPauseNode(token.value);
+        } else if (token.type === undefined) {
+          currentBubble.insertUnsupportedNode(token.value);
         }
       } else if (token.instruction === "setTextAttr") {
         // Set given property of next text token
@@ -289,17 +291,19 @@ export default class Parser {
       for (let line = 0; line < nodes.length; line++) {
         for (let n = 0; n < nodes[line].length; n++) {
           let node = nodes[line][n];
-          if (!node.nodeValue && !node.childNodes[0] && !node.getAttribute?.("data-pause")) continue;
+          if (!node.nodeValue && !node.childNodes[0] && !node.getAttribute?.("data-pause") && !node.getAttribute?.("data-raw")) continue;
           let isFirst = !previousColor;
 
-          // If this is a pause node, parse and continue to next node
+          // If this is an inline node, parse and continue to next node
           let pauseDuration = node.getAttribute?.("data-pause");
-          if (pauseDuration) {
+          let rawData = node.getAttribute?.("data-raw");
+          if (pauseDuration || rawData) {
             if (textUnfinished) {
               this.endTextNode(false);
               textUnfinished = false;
             }
-            this.addPauseNode(pauseDuration);
+            if (pauseDuration) this.addPauseNode(pauseDuration);
+            else if (rawData) this.addUnsupportedNode(rawData);
             continue;
           }
 
@@ -437,6 +441,11 @@ export default class Parser {
    * @param {number} size A number of type {@link TextSize}.
    */
   addSizeNode(size) {}
+  /**
+   * Attempts to insert an unsupported node with the given data.
+   * @param {*} data Arbitrary data from which a control node recreation will be attempted.
+   */
+  addUnsupportedNode(data) {}
   /**
    * Performs any needed post-processing on the output.
    * @param {string} output The output to process.

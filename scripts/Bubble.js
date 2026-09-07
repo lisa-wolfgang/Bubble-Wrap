@@ -312,6 +312,37 @@ export default class Bubble {
     }
   };
 
+  /**
+   * Inserts an unsupported control node into this bubble.
+   * @param {*} data The data of the unsupported node.
+   * @param {Range} [range] If provided, the node will be inserted at the end position of this range.
+   * Otherwise, it will be appended to the bubble.
+   * @returns {Node} The new Node.
+   */
+  insertUnsupportedNode(data, range) {
+    let node = this.insertNonTextNode({ raw: data }, Bubble.unsupportedNodeCallback, range);
+
+    let raw = node.getAttribute("data-raw");
+    // Check for an unsupported node immediately preceding the current one;
+    // if one exists, merge with it
+    const previousRaw = node.previousSibling?.getAttribute?.("data-raw");
+    if (previousRaw) {
+      raw = `${previousRaw}\n${raw}`;
+      node.previousSibling.remove();
+    }
+
+    node.setAttribute("data-raw", raw);
+    node.setAttribute("title", `Unsupported control node${previousRaw ? "s" : ""}:\n${raw}`);
+    return node;
+  }
+
+  static unsupportedNodeCallback = (e) => {
+    const rawContent = e.currentTarget.getAttribute("data-raw");
+    if (confirm(`Delete this unsupported control node?\n\n${rawContent}`)) {
+      e.currentTarget.remove();
+    }
+  };
+
   parsePaste(e) {
     e.preventDefault();
     let plaintext = e.clipboardData.getData("text/plain");

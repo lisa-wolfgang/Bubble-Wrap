@@ -69,6 +69,14 @@ export default class TOTKNXEditorParser extends Parser {
           tokens.push(new BubbleToken(convertedValue, "setBubbleAttr", "animation"));
           const noVoice = this.getHexByte(controlValue.slice(2));
           if (noVoice == 0) tokens.push(new BubbleToken("animation", "setBubbleAttr", "sound"));
+        } else {
+          // Unsupported node
+          const jsonData = {
+            group: tokenData.nodeName,
+            type: controlType,
+            argData: controlValue
+          };
+          tokens.push(new BubbleToken(JSON.stringify(jsonData), "newNonTextNode", undefined));
         }
       }
     }
@@ -150,6 +158,13 @@ export default class TOTKNXEditorParser extends Parser {
 
   addSizeNode(size) {
     this.plaintextExport += `<0 Type='2' Data='${parseInt(size).toString(16).padStart(2, "0")}00'/>`;
+  }
+
+  addUnsupportedNode(data) {
+    const nodes = data.split("\n").map((nodeData) => JSON.parse(nodeData));
+    for (const node of nodes) {
+      this.plaintextExport += `<${node.group.replace("control-", "")} Type='${node.type}' Data='${node.argData}'/>`;
+    }
   }
 
   postProcess(output) {

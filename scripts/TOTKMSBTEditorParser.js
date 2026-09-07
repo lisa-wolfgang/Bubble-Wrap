@@ -88,6 +88,11 @@ export default class TOTKMSBTEditorParser extends Parser {
           tokens.push(new BubbleToken(convertedValue, "setBubbleAttr", "animation"));
           const noVoice = tokenData.getAttribute("noVoice");
           if (noVoice == "false") tokens.push(new BubbleToken("animation", "setBubbleAttr", "sound"));
+        } else {
+          // Unsupported node
+          const jsonData = { _name: tokenData.nodeName };
+          for (const attr of tokenData.attributes) jsonData[attr.name] = attr.value;
+          tokens.push(new BubbleToken(JSON.stringify(jsonData), "newNonTextNode", undefined));
         }
       }
     }
@@ -149,6 +154,18 @@ export default class TOTKMSBTEditorParser extends Parser {
 
   addSizeNode(size) {
     this.plaintextExport += `{{size value="${size}"}}`;
+  }
+
+  addUnsupportedNode(data) {
+    const nodes = data.split("\n").map((str) => JSON.parse(str));
+    for (const node of nodes) {
+      const nodeData = Object.entries(node);
+      this.plaintextExport += `{{${node._name}`;
+      for (const [key, val] of nodeData) {
+        if (key !== "_name") this.plaintextExport += ` ${key}="${val}"`;
+      }
+      this.plaintextExport += `}}`;
+    }
   }
 
   postProcess(output) {

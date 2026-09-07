@@ -68,6 +68,9 @@ export default class MSYTParser extends Parser {
               tokens.push(new BubbleToken(soundValues.join(" "), "setBubbleAttr", "sound"));
             }
           }
+        } else {
+          // Unsupported node
+          tokens.push(new BubbleToken(JSON.stringify(tokenData.control), "newNonTextNode", undefined));
         }
       }
     }
@@ -148,6 +151,16 @@ export default class MSYTParser extends Parser {
     this.plaintextExport += `      - control:\n`;
     this.plaintextExport += `          kind: text_size\n`;
     this.plaintextExport += `          percent: ${size}\n`;
+  }
+
+  addUnsupportedNode(data) {
+    const nodes = data.split("\n").map((nodeData) => Object.entries(JSON.parse(nodeData)));
+    for (const node of nodes) {
+      this.plaintextExport += `      - control:\n`;
+      for (const [key, val] of node) {
+        this.plaintextExport += `          ${key}: ${val}\n`;
+      }
+    }
   }
 
   postProcess(output) {

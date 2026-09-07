@@ -43,15 +43,8 @@ export default class BubbleUtil {
     if (!bubbleObj) return;
     BubbleUtil.reconstructBubble(
       bubbleObj,
-      (node) => range.intersectsNode(node),
+      (node) => range.intersectsNode(node) && node.textContent !== "",
       (currentNode, newParentNode) => {
-        if (currentNode.textContent == "") {
-          let pauseDuration = currentNode.getAttribute?.("data-pause");
-          if (pauseDuration) {
-            newParentNode.appendChild(BubbleUtil.newNonTextNode({ pause: pauseDuration }, Bubble.pauseNodeCallback));
-          }
-          return;
-        }
         const isStart = currentNode.contains(range.startContainer);
         const isEnd = currentNode.contains(range.endContainer);
         if (isStart && range.startOffset != 0) {
@@ -216,6 +209,7 @@ export default class BubbleUtil {
    * Creates and returns a new, detached Bubble non-textual node.
    * @param {Object} args A set of parameters for the new node.
    * @param {PauseDuration | number} args.pause The pause attribute of the node.
+   * @param {*} args.raw Attribute to store data of unsupported attributes.
    * @param {Function} callback The callback to run when the UI of this node is clicked.
    * @returns {Node} The new node.
    */
@@ -225,6 +219,9 @@ export default class BubbleUtil {
     if (args.pause) {
       newSpan.setAttribute("data-pause", args.pause);
       newSpan.setAttribute("title", `Pause (${args.pause}${isNaN(args.pause) ? "" : " frames"})`);
+    } else if (args.raw) {
+      newSpan.setAttribute("data-raw", args.raw);
+      newSpan.setAttribute("title", `Unsupported control node:\n${args.raw}`);
     }
     let nodeSelectElement = document.createElement("span");
     nodeSelectElement.classList.add("node-select");
