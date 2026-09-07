@@ -6,7 +6,7 @@ A visual text bubble editor for _The Legend of Zelda: Breath of the Wild_ and _T
 
 ### Automatic text wrapping
 
-The editor works just like a regular text box -- eliminating guesswork and providing instant visual feedback. The spacing and wrapping behaviors have been tested for accuracy against a variety of vanilla text. The currently supported formats are:
+The editor works just like a regular text box, eliminating guesswork and providing instant visual feedback. The spacing and wrapping behaviors have been tested for accuracy against a variety of vanilla text. The currently supported formats are:
 
 - NPC dialogue
 - Sign dialogs
@@ -17,21 +17,28 @@ The editor works just like a regular text box -- eliminating guesswork and provi
 
 ### Hassle-free control nodes
 
-Say goodbye to extra and missing spaces in your text. Coloring, resizing, and adding pauses is as easy as selecting a portion of text and applying the desired effect. In addition, presets are available for the most common animation/sound control nodes, but with full support for custom values. When it comes time to export, the control nodes are intelligently inserted so minimal manual tweakage is required.
+Coloring, resizing, and adding pauses is as easy as selecting a portion of text and applying the desired effect. In addition, presets are available for the most common animation/sound control nodes, but with full support for custom values. When it comes time to export, the control nodes are intelligently inserted to avoid the need for manual reordering.
 
-### Smart paste
+### Effortless syntax conversion
 
-Simply paste a set of dialogue from your planning document into a bubble -- the text will automatically be wrapped and broken into multiple bubbles based on line breaks. Plus, sneaky variants of apostrophes and other characters are weeded out and replaced with the correct in-game versions.
+Easily import and export your bubbles from the clipboard with your format/editor of choice:
 
-### Effortless syntax export
+- Plain text
+- MSYT files
+- YAML files
+- Wild Bits
+- NX Editor (TOTK only)
+- MSBT Editor (TOTK only)
 
-Easily export your bubbles for use in MSYT files, NX Editor, or MSBT Editor. Select your game and format of choice, then hit the button or keyboard shortcut to copy the syntax to the clipboard. Never type a `\n` again.
+When importing, both full message entries and syntax fragments are supported. Unrecognized/unsupported control nodes will remain as red lines, but they are lost when switching to a different export format.
+
+Bubble Wrap will also automatically replace sneaky variants of apostrophes and other characters with the correct in-game versions.
 
 ## Install
 
-Bubble Wrap is a web app: no installation is required, and it works on all platforms. However, if your browser supports it, you may install it offline.
+Bubble Wrap is a web application: simply visit https://lisa-wolfgang.github.io/Bubble-Wrap to start using it.
 
-Access Bubble Wrap at https://lisa-wolfgang.github.io/Bubble-Wrap.
+If supported by your browser, you may also install Bubble Wrap as a "standalone" application, although this still requires Internet access. If you need offline access, see [CONTRIBUTING.md](CONTRIBUTING.md) for guidance on running the application locally.
 
 ## Contributing
 

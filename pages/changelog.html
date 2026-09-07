@@ -10,6 +10,19 @@
         <h1 class="title">Changelog</h1>
         <div class="list-container">
           <div class="list-item">
+            <h2 class="list-item-heading">v0.14</h2>
+            <ul>
+              <li>
+                Smart paste now recognizes MSYT / NX Editor / MSBT Editor syntax and converts it into editable bubbles. Both full message
+                entries and fragments are supported. Unrecognized/unsupported control nodes will remain as red lines, but they are lost when
+                switching to a different export format.
+              </li>
+              <li>Changed the double-hyphen to em-dash auto-conversion to preserve long strings of hyphens.</li>
+              <li>Fixed minor character escaping issues when exporting for NX Editor and MSBT Editor.</li>
+              <li>Internal: reworked testing system to display results in a more organized fashion.</li>
+            </ul>
+          </div>
+          <div class="list-item">
             <h2 class="list-item-heading">v0.13.3</h2>
             <ul>
               <li>Updated MSBT Editor exporter syntax to match the latest default TOTK game config.</li>
@@ -232,7 +245,7 @@
             <h2 class="list-item-heading">v0.7</h2>
             <ul>
               <li>Text pasted from an external source is automatically distributed into multiple bubbles based on ending punctuation.</li>
-              <li>MSYT syntax is automatically reformatted into plaintext when pasted.</li>
+              <li>Text nodes in the MSYT syntax are automatically reformatted into plaintext when pasted.</li>
               <li>Variants of certain characters are automatically corrected to the in-game version on paste and export.</li>
               <li>Bubbles can be added using Ctrl+Enter -- the hotkey for exporting to MSYT is now Ctrl+Alt+Enter.</li>
               <li>All shortcuts and hotkeys are viewable on the Shortcuts page linked in the footer.</li>
