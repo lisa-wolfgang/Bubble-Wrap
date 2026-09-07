@@ -130,6 +130,11 @@ export default class Parser {
       console.log(`Could not import text with ${this.constructor.name}: ${error}`);
       return false;
     }
+    // If this chain is using unsupported nodes in a different format, confirm before clearing
+    // (otherwise cancel import)
+    if (tokens.some((token) => token.instruction == "newNonTextNode" && token.type == undefined)) {
+      if (!BubbleManager.setParserMode(this.constructor)) return true;
+    }
     // Populate new bubbles
     this.executeTokensOnChain(tokens);
     return true;

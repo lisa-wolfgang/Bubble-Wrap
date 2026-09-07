@@ -320,6 +320,16 @@ export default class BubbleTools {
     BubbleTools.setExportDocsElement.textContent = BubbleTools.exportFormat.docsLabel;
     BubbleTools.setExportDocsElement.setAttribute("href", BubbleTools.exportFormat.docsLink);
   }
+  static updateExportType(format) {
+    // Set export type value
+    BubbleTools.exportFormat = ExportType[format];
+    // Update button label
+    const titleElement = BubbleTools.setExportFormatBtnElement.querySelector(".select-title");
+    const titleValueBtn = BubbleTools.setExportFormatBtnElement.querySelector(`[value="${format}"]`);
+    titleElement.textContent = titleValueBtn?.textContent;
+    // Update docs link
+    BubbleTools.updateExportDocsLink();
+  }
   static {
     let dropdownOptions = [];
     for (const type in ExportType) {
@@ -333,14 +343,9 @@ export default class BubbleTools {
       null,
       dropdownOptions,
       (format) => {
-        // Set export type value
-        BubbleTools.exportFormat = ExportType[format];
-        // Update button label
-        const titleElement = BubbleTools.setExportFormatBtnElement.querySelector(".select-title");
-        const titleValueBtn = BubbleTools.setExportFormatBtnElement.querySelector(`[value="${format}"]`);
-        titleElement.textContent = titleValueBtn?.textContent;
-        // Update docs link
-        BubbleTools.updateExportDocsLink();
+        // If unsupported nodes are present, prompt the user before clearing
+        if (!BubbleManager.setParserMode(ExportType[format].parser)) return;
+        this.updateExportType(format);
       },
       true,
       false,

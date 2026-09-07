@@ -321,6 +321,7 @@ export default class Bubble {
    */
   insertUnsupportedNode(data, range) {
     let node = this.insertNonTextNode({ raw: data }, Bubble.unsupportedNodeCallback, range);
+    BubbleManager.unsupportedNodes.push(node);
 
     let raw = node.getAttribute("data-raw");
     // Check for an unsupported node immediately preceding the current one;
@@ -339,6 +340,7 @@ export default class Bubble {
   static unsupportedNodeCallback = (e) => {
     const rawContent = e.currentTarget.getAttribute("data-raw");
     if (confirm(`Delete this unsupported control node?\n\n${rawContent}`)) {
+      BubbleManager.unsupportedNodes.splice(BubbleManager.unsupportedNodes.indexOf(e.currentTarget), 1);
       e.currentTarget.remove();
     }
   };

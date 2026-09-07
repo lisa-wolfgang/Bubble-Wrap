@@ -13,6 +13,9 @@ export default class BubbleManager {
   static bubbles = [];
   static testBubbles = [];
 
+  static parserMode = null;
+  static unsupportedNodes = [];
+
   constructor() {
     BubbleManager.wrappingBubble = new Bubble(-1);
     BubbleManager.bubbles.push(new Bubble(0));
@@ -95,5 +98,22 @@ export default class BubbleManager {
     for (let bubble of BubbleManager.bubbles) {
       bubble.inputHandler(); // to recalculate overflow
     }
+  }
+
+  static setParserMode(parser) {
+    // Clear unsupported nodes if requested parser mode differs
+    // Confirm if unsupported nodes are present (not using cache because this does not update on delete via backspace, etc.)
+    if (BubbleManager.parserMode != parser && BubbleManager.container?.querySelector("[data-raw]")) {
+      const msg =
+        "You have bubbles with unsupported control nodes (red lines). Unsupported nodes will be deleted if you switch export formats. Continue anyway?";
+      if (!confirm(msg)) return false; // don't change anything if user cancels
+      for (const node of BubbleManager.unsupportedNodes) node.remove();
+      BubbleManager.unsupportedNodes = [];
+    }
+    BubbleManager.parserMode = parser;
+    // Update export type to match
+    BubbleTools.updateExportType(parser.name.replace(/Parser$/, ""));
+    // Signal that the operation wasn't cancelled
+    return true;
   }
 }
