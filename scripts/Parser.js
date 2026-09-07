@@ -150,6 +150,7 @@ export default class Parser {
     xmlLike = "<root>" + xmlLike + "</root>";
 
     const domObj = new DOMParser().parseFromString(xmlLike, "application/xml").firstChild;
+    if (domObj?.nodeName === "parsererror") return new NodeList();
     return domObj?.childNodes || new NodeList();
   }
 
