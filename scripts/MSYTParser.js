@@ -164,6 +164,6 @@ export default class MSYTParser extends Parser {
   }
 
   postProcess(output) {
-    return output.trimEnd();
+    return super.postProcess(output.trimEnd());
   }
 }

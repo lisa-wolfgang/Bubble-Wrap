@@ -168,6 +168,6 @@ export default class TOTKNXEditorParser extends Parser {
   }
 
   postProcess(output) {
-    return "  " + output;
+    return super.postProcess("  " + output);
   }
 }

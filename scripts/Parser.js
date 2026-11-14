@@ -457,7 +457,7 @@ export default class Parser {
    * @returns {string} The processed output.
    */
   postProcess(output) {
-    return output;
+    return output + "\n";
   }
 }
 

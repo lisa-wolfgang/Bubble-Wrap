@@ -84,7 +84,7 @@ export default class Test {
         inputDescription: this.testData.bubbleDescription,
         outputDescription: this.testData.exportDescription
       };
-      if (result !== this.testData.exportFormats[key]) {
+      if (result !== this.testData.exportFormats[key] + "\n") {
         results[key]["result"] = result;
         results[key]["expected"] = this.testData.exportFormats[key];
       }

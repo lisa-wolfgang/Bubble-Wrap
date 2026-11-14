@@ -173,6 +173,6 @@ export default class TOTKMSBTEditorParser extends Parser {
     output?.replaceAll("\n---\n", "\n{{---}}\n");
     if (output?.startsWith("---\n")) output = "{{---}}\n" + output.slice(4);
     if (output?.endsWith("\n---")) output = output.slice(0, -4) + "\n{{---}}";
-    return output;
+    return super.postProcess(output);
   }
 }
