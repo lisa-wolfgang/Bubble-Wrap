@@ -371,7 +371,13 @@ export default class BubbleTools {
     if (result) {
       navigator.clipboard.writeText(result).then(
         () => {
-          let alertMsg = "The output has been copied to your clipboard.";
+          let alertMsg = "";
+          if (BubbleManager.bubbles.some((b) => b.element.classList.contains("overflow"))) {
+            alertMsg +=
+              "Your text is overflowing. The red bubbles indicate bubbles with too many lines or too many characters.\nThe output has been copied to your clipboard, but your text may not appear correctly in-game or import back into Bubble Wrap the same way.";
+          } else {
+            alertMsg += "The output has been copied to your clipboard.";
+          }
           if (BubbleTools.exportFormat == ExportType.TOTKMSBTEditor) {
             alertMsg +=
               "\n\nBefore pasting, make sure that the TOTK game config is up-to-date. In MSBT Editor's toolbar, click Data > Change Game Config > Download Configs.";

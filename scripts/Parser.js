@@ -262,12 +262,6 @@ export default class Parser {
         window.alert("There's nothing to copy. Try typing some text in the dialogue bubble.");
         return undefined;
       }
-      if (verbose && bubble.element.classList.contains("overflow")) {
-        window.alert(
-          "Your text is overflowing. The red bubbles indicate bubbles with too many lines or too many characters. Reformat your text, and try again."
-        );
-        return undefined;
-      }
 
       // Bubble property control nodes (animation, sound)
       if (bubble.animation != "none" || bubble.sound != "none") {
